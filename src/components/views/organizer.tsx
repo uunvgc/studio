@@ -1,140 +1,188 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
-import { PlusCircle, Trash2, ListTodo } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { PlusCircle, Trash2, Edit, Lightbulb } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 
-const formSchema = z.object({
-  task: z.string().min(3, { message: 'Task must be at least 3 characters long.' }),
+const ideaSchema = z.object({
+  title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
+  description: z.string().optional(),
 });
 
-interface Task {
+interface Idea {
   id: number;
-  text: string;
-  completed: boolean;
+  title: string;
+  description: string;
 }
 
 export default function Organizer() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+        const storedIdeas = localStorage.getItem('userIdeas');
+        if (storedIdeas) {
+            setIdeas(JSON.parse(storedIdeas));
+        }
+    } catch (error) {
+        console.error("Failed to parse ideas from localStorage", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if(isMounted) {
+        localStorage.setItem('userIdeas', JSON.stringify(ideas));
+    }
+  }, [ideas, isMounted]);
   
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      task: '',
-    },
+  const addForm = useForm<z.infer<typeof ideaSchema>>({
+    resolver: zodResolver(ideaSchema),
+    defaultValues: { title: '', description: '' },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const newTask: Task = {
+  const editForm = useForm<z.infer<typeof ideaSchema>>({
+    resolver: zodResolver(ideaSchema),
+  });
+
+  function handleAddIdea(values: z.infer<typeof ideaSchema>) {
+    const newIdea: Idea = {
       id: Date.now(),
-      text: values.task,
-      completed: false,
+      title: values.title,
+      description: values.description || '',
     };
-    setTasks(prev => [newTask, ...prev]);
-    form.reset();
+    setIdeas(prev => [newIdea, ...prev]);
+    addForm.reset();
   }
 
-  const toggleTask = (id: number) => {
-    setTasks(tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task));
-  };
+  function handleEditIdea(id: number, values: z.infer<typeof ideaSchema>) {
+    setIdeas(ideas.map(idea => idea.id === id ? { ...idea, title: values.title, description: values.description || '' } : idea));
+  }
 
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
+  const deleteIdea = (id: number) => {
+    setIdeas(ideas.filter(idea => idea.id !== id));
   };
-  
-  const completedTasks = tasks.filter(t => t.completed).length;
-  const totalTasks = tasks.length;
-  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="font-headline">Task Organizer</CardTitle>
-        <CardDescription>Break down your master plan into actionable steps.</CardDescription>
+        <div className="flex justify-between items-start">
+            <div>
+                <CardTitle className="font-headline">Idea Organizer</CardTitle>
+                <CardDescription>Capture, refine, and organize your business ideas.</CardDescription>
+            </div>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Idea</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Capture a New Idea</DialogTitle>
+                    </DialogHeader>
+                    <Form {...addForm}>
+                        <form onSubmit={addForm.handleSubmit(handleAddIdea)} className="space-y-4">
+                            <FormField control={addForm.control} name="title" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Idea Title</FormLabel>
+                                    <FormControl><Input placeholder="e.g., AI-powered pet translator" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                            <FormField control={addForm.control} name="description" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Description (Optional)</FormLabel>
+                                    <FormControl><Textarea placeholder="Describe your idea in more detail..." {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                             <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button type="submit">Save Idea</Button>
+                                </DialogClose>
+                            </DialogFooter>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+        </div>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-4 mb-6">
-            <FormField
-              control={form.control}
-              name="task"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormControl>
-                    <Input placeholder="e.g., Design the landing page" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" size="icon">
-              <PlusCircle className="h-5 w-5" />
-            </Button>
-          </form>
-        </Form>
-        
-        <div className="space-y-4">
-            <div className="px-1 space-y-2">
-                <div className='flex justify-between items-center text-sm text-muted-foreground'>
-                    <span>Progress</span>
-                    <span>{completedTasks} / {totalTasks} Completed</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2.5">
-                    <motion.div 
-                        className="bg-primary h-2.5 rounded-full" 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.5 }}
-                    />
-                </div>
-            </div>
-
-            {tasks.length > 0 ? (
-                <ul className="space-y-2">
-                    <AnimatePresence>
-                    {tasks.map(task => (
-                        <motion.li
-                            key={task.id}
-                            layout
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            className="flex items-center gap-4 p-3 rounded-md bg-background hover:bg-muted/50"
-                        >
-                            <Checkbox 
-                                id={`task-${task.id}`}
-                                checked={task.completed}
-                                onCheckedChange={() => toggleTask(task.id)}
-                            />
-                            <label 
-                                htmlFor={`task-${task.id}`} 
-                                className={`flex-grow text-sm cursor-pointer ${task.completed ? 'line-through text-muted-foreground' : ''}`}
-                            >
-                                {task.text}
-                            </label>
-                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => deleteTask(task.id)}>
-                                <Trash2 className="h-4 w-4 text-muted-foreground" />
+        {isMounted && ideas.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <AnimatePresence>
+              {ideas.map(idea => (
+                <motion.div
+                  key={idea.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                >
+                    <Card className="h-full flex flex-col">
+                        <CardHeader>
+                            <CardTitle className="text-lg">{idea.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">{idea.description || "No description provided."}</p>
+                        </CardContent>
+                        <CardContent className="flex justify-end gap-2">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => editForm.reset(idea)}>
+                                        <Edit className="h-4 w-4" />
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader><DialogTitle>Edit Idea</DialogTitle></DialogHeader>
+                                    <Form {...editForm}>
+                                        <form onSubmit={editForm.handleSubmit((values) => handleEditIdea(idea.id, values))} className="space-y-4">
+                                            <FormField control={editForm.control} name="title" render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Idea Title</FormLabel>
+                                                    <FormControl><Input {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )} />
+                                            <FormField control={editForm.control} name="description" render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Description (Optional)</FormLabel>
+                                                    <FormControl><Textarea {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )} />
+                                            <DialogFooter>
+                                                <DialogClose asChild><Button type="submit">Save Changes</Button></DialogClose>
+                                            </DialogFooter>
+                                        </form>
+                                    </Form>
+                                </DialogContent>
+                            </Dialog>
+                            <Button variant="destructive" size="icon" className="h-8 w-8" onClick={() => deleteIdea(idea.id)}>
+                                <Trash2 className="h-4 w-4" />
                             </Button>
-                        </motion.li>
-                    ))}
-                    </AnimatePresence>
-                </ul>
-            ) : (
-                <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
-                    <ListTodo className="mx-auto h-12 w-12" />
-                    <p className="mt-4 text-sm">No tasks yet. Add your first task to get started!</p>
-                </div>
-            )}
-        </div>
-
+                        </CardContent>
+                    </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <div className="text-center py-16 text-muted-foreground border-2 border-dashed rounded-lg">
+            <Lightbulb className="mx-auto h-12 w-12" />
+            <p className="mt-4 text-sm font-bold">Your idea vault is empty.</p>
+            <p className="text-sm">Click "Add Idea" to capture your first concept.</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
