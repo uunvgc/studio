@@ -25,8 +25,8 @@ const freeQuickStartLinks = [
     description: 'Map out your world domination.',
     icon: Target,
     view: 'organizer',
-    color: 'text-accent',
-    bgColor: 'bg-accent/10',
+    color: 'text-amber-400',
+    bgColor: 'bg-amber-500/10',
   },
 ]
 
@@ -60,8 +60,8 @@ const proLinks = [
     description: 'Map out your empire, from concept to execution.',
     icon: Target,
     view: 'organizer',
-    color: 'text-accent',
-    bgColor: 'bg-accent/10',
+    color: 'text-amber-400',
+    bgColor: 'bg-amber-500/10',
   },
 ]
 
@@ -72,14 +72,14 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
     <div className="space-y-8 animate-in fade-in-50">
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-3 space-y-6">
-            <Card>
+            <Card className="bg-transparent">
                 <CardHeader>
-                    <CardTitle className="font-headline">Pro Command Center</CardTitle>
+                    <CardTitle className="font-headline text-2xl">Pro Command Center</CardTitle>
                     <CardDescription>You have the power to outmaneuver the competition. Use these tools to build your empire.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                      {proLinks.map((link) => (
-                      <Card key={link.view} className="hover:border-primary/50 transition-colors duration-300 group cursor-pointer" onClick={() => setActiveView(link.view as View)}>
+                      <Card key={link.view} className="bg-card hover:border-primary/80 transition-colors duration-300 group cursor-pointer" onClick={() => setActiveView(link.view as View)}>
                         <CardHeader className="p-4">
                            <div className={`p-3 rounded-lg ${link.bgColor} w-fit`}>
                             <link.icon className={`h-6 w-6 ${link.color}`} />
@@ -101,7 +101,7 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
                 </CardContent>
             </Card>
             
-            <Card className="text-center bg-gradient-to-r from-purple-500/10 to-accent/10 border-purple-500/20" onClick={() => setActiveView('upgrade')}>
+            <Card className="text-center bg-gradient-to-r from-purple-500/10 to-primary/10 border-purple-500/20" onClick={() => setActiveView('upgrade')}>
                 <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
                          <div className="bg-purple-500 p-3 rounded-full border-2 border-purple-400/50 shadow-lg">
@@ -130,14 +130,14 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-3 space-y-6">
-            <Card>
+            <Card className="bg-transparent">
                 <CardHeader>
                     <CardTitle className="font-headline">Quick Start</CardTitle>
                     <CardDescription>You're minutes away from your first AI-generated strategy.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                      {freeQuickStartLinks.map((link) => (
-                      <Card key={link.view} className="hover:border-primary/50 transition-colors duration-300 group cursor-pointer" onClick={() => setActiveView(link.view as View)}>
+                      <Card key={link.view} className="bg-card hover:border-primary/80 transition-colors duration-300 group cursor-pointer" onClick={() => setActiveView(link.view as View)}>
                         <CardHeader className="p-4">
                            <div className={`p-3 rounded-lg ${link.bgColor} w-fit`}>
                             <link.icon className={`h-6 w-6 ${link.color}`} />
@@ -159,7 +159,7 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
                 </CardContent>
             </Card>
             
-            <Card className="text-center bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20" onClick={() => setActiveView('upgrade')}>
+            <Card className="text-center bg-gradient-to-r from-primary/10 to-transparent border-primary/20" onClick={() => setActiveView('upgrade')}>
                 <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
                          <div className="bg-primary p-3 rounded-full border-2 border-primary-foreground/50 shadow-lg">

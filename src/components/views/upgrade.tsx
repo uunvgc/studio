@@ -23,7 +23,7 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
   const { toast } = useToast();
 
   const handleUpgradeClick = async (planId: PlanTier, billingCycle: 'monthly' | 'annual') => {
-    if (planId === 'free') return;
+    if (planId === 'free' || planId === currentPlan) return;
 
     const plan = pricingPlans.find(p => p.id === planId);
     if (!plan) return;
@@ -37,8 +37,6 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
       if (url) {
         window.location.href = url;
       }
-      // The user will be redirected to Stripe by the server action.
-      // No need to set current plan here, that would happen after a successful payment webhook.
     } catch (error) {
       console.error("Stripe checkout failed:", error);
       toast({
@@ -55,15 +53,15 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
   return (
     <div className="space-y-8 animate-in fade-in-50">
       <div className="text-center">
-        <h2 className="font-headline text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-2">The ROI is Inevitable</h2>
+        <h2 className="font-headline text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-foreground to-muted-foreground mb-2">The ROI is Inevitable</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">This is not an expense, it's an investment in your income. Choose the plan that matches your ambition.</p>
       </div>
       
       <div className="flex justify-center items-center gap-4">
-        <Label htmlFor="billing-cycle" className="font-medium">Monthly</Label>
+        <Label htmlFor="billing-cycle" className="font-medium text-muted-foreground">Monthly</Label>
         <Switch id="billing-cycle" checked={isAnnual} onCheckedChange={setIsAnnual} />
-        <Label htmlFor="billing-cycle" className="font-medium">Annual</Label>
-        <div className="text-sm bg-accent/20 text-accent-foreground border border-accent/30 rounded-full px-3 py-1 font-bold">Save 15%</div>
+        <Label htmlFor="billing-cycle" className="font-medium text-foreground">Annual</Label>
+        <div className="text-sm bg-primary/10 text-primary border border-primary/20 rounded-full px-3 py-1 font-bold">Save 15%</div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
@@ -71,9 +69,9 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
           <Card 
             key={plan.id} 
             className={cn(
-                "flex flex-col border-2 transition-all duration-300",
-                plan.isMostPopular && "border-primary shadow-2xl shadow-primary/10 -translate-y-4",
-                plan.id === currentPlan && "ring-2 ring-offset-2 ring-primary",
+                "flex flex-col border-2 transition-all duration-300 bg-card/50",
+                plan.isMostPopular ? "border-primary shadow-2xl shadow-primary/10 lg:-translate-y-4" : "border-transparent",
+                plan.id === currentPlan && "ring-2 ring-offset-4 ring-offset-background ring-primary",
                 plan.id !== currentPlan && "hover:border-primary/50 hover:shadow-lg"
             )}
           >
@@ -87,13 +85,13 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
               )}
                {plan.id === 'beast' && !plan.isMostPopular && (
                 <div className="flex justify-center mb-4">
-                  <div className="bg-accent text-accent-foreground px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2">
                     <Zap className="h-4 w-4" /> MAX POWER
                   </div>
                 </div>
               )}
               <CardTitle className="font-headline text-3xl">{plan.name}</CardTitle>
-              <div className="h-20">
+              <div className="h-20 flex flex-col items-center justify-center">
                 {plan.id !== 'free' ? (
                   <>
                     <div className="flex items-baseline justify-center gap-1">

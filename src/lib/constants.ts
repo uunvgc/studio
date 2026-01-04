@@ -19,8 +19,7 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     id: 'beast-dashboard',
     title: 'Beast Dashboard',
     description: 'Your Ultimate Command Center for Market Domination.',
-    icon: Bot,
-    isNew: true,
+    icon: BrainCircuit,
   },
   {
     id: 'website-analysis',
@@ -73,6 +72,8 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     icon: BrainCircuit,
   },
 ];
+
+type PlanTier = 'free' | 'pro' | 'beast';
 
 export const pricingPlans: {
   id: PlanTier;

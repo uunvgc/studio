@@ -42,7 +42,11 @@ export default function Organizer() {
 
   useEffect(() => {
     if (isClient) {
-        localStorage.setItem('userIdeas', JSON.stringify(ideas));
+        try {
+            localStorage.setItem('userIdeas', JSON.stringify(ideas));
+        } catch (error) {
+            console.error("Failed to save ideas to localStorage", error);
+        }
     }
   }, [ideas, isClient]);
   
@@ -73,12 +77,16 @@ export default function Organizer() {
     setIdeas(ideas.filter(idea => idea.id !== id));
   };
 
+  if (!isClient) {
+      return null;
+  }
+
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm bg-transparent">
       <CardHeader>
         <div className="flex justify-between items-start">
             <div>
-                <CardTitle className="font-headline">Idea Organizer</CardTitle>
+                <CardTitle className="font-headline text-2xl">Idea Organizer</CardTitle>
                 <CardDescription>Capture, refine, and organize your business ideas.</CardDescription>
             </div>
             <Dialog>
@@ -117,7 +125,7 @@ export default function Organizer() {
         </div>
       </CardHeader>
       <CardContent>
-        {isClient && ideas.length > 0 ? (
+        {ideas.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence>
               {ideas.map(idea => (
@@ -127,15 +135,16 @@ export default function Organizer() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
                 >
-                    <Card className="h-full flex flex-col">
+                    <Card className="h-full flex flex-col bg-card hover:border-primary/80 transition-colors">
                         <CardHeader>
                             <CardTitle className="text-lg">{idea.title}</CardTitle>
                         </CardHeader>
                         <CardContent className="flex-grow">
                             <p className="text-sm text-muted-foreground whitespace-pre-wrap">{idea.description || "No description provided."}</p>
                         </CardContent>
-                        <CardContent className="flex justify-end gap-2">
+                        <CardContent className="flex justify-end gap-2 pt-4">
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => editForm.reset(idea)}>

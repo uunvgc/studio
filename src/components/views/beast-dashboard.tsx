@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, Bot, Loader2, Send } from 'lucide-react';
+import { Bot, Loader2, Send } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import type { View, AICoachPersonalizedGuidanceOutput } from '@/lib/types';
+import type { View } from '@/lib/types';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { motion, AnimatePresence } from 'framer-motion';
 
+type AICoachPersonalizedGuidanceOutput = Awaited<ReturnType<typeof aiCoachPersonalizedGuidance>>;
 
 interface BeastDashboardProps {
   setActiveView: (view: View) => void;
@@ -69,8 +70,6 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         try {
             const result = await aiCoachPersonalizedGuidance({
                 userIdea: values.message,
-                // The following fields are not collected in this chat interface.
-                // You could add inputs for them or use default/placeholder values.
                 currentRevenue: 0,
                 businessGoals: 'Maximize profit.',
                 riskTolerance: 'high'
@@ -119,10 +118,10 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
     <div className="space-y-8 animate-in fade-in-50">
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
-        <Card className="xl:col-span-3 flex flex-col h-[80vh]">
+        <Card className="xl:col-span-3 flex flex-col h-[80vh] bg-transparent">
             <CardHeader>
-                <CardTitle className="font-headline">Your AI CEO</CardTitle>
-                <CardDescription>Chat directly with your AI CEO for ruthless, profit-driven advice.</CardDescription>
+                <CardTitle className="font-headline text-2xl">Your AI CEO</CardTitle>
+                <CardDescription>Direct line to your AI strategist for ruthless, profit-driven advice.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden">
                 <ScrollArea className="flex-grow pr-4" ref={scrollAreaRef}>
@@ -136,22 +135,23 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
                             >
                                 {message.sender === 'ai' && (
                                     <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
-                                        <AvatarFallback><Bot size={18} /></AvatarFallback>
+                                        <AvatarFallback className="bg-background"><Bot size={18} className="text-primary" /></AvatarFallback>
                                     </Avatar>
                                 )}
                                 <div className={cn(
-                                    "max-w-3xl rounded-lg p-3", 
-                                    message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
-                                    message.isGreeting && 'bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-foreground'
+                                    "max-w-3xl rounded-xl p-4 shadow-md", 
+                                    message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card',
+                                    message.isGreeting && 'bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 text-foreground'
                                 )}>
                                     <AiMessageContent content={message.text} />
                                 </div>
-                                {message.sender === 'user' && (
+                                {message.sender === 'user' && userAvatar && (
                                     <Avatar className="h-8 w-8">
-                                        <AvatarImage src={userAvatar?.imageUrl} />
+                                        <AvatarImage src={userAvatar.imageUrl} />
                                         <AvatarFallback>U</AvatarFallback>
                                     </Avatar>
                                 )}
@@ -165,10 +165,10 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                                 animate={{ opacity: 1, y: 0 }}
                             >
                                 <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
-                                    <AvatarFallback><Bot size={18} /></AvatarFallback>
+                                    <AvatarFallback className="bg-background"><Bot size={18} className="text-primary"/></AvatarFallback>
                                 </Avatar>
-                                <div className="bg-muted rounded-lg p-3">
-                                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                                <div className="bg-card rounded-lg p-3">
+                                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
                                 </div>
                             </motion.div>
                         )}
@@ -179,7 +179,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                         <FormField control={form.control} name="message" render={({ field }) => (
                             <FormItem className="flex-grow">
                                 <FormControl>
-                                    <Textarea placeholder="Ask your AI CEO for a strategy or advice..." {...field} rows={1} className="min-h-0 resize-none text-base" onKeyDown={(e) => {
+                                    <Textarea placeholder="Ask your AI CEO for a strategy or advice..." {...field} rows={1} className="min-h-0 resize-none text-base bg-card" onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
                                             e.preventDefault();
                                             form.handleSubmit(onSubmit)();

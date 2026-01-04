@@ -4,74 +4,78 @@
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 9%;
+    --background: 240 10% 3.9%; /* Matte Black */
+    --foreground: 210 40% 98%; /* Light Gray */
+    --card: 240 5% 8%; /* Darker Card */
     --card-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 142 76% 36%;
-    --primary-foreground: 142 86% 96%;
-    --secondary: 216 34% 17%;
+    --primary: 45 90% 55%; /* Rich Gold */
+    --primary-foreground: 45 90% 10%; /* Dark text for Gold buttons */
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 216 34% 17%;
+    --muted: 220 15% 15%;
     --muted-foreground: 215 20% 65%;
-    --accent: 48 96% 53%;
-    --accent-foreground: 48 96% 13%;
-    --destructive: 0 63% 31%;
+    --accent: 45 90% 60%; /* Slightly Brighter Gold */
+    --accent-foreground: 45 90% 10%;
+    --destructive: 0 72% 51%; /* Destructive Red */
     --destructive-foreground: 210 40% 98%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 142 76% 36%;
-    --chart-1: 142 76% 36%;
-    --chart-2: 48 96% 53%;
-    --chart-3: 180 84% 60%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --border: 240 4% 16%; /* Darker Border */
+    --input: 240 4% 16%;
+    --ring: 45 90% 55%; /* Gold Ring */
     --radius: 0.5rem;
-    --sidebar-background: 224 71% 6%;
+
+    --chart-1: 45 90% 55%;
+    --chart-2: 45 80% 65%;
+    --chart-3: 45 70% 75%;
+    --chart-4: 45 60% 85%;
+    --chart-5: 210 40% 98%;
+    
+    --sidebar-background: 240 10% 5%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 142 76% 36%;
-    --sidebar-primary-foreground: 142 86% 96%;
-    --sidebar-accent: 48 96% 53%;
-    --sidebar-accent-foreground: 48 96% 13%;
-    --sidebar-border: 216 34% 17%;
-    --sidebar-ring: 142 76% 36%;
+    --sidebar-primary: 45 90% 55%;
+    --sidebar-primary-foreground: 45 90% 10%;
+    --sidebar-accent: 45 90% 55%;
+    --sidebar-accent-foreground: 45 90% 10%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 45 90% 55%;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 9%;
+    --background: 240 10% 3.9%; /* Matte Black */
+    --foreground: 210 40% 98%; /* Light Gray */
+    --card: 240 5% 8%; /* Darker Card */
     --card-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 142 76% 36%;
-    --primary-foreground: 142 86% 96%;
-    --secondary: 216 34% 17%;
+    --primary: 45 90% 55%; /* Rich Gold */
+    --primary-foreground: 45 90% 10%; /* Dark text for Gold buttons */
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 216 34% 17%;
+    --muted: 220 15% 15%;
     --muted-foreground: 215 20% 65%;
-    --accent: 48 96% 53%;
-    --accent-foreground: 48 96% 13%;
-    --destructive: 0 63% 31%;
+    --accent: 45 90% 60%; /* Slightly Brighter Gold */
+    --accent-foreground: 45 90% 10%;
+    --destructive: 0 72% 51%; /* Destructive Red */
     --destructive-foreground: 210 40% 98%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 142 76% 36%;
-    --chart-1: 142 76% 36%;
-    --chart-2: 48 96% 53%;
-    --chart-3: 180 84% 60%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --sidebar-background: 224 71% 6%;
+    --border: 240 4% 16%; /* Darker Border */
+    --input: 240 4% 16%;
+    --ring: 45 90% 55%; /* Gold Ring */
+
+    --chart-1: 45 90% 55%;
+    --chart-2: 45 80% 65%;
+    --chart-3: 45 70% 75%;
+    --chart-4: 45 60% 85%;
+    --chart-5: 210 40% 98%;
+    
+    --sidebar-background: 240 10% 5%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 142 76% 36%;
-    --sidebar-primary-foreground: 142 86% 96%;
-    --sidebar-accent: 48 96% 53%;
-    --sidebar-accent-foreground: 48 96% 13%;
-    --sidebar-border: 216 34% 17%;
-    --sidebar-ring: 142 76% 36%;
+    --sidebar-primary: 45 90% 55%;
+    --sidebar-primary-foreground: 45 90% 10%;
+    --sidebar-accent: 45 90% 55%;
+    --sidebar-accent-foreground: 45 90% 10%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 45 90% 55%;
   }
 }
 
@@ -81,5 +85,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

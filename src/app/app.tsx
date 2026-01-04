@@ -6,7 +6,6 @@ import {
   SidebarProvider,
   Sidebar,
   SidebarHeader,
-  SidebarTrigger,
   SidebarContent,
   SidebarMenu,
   SidebarMenuItem,
@@ -34,19 +33,21 @@ import { ALL_NAV_ITEMS } from '@/lib/constants';
 
 
 export default function App() {
-  const { currentPlan, setCurrentPlan, navItemsForPlan } = usePlan();
-  const [activeView, setActiveView] = React.useState<View>(`${currentPlan}-dashboard`);
+  const { currentPlan, setCurrentPlan, navItemsForPlan, activeDashboard } = usePlan();
+  const [activeView, setActiveView] = React.useState<View>(activeDashboard);
 
   // Effect to sync dashboard view with plan changes
   React.useEffect(() => {
-    setActiveView(`${currentPlan}-dashboard`);
-  }, [currentPlan]);
+    setActiveView(activeDashboard);
+  }, [currentPlan, activeDashboard]);
   
   const activeNavItem = navItemsForPlan.find(item => item.id === activeView);
+  const pageTitle = activeNavItem?.title ?? 'Dashboard';
+  const pageDescription = activeNavItem?.description ?? '';
 
   const renderActiveView = () => {
     // If there's no active nav item, default to the dashboard to be safe
-    const viewToRender = activeNavItem ? activeView : `${currentPlan}-dashboard`;
+    const viewToRender = activeNavItem ? activeView : activeDashboard;
 
     switch (viewToRender) {
       case 'free-dashboard':
@@ -81,7 +82,12 @@ export default function App() {
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Button variant="ghost" className="h-10 w-full justify-start px-2 font-bold text-base">
-                <BrainCircuit className="h-5 w-5 mr-2 text-primary" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-primary">
+                  <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                  <path d="M2 7L12 12L22 7" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                  <path d="M12 12V22" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                  <path d="M17 4.5L7 9.5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                </svg>
                 ProfitPro AI
             </Button>
           </div>
@@ -117,7 +123,7 @@ export default function App() {
       </Sidebar>
       <SidebarInset>
         <div className="p-4 sm:p-6 lg:p-8">
-          {activeNavItem && <PageHeader title={activeNavItem.title} description={activeNavItem.description} />}
+          <PageHeader title={pageTitle} description={pageDescription} />
           <main className="py-8">
             {renderActiveView()}
           </main>
