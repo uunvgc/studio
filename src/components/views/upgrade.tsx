@@ -33,7 +33,10 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
     setIsLoading(planId);
     
     try {
-      await createCheckoutSession(priceId);
+      const { url } = await createCheckoutSession(priceId);
+      if (url) {
+        window.location.href = url;
+      }
       // The user will be redirected to Stripe by the server action.
       // No need to set current plan here, that would happen after a successful payment webhook.
     } catch (error) {
