@@ -5,7 +5,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function createCheckoutSession(priceId: string) {
-    const headersList = headers();
+    const headersList = await headers();
     const origin = headersList.get('origin');
 
     if (!origin) {
