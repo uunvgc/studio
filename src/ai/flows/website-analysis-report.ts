@@ -8,7 +8,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 import { WebsiteAnalysisInputSchema, WebsiteAnalysisOutputSchema, type WebsiteAnalysisInput, type WebsiteAnalysisOutput } from '@/lib/types';
 
 
@@ -27,11 +27,11 @@ I am providing you with the competitor's website and context about my own busine
 Competitor Website URL: {{{websiteUrl}}}
 My Business: {{{businessIdea}}}
 
-Your report must be brutally honest and focused on exploitation. Respond with:
+Your report must be brutally honest and focused on exploitation. Your response must be a JSON object with two keys: "potentialRevenueStreams" and "areasForImprovement".
 
-*   **Revenue Stream Recon:** Deconstruct every possible way the competitor makes money. Advertising, affiliate links, product sales, subscriptions, etc. For each stream, suggest how I can do it better, cheaper, or faster to steal their customers.
+For "potentialRevenueStreams": Deconstruct every possible way the competitor makes money. Advertising, affiliate links, product sales, subscriptions, etc. For each stream, suggest how I can do it better, cheaper, or faster to steal their customers.
 
-*   **Exploitable Weaknesses:** Identify every crack in their armor. Is their design dated? Is their copy weak? Is their site slow? Is their marketing message unclear? Provide a direct, actionable list of their failures that I can turn into my strengths. Be specific and merciless.`,
+For "areasForImprovement": Identify every crack in their armor. Is their design dated? Is their copy weak? Is their site slow? Is their marketing message unclear? Provide a direct, actionable list of their failures that I can turn into my strengths. Be specific and merciless.`,
 });
 
 const websiteAnalysisFlow = ai.defineFlow(
