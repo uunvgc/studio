@@ -68,7 +68,8 @@ The plan for the "Pro" tier should be a practical and more in-depth strategy. It
 The "Beast" tier plan must be the flagship, premium offering. It should include the most advanced and comprehensive strategies, including AI-driven personalization, predictive analysis of earnings, and guidance on leveraging viral platforms for maximum reach and monetization. Emphasize the cutting-edge tools and strategic foresight that will position the user years ahead of the market.
 {{/if}}
 
-Generate the Revenue Plan:`,
+Generate the Revenue Plan as a JSON object with a single key "revenuePlan" containing the detailed plan as a string.
+`,
 });
 
 const generateRevenuePlanFlow = ai.defineFlow(

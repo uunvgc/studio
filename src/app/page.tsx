@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -17,7 +16,8 @@ import {
   Badge,
   Newspaper,
   LayoutPanelLeft,
-  ChevronDown
+  ChevronDown,
+  Check,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -68,7 +68,7 @@ const NAV_ICONS: { [key in View]: React.ElementType } = {
     upgrade: Gem,
 };
 
-export default function App() {
+export default function CoverPage() {
     const { currentPlan, setCurrentPlan, navItemsForPlan, canAccess } = usePlan();
     const [activeView, setActiveView] = React.useState<View>('overview');
 
