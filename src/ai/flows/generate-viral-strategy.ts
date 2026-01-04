@@ -55,7 +55,21 @@ const generateViralStrategyFlow = ai.defineFlow(
     outputSchema: ViralStrategyOutputSchema,
   },
   async (input) => {
-    const {output} = await viralStrategyPrompt(input);
-    return output!;
+    const result = await viralStrategyPrompt(input);
+    const output = result.output;
+    if (!output) {
+      throw new Error('Failed to generate viral strategy: AI returned no output.');
+    }
+    // Ensure the output matches the schema, particularly the root `strategies` key.
+    if ('strategies' in output && Array.isArray(output.strategies)) {
+       return output;
+    }
+
+    // Handle cases where the model might return a raw array
+    if(Array.isArray(output)) {
+        return { strategies: output };
+    }
+    
+    throw new Error('AI returned data in an unexpected format.');
   }
 );

@@ -50,6 +50,7 @@ export type WebsiteAnalysisOutput = z.infer<typeof WebsiteAnalysisOutputSchema>;
 export const ViralStrategyInputSchema = z.object({
   businessIdea: z
     .string()
+    .min(10, { message: 'Please provide a more detailed business idea.' })
     .describe('A description of the business or product idea.'),
 });
 export type ViralStrategyInput = z.infer<typeof ViralStrategyInputSchema>;
