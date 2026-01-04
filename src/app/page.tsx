@@ -91,9 +91,7 @@ export default function CoverPage() {
     React.useEffect(() => {
         // When plan changes, switch to the default dashboard for that plan
         const defaultView = getDefaultViewForPlan(currentPlan);
-        if (activeView !== defaultView) {
-            setActiveView(defaultView);
-        }
+        setActiveView(defaultView);
     }, [currentPlan]);
 
     const handleViewChange = (viewId: View) => {

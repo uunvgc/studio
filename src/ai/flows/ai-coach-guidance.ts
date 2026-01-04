@@ -12,9 +12,6 @@ import {z} from 'genkit';
 
 const AICoachPersonalizedGuidanceInputSchema = z.object({
   userIdea: z.string().describe("The user's business idea or question."),
-  currentRevenue: z.number().optional().describe('The current monthly revenue of the business, if applicable.'),
-  businessGoals: z.string().optional().describe("The user's goals for the business (e.g., increase revenue, expand market share)."),
-  riskTolerance: z.string().optional().describe("The user's risk tolerance level (e.g., high, medium, low)."),
 });
 export type AICoachPersonalizedGuidanceInput = z.infer<typeof AICoachPersonalizedGuidanceInputSchema>;
 
