@@ -26,10 +26,10 @@ interface Idea {
 
 export default function Organizer() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsClient(true);
     try {
         const storedIdeas = localStorage.getItem('userIdeas');
         if (storedIdeas) {
@@ -41,10 +41,10 @@ export default function Organizer() {
   }, []);
 
   useEffect(() => {
-    if(isMounted) {
+    if (isClient) {
         localStorage.setItem('userIdeas', JSON.stringify(ideas));
     }
-  }, [ideas, isMounted]);
+  }, [ideas, isClient]);
   
   const addForm = useForm<z.infer<typeof ideaSchema>>({
     resolver: zodResolver(ideaSchema),
@@ -117,7 +117,7 @@ export default function Organizer() {
         </div>
       </CardHeader>
       <CardContent>
-        {isMounted && ideas.length > 0 ? (
+        {isClient && ideas.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence>
               {ideas.map(idea => (

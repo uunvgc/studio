@@ -2,12 +2,14 @@
 
 import { ArrowRight, BrainCircuit, DollarSign, Gem, Swords, Target, TrendingUp, Share2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import type { View } from "@/lib/types";
+import type { View, PlanTier } from "@/lib/types";
 import { Button } from "../ui/button";
 import ReferralCard from "../referral-card";
+import FreeDashboard from "./free-dashboard";
 
 interface ProDashboardProps {
   setActiveView: (view: View) => void;
+  currentPlan: PlanTier;
 }
 
 const proLinks = [
@@ -45,7 +47,11 @@ const proLinks = [
   },
 ]
 
-export default function ProDashboard({ setActiveView }: ProDashboardProps) {
+export default function ProDashboard({ setActiveView, currentPlan }: ProDashboardProps) {
+  if (currentPlan === 'free') {
+    return <FreeDashboard setActiveView={setActiveView} />;
+  }
+
   return (
     <div className="space-y-8 animate-in fade-in-50">
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

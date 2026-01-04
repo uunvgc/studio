@@ -54,7 +54,6 @@ import UpgradePlan from '@/components/views/upgrade';
 import PageHeader from '@/components/page-header';
 import { motion, AnimatePresence } from 'framer-motion';
 import BeastDashboard from '@/components/views/beast-dashboard';
-import FreeDashboard from '@/components/views/free-dashboard';
 import ProDashboard from '@/components/views/pro-dashboard';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
@@ -78,24 +77,36 @@ const NAV_ICONS: { [key in View]: React.ElementType } = {
     upgrade: Gem,
 };
 
-const getDefaultViewForPlan = (plan: PlanTier): View => {
-    switch(plan) {
-        case 'beast': return 'beast-dashboard';
-        case 'pro': return 'pro-dashboard';
-        case 'free':
-        default:
-            return 'free-dashboard';
-    }
-}
+const PLAN_DASHBOARDS: Record<PlanTier, View> = {
+    free: 'free-dashboard',
+    pro: 'pro-dashboard',
+    beast: 'beast-dashboard',
+};
+
+const VIEW_COMPONENTS: Record<View, React.ElementType> = {
+    'free-dashboard': ProDashboard,
+    'pro-dashboard': ProDashboard,
+    'beast-dashboard': BeastDashboard,
+    'website-analysis': WebsiteAnalysis,
+    'revenue-maximizer': RevenueMaximizer,
+    'ai-coach': AiCoach,
+    predictions: Predictions,
+    'viral-platforms': ViralPlatforms,
+    organizer: Organizer,
+    upgrade: UpgradePlan,
+    overview: ProDashboard,
+};
 
 export default function CoverPage() {
     const { currentPlan, setCurrentPlan, navItemsForPlan, canAccess } = usePlan();
-    const [activeView, setActiveView] = React.useState<View>(getDefaultViewForPlan(currentPlan));
+    const [activeView, setActiveView] = React.useState<View>(PLAN_DASHBOARDS[currentPlan] || 'free-dashboard');
     const { toast } = useToast();
 
     React.useEffect(() => {
-        const defaultView = getDefaultViewForPlan(currentPlan);
+        const defaultView = PLAN_DASHBOARDS[currentPlan] || 'free-dashboard';
         if (!canAccess(activeView)) {
+            setActiveView(defaultView);
+        } else if(activeView !== defaultView && (activeView === 'free-dashboard' || activeView === 'pro-dashboard' || activeView === 'beast-dashboard')) {
             setActiveView(defaultView);
         }
     }, [currentPlan, canAccess, activeView]);
@@ -111,21 +122,7 @@ export default function CoverPage() {
     
     const activeNavItem = ALL_NAV_ITEMS.find(item => item.id === activeView);
 
-    const renderView = () => {
-        switch (activeView) {
-            case 'free-dashboard': return <FreeDashboard setActiveView={handleViewChange} />;
-            case 'pro-dashboard': return <ProDashboard setActiveView={handleViewChange} />;
-            case 'beast-dashboard': return <BeastDashboard setActiveView={handleViewChange} />;
-            case 'website-analysis': return <WebsiteAnalysis currentPlan={currentPlan} setActiveView={handleViewChange} />;
-            case 'revenue-maximizer': return <RevenueMaximizer currentPlan={currentPlan} />;
-            case 'ai-coach': return <AiCoach currentPlan={currentPlan} setActiveView={handleViewChange} />;
-            case 'predictions': return <Predictions currentPlan={currentPlan} setActiveView={handleViewChange} />;
-            case 'viral-platforms': return <ViralPlatforms currentPlan={currentPlan} setActiveView={handleViewChange} />;
-            case 'organizer': return <Organizer />;
-            case 'upgrade': return <UpgradePlan currentPlan={currentPlan} setCurrentPlan={setCurrentPlan} />;
-            default: return <FreeDashboard setActiveView={handleViewChange} />;
-        }
-    };
+    const RenderComponent = VIEW_COMPONENTS[activeView] || ProDashboard;
 
     const getBadgeForPlan = (plan: PlanTier) => {
         switch(plan) {
@@ -252,7 +249,11 @@ export default function CoverPage() {
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                {renderView()}
+                                <RenderComponent 
+                                    setActiveView={handleViewChange}
+                                    currentPlan={currentPlan}
+                                    setCurrentPlan={setCurrentPlan}
+                                />
                             </motion.div>
                         </AnimatePresence>
                    </div>
