@@ -54,6 +54,7 @@ import UpgradePlan from '@/components/views/upgrade';
 import PageHeader from '@/components/page-header';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import BeastDashboard from '@/components/views/beast-dashboard';
 
 const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
@@ -66,11 +67,20 @@ const NAV_ICONS: { [key in View]: React.ElementType } = {
     'viral-platforms': Share2,
     organizer: Target,
     upgrade: Gem,
+    'beast-dashboard': Gem,
 };
 
 export default function CoverPage() {
     const { currentPlan, setCurrentPlan, navItemsForPlan, canAccess } = usePlan();
     const [activeView, setActiveView] = React.useState<View>('overview');
+
+    React.useEffect(() => {
+        if (currentPlan === 'beast') {
+            setActiveView('beast-dashboard');
+        } else if (activeView === 'beast-dashboard') {
+            setActiveView('overview');
+        }
+    }, [currentPlan, activeView]);
 
     const handleViewChange = (viewId: View) => {
         if (canAccess(viewId)) {
@@ -92,6 +102,8 @@ export default function CoverPage() {
             case 'viral-platforms': return <ViralPlatforms currentPlan={currentPlan} setActiveView={handleViewChange} />;
             case 'organizer': return <Organizer />;
             case 'upgrade': return <UpgradePlan currentPlan={currentPlan} setCurrentPlan={setCurrentPlan} />;
+            case 'beast-dashboard':
+                return currentPlan === 'beast' ? <BeastDashboard setActiveView={handleViewChange} /> : <UpgradePlan currentPlan={currentPlan} setCurrentPlan={setCurrentPlan} />;
             default: return <Overview setActiveView={handleViewChange} />;
         }
     };

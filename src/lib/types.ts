@@ -10,7 +10,8 @@ export type View =
   | 'predictions'
   | 'viral-platforms'
   | 'organizer'
-  | 'upgrade';
+  | 'upgrade'
+  | 'beast-dashboard';
 
 export interface NavItem {
   id: View;

@@ -7,6 +7,12 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     description: 'Your command center for financial domination.',
   },
   {
+    id: 'beast-dashboard',
+    title: 'Beast Dashboard',
+    description: 'Your Ultimate Command Center.',
+    isNew: true,
+  },
+  {
     id: 'website-analysis',
     title: 'Competitor Annihilator',
     description: 'Dismantle your competition. Steal their profits.',
@@ -62,7 +68,18 @@ export const PRO_NAV_ITEMS: NavItem[] = [
   getItem('upgrade'),
 ];
 
-export const BEAST_NAV_ITEMS: NavItem[] = ALL_NAV_ITEMS;
+export const BEAST_NAV_ITEMS: NavItem[] = [
+    getItem('beast-dashboard'),
+    getItem('overview'),
+    getItem('website-analysis'),
+    getItem('revenue-maximizer'),
+    getItem('ai-coach'),
+    getItem('predictions'),
+    getItem('viral-platforms'),
+    getItem('organizer'),
+    getItem('upgrade'),
+];
+
 
 export const NAV_ITEMS = ALL_NAV_ITEMS; // Keep for backward compatibility if needed anywhere else
 

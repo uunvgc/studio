@@ -17,6 +17,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import type { z } from 'zod';
 import type { PlanTier, View } from '@/lib/types';
 import UpgradePrompt from '@/components/upgrade-prompt';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface ViralPlatformsProps {
   currentPlan: PlanTier;
@@ -71,17 +72,9 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
     const renderContent = () => {
         if (isLoading) {
             return (
-                <div className="space-y-4">
-                    {[...Array(3)].map((_, i) => (
-                        <Card key={i}>
-                            <CardHeader>
-                                <Skeleton className="h-6 w-1/3" />
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <Skeleton className="h-4 w-full" />
-                                <Skeleton className="h-4 w-5/6" />
-                            </CardContent>
-                        </Card>
+                <div className="space-y-2">
+                    {[...Array(2)].map((_, i) => (
+                        <Skeleton key={i} className="h-12 w-full" />
                     ))}
                 </div>
             );
@@ -89,37 +82,25 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
 
         if (strategyOutput && strategyOutput.strategies && strategyOutput.strategies.length > 0) {
             return (
-                <Accordion type="single" collapsible defaultValue={strategyOutput.strategies[0]?.platform} className="w-full space-y-4">
+                <Accordion type="single" collapsible defaultValue={strategyOutput.strategies[0]?.platform} className="w-full space-y-2">
                     {strategyOutput.strategies.map((platformStrategy) => (
                         <AccordionItem value={platformStrategy.platform} key={platformStrategy.platform} className="border-b-0">
-                            <Card className="flex flex-col">
-                                <AccordionTrigger className="p-6 text-left hover:no-underline group">
-                                    <div className="flex justify-between items-start w-full">
-                                        <div className='flex flex-col gap-1 items-start text-left'>
-                                            <CardTitle className="font-headline text-xl">{platformStrategy.platform}</CardTitle>
-                                            <CardDescription className="group-hover:text-foreground/80">{platformStrategy.rationale}</CardDescription>
-                                        </div>
+                            <Card className="flex flex-col text-sm">
+                                <AccordionTrigger className="p-3 text-left hover:no-underline group">
+                                    <div className="flex justify-between items-center w-full">
+                                        <div className='font-bold'>{platformStrategy.platform}</div>
                                         <Badge variant="outline" className={`font-bold ml-4 ${getPotentialBadgeColor(platformStrategy.potential)}`}>
                                             {platformStrategy.potential}
                                         </Badge>
                                     </div>
                                 </AccordionTrigger>
-                                <AccordionContent className="px-6 pb-6">
-                                    <div className="text-sm prose prose-sm max-w-none prose-p:text-muted-foreground prose-strong:text-foreground">
-                                        <p className="whitespace-pre-wrap">{platformStrategy.strategy}</p>
-                                    </div>
-                                    <div className="flex items-center text-sm text-foreground mt-4">
-                                        <Users className="h-4 w-4 mr-2 text-muted-foreground" />
+                                <AccordionContent className="px-3 pb-3">
+                                    <p className="text-muted-foreground mb-2">{platformStrategy.rationale}</p>
+                                    <p className="whitespace-pre-wrap text-xs mb-2">{platformStrategy.strategy}</p>
+                                    <div className="flex items-center text-xs text-foreground">
+                                        <Users className="h-3 w-3 mr-1.5 text-muted-foreground" />
                                         <span>{platformStrategy.userBase} Users</span>
                                     </div>
-                                    <CardFooter className="p-0 mt-4">
-                                        <a href={platformStrategy.url} target="_blank" rel="noopener noreferrer" className="w-full">
-                                            <Button className="w-full">
-                                                <ExternalLink className="mr-2" />
-                                                Go to {platformStrategy.platform}
-                                            </Button>
-                                        </a>
-                                    </CardFooter>
                                 </AccordionContent>
                             </Card>
                         </AccordionItem>
@@ -128,58 +109,48 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
             );
         }
         
-        if (strategyOutput) {
-             return (
-                <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
-                    <Sparkles className="mx-auto h-12 w-12" />
-                    <p className="mt-4 text-sm font-bold">No specific strategies were generated.</p>
-                    <p className="text-sm">Try rephrasing your business idea to be more specific.</p>
-                </div>
-            );
-        }
-
         return (
-            <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
-                <Sparkles className="mx-auto h-12 w-12" />
-                <p className="mt-4 text-sm font-bold">Your custom viral strategy awaits.</p>
-                <p className="text-sm">Enter your business idea to generate a plan.</p>
+            <div className="text-center py-4 text-muted-foreground border-2 border-dashed rounded-lg h-full flex flex-col justify-center">
+                <Sparkles className="mx-auto h-8 w-8" />
+                <p className="mt-2 text-sm font-bold">Your custom viral strategy awaits.</p>
             </div>
         );
     }
 
     return (
-        <div className="space-y-8">
-            <Card className="shadow-sm">
-                <CardHeader>
-                    <CardTitle className="font-headline">AI Viral Strategy</CardTitle>
-                    <CardDescription>Don't guess where your customers are. Tell our AI about your business, and it will generate a ruthless plan to find and dominate them on the right platforms.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <FormField
-                            control={form.control}
-                            name="businessIdea"
-                            render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Your Business Idea</FormLabel>
-                                <FormControl>
-                                <Textarea placeholder="e.g., A subscription box service for rare indoor plants, targeting millennials living in apartments." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                            )}
-                        />
-                        <Button type="submit" disabled={isLoading} size="lg">
-                            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Generate Viral Plan
-                        </Button>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-
-            {renderContent()}
-        </div>
+        <Card className="h-full flex flex-col">
+            <CardHeader>
+                <CardTitle className="font-headline">AI Viral Strategy</CardTitle>
+                <CardDescription>Tell our AI your business idea to get a ruthless plan.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow flex flex-col">
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="businessIdea"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Your Business Idea</FormLabel>
+                            <FormControl>
+                            <Textarea placeholder="e.g., A subscription box service for rare indoor plants..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                    <Button type="submit" disabled={isLoading} className="w-full">
+                        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Generate Viral Plan
+                    </Button>
+                    </form>
+                </Form>
+                <div className="mt-4 flex-grow overflow-hidden">
+                    <ScrollArea className="h-full pr-4 -mr-4">
+                        {renderContent()}
+                    </ScrollArea>
+                </div>
+            </CardContent>
+        </Card>
     );
 }

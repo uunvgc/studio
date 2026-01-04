@@ -16,6 +16,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LabelList } from 'recharts';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ScrollArea } from '../ui/scroll-area';
 
 
 const formSchema = z.object({
@@ -68,20 +69,14 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-                <CardHeader>
-                    <Skeleton className="h-6 w-1/2" />
-                </CardHeader>
-                <CardContent>
-                    <Skeleton className="h-40 w-full" />
-                </CardContent>
-            </Card>
-            <div className="space-y-6">
-                <Card><CardHeader><Skeleton className="h-10 w-full" /></CardHeader></Card>
-                <Card><CardHeader><Skeleton className="h-10 w-full" /></CardHeader></Card>
-            </div>
-        </div>
+        <Card className="h-full">
+            <CardHeader>
+                <Skeleton className="h-6 w-1/2" />
+            </CardHeader>
+            <CardContent>
+                <Skeleton className="h-20 w-full" />
+            </CardContent>
+        </Card>
       );
     }
 
@@ -93,113 +88,76 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
       } satisfies ChartConfig;
 
       return (
-        <div className="grid lg:grid-cols-5 gap-6 animate-in fade-in-50">
-            <Card className="lg:col-span-3">
-                <CardHeader>
-                    <CardTitle className='font-headline'>Success Probability: {probability}%</CardTitle>
-                    <CardDescription>AI-powered estimation of your idea's success.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChartContainer config={chartConfig} className="w-full h-40">
-                        <BarChart accessibilityLayer data={chartData} layout="vertical" margin={{ left: 10, right: 30 }}>
-                            <CartesianGrid horizontal={false} />
-                            <XAxis type="number" dataKey="probability" domain={[0, 100]} tickFormatter={(value) => `${value}%`} hide />
-                            <YAxis type="category" dataKey="name" hide />
-                            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                            <Bar dataKey="probability" radius={8}>
-                                <LabelList 
-                                    position="right" 
-                                    offset={10} 
-                                    className="fill-foreground font-bold"
-                                    fontSize={16}
-                                    formatter={(value: number) => `${value}%`} 
-                                />
-                            </Bar>
-                        </BarChart>
-                    </ChartContainer>
-                </CardContent>
-            </Card>
-            <Card className="lg:col-span-2">
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2">
-                        <TrendingUp className="text-accent" /> Revenue Projection
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-3xl font-bold">{prediction.revenueProjection}</p>
-                </CardContent>
-            </Card>
-             <Card className="lg:col-span-5">
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2">
-                        <Key className="text-accent" /> Key Influencing Factors
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="whitespace-pre-wrap">{prediction.keyFactors}</p>
-                </CardContent>
-            </Card>
-        </div>
+        <Card className="h-full">
+            <CardHeader>
+                <CardTitle className='font-headline'>Success Probability: {probability}%</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-xl font-bold mb-2">{prediction.revenueProjection}</p>
+                <p className="text-sm text-muted-foreground">{prediction.keyFactors}</p>
+            </CardContent>
+        </Card>
       );
     }
 
     return (
-        <div className="text-center py-12 text-muted-foreground">
-            <TrendingUp className="mx-auto h-12 w-12" />
-            <p className="mt-4 text-sm">Your revenue and success predictions will appear here.</p>
-        </div>
+        <Card className="h-full">
+            <CardHeader>
+                 <CardTitle className="font-headline">Predictive Analysis</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="text-center py-4 text-muted-foreground">
+                    <TrendingUp className="mx-auto h-8 w-8" />
+                    <p className="mt-2 text-sm">Your revenue and success predictions will appear here.</p>
+                </div>
+            </CardContent>
+        </Card>
     );
   };
   
   return (
-    <div className="space-y-8">
-      <Card className="shadow-sm">
+    <Card className="h-full flex flex-col">
         <CardHeader>
             <CardTitle className="font-headline">Get Your Revenue Prediction</CardTitle>
-            <CardDescription>Fill out the details below to get an AI-driven forecast of your potential success.</CardDescription>
+            <CardDescription>Fill out the details to get an AI-driven forecast.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow flex flex-col">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                    control={form.control} name="idea"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Business Idea</FormLabel>
-                        <FormControl><Textarea placeholder="e.g., A platform that connects local artists with coffee shops for displaying their art." {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control} name="plan"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Execution Plan</FormLabel>
-                        <FormControl><Textarea placeholder="How will you build it, market it, and operate it?" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control} name="marketData"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Market Data</FormLabel>
-                        <FormControl><Textarea placeholder="Who are your competitors? What's your target market size? Any relevant trends?" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                <Button type="submit" disabled={isLoading} size="lg">
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Predict Potential
-                </Button>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex-grow flex flex-col">
+                <ScrollArea className="flex-grow pr-4 -mr-4">
+                    <div className="space-y-4">
+                        <FormField control={form.control} name="idea" render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Business Idea</FormLabel>
+                                <FormControl><Textarea placeholder="e.g., A platform that connects local artists with coffee shops..." {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                        <FormField control={form.control} name="plan" render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Execution Plan</FormLabel>
+                                <FormControl><Textarea placeholder="How will you build it, market it, and operate it?" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                        <FormField control={form.control} name="marketData" render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Market Data</FormLabel>
+                                <FormControl><Textarea placeholder="Who are your competitors? What's your target market size?" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    </div>
+                </ScrollArea>
+                <div className="pt-4">
+                    <Button type="submit" disabled={isLoading} className="w-full">
+                        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Predict Potential
+                    </Button>
+                </div>
             </form>
           </Form>
         </CardContent>
       </Card>
-      {renderContent()}
-    </div>
   );
 }
