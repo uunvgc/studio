@@ -5,7 +5,8 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function createCheckoutSession(priceId: string) {
-    const origin = headers().get('origin');
+    const headersList = headers();
+    const origin = headersList.get('origin');
 
     if (!origin) {
         throw new Error('Could not determine request origin.');
