@@ -17,7 +17,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import type { z } from 'zod';
 
 export default function ViralPlatforms() {
-    const [strategy, setStrategy] = useState<ViralStrategyOutput | null>(null);
+    const [strategyOutput, setStrategyOutput] = useState<ViralStrategyOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
 
@@ -30,10 +30,10 @@ export default function ViralPlatforms() {
 
     async function onSubmit(values: z.infer<typeof ViralStrategyInputSchema>) {
         setIsLoading(true);
-        setStrategy(null);
+        setStrategyOutput(null);
         try {
             const result = await generateViralStrategy(values);
-            setStrategy(result);
+            setStrategyOutput(result);
         } catch (error) {
             console.error("Viral strategy generation failed:", error);
             toast({
@@ -76,17 +76,17 @@ export default function ViralPlatforms() {
             );
         }
 
-        if (strategy) {
+        if (strategyOutput && strategyOutput.strategies && strategyOutput.strategies.length > 0) {
             return (
-                <Accordion type="single" collapsible defaultValue={strategy.strategies[0]?.platform} className="w-full space-y-4">
-                    {strategy.strategies.map((platformStrategy) => (
+                <Accordion type="single" collapsible defaultValue={strategyOutput.strategies[0]?.platform} className="w-full space-y-4">
+                    {strategyOutput.strategies.map((platformStrategy) => (
                         <AccordionItem value={platformStrategy.platform} key={platformStrategy.platform} className="border-b-0">
                             <Card className="flex flex-col">
-                                <AccordionTrigger className="p-6 text-left hover:no-underline">
+                                <AccordionTrigger className="p-6 text-left hover:no-underline group">
                                     <div className="flex justify-between items-start w-full">
-                                        <div className='flex flex-col gap-1 items-start'>
+                                        <div className='flex flex-col gap-1 items-start text-left'>
                                             <CardTitle className="font-headline text-xl">{platformStrategy.platform}</CardTitle>
-                                            <CardDescription>{platformStrategy.rationale}</CardDescription>
+                                            <CardDescription className="group-hover:text-foreground/80">{platformStrategy.rationale}</CardDescription>
                                         </div>
                                         <Badge variant="outline" className={`font-bold ml-4 ${getPotentialBadgeColor(platformStrategy.potential)}`}>
                                             {platformStrategy.potential}
@@ -98,14 +98,14 @@ export default function ViralPlatforms() {
                                         <p className="whitespace-pre-wrap">{platformStrategy.strategy}</p>
                                     </div>
                                     <div className="flex items-center text-sm text-foreground mt-4">
-                                        <Users className="h-4 w-4 mr-2" />
+                                        <Users className="h-4 w-4 mr-2 text-muted-foreground" />
                                         <span>{platformStrategy.userBase} Users</span>
                                     </div>
                                     <CardFooter className="p-0 mt-4">
                                         <a href={platformStrategy.url} target="_blank" rel="noopener noreferrer" className="w-full">
                                             <Button className="w-full">
                                                 <ExternalLink className="mr-2" />
-                                                Get Started on {platformStrategy.platform}
+                                                Go to {platformStrategy.platform}
                                             </Button>
                                         </a>
                                     </CardFooter>
@@ -114,6 +114,16 @@ export default function ViralPlatforms() {
                         </AccordionItem>
                     ))}
                 </Accordion>
+            );
+        }
+        
+        if (strategyOutput) {
+             return (
+                <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
+                    <Sparkles className="mx-auto h-12 w-12" />
+                    <p className="mt-4 text-sm font-bold">No specific strategies were generated.</p>
+                    <p className="text-sm">Try rephrasing your business idea to be more specific.</p>
+                </div>
             );
         }
 
