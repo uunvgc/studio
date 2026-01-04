@@ -70,6 +70,10 @@ export const pricingPlans: {
   features: string[];
   cta: string;
   isMostPopular?: boolean;
+  priceIds: {
+    monthly: string;
+    annual: string;
+  };
 }[] = [
   {
     id: 'free',
@@ -84,13 +88,17 @@ export const pricingPlans: {
       'Limited AI analysis'
     ],
     cta: 'Start for Free',
+    priceIds: {
+      monthly: '', // Free plan has no price IDs
+      annual: '',
+    },
   },
   {
     id: 'pro',
     name: 'Pro',
-    price: '29',
+    price: '14.99',
     priceDetail: '/ month',
-    annualPrice: '299',
+    annualPrice: '149',
     isMostPopular: true,
     features: [
       'Everything in Free, plus:',
@@ -100,13 +108,17 @@ export const pricingPlans: {
       'ROI-focused tools to directly increase your income',
     ],
     cta: 'Upgrade to Pro',
+    priceIds: {
+      monthly: 'price_1PbdHqBLe1J7T5bVjC4G9Y3Z', // Replace with your actual Stripe Price ID
+      annual: 'price_1PbdHqBLe1J7T5bVwOqfA3b1', // Replace with your actual Stripe Price ID
+    },
   },
   {
     id: 'beast',
     name: 'Beast',
-    price: '99',
+    price: '29.99',
     priceDetail: '/ month',
-    annualPrice: '999',
+    annualPrice: '299',
     features: [
       'Everything in Pro, plus:',
       '**Conversational AI CEO/Coach**',
@@ -115,6 +127,10 @@ export const pricingPlans: {
       'The ultimate toolkit for market domination',
     ],
     cta: 'Unleash Beast Mode',
+    priceIds: {
+      monthly: 'price_1PbdJHBLe1J7T5bV7e8fI9o2', // Replace with your actual Stripe Price ID
+      annual: 'price_1PbdJHBLe1J7T5bVV23tG4d0', // Replace with your actual Stripe Price ID
+    },
   },
 ];
 

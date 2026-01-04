@@ -5,10 +5,12 @@ import { pricingPlans } from '@/lib/constants';
 import type { PlanTier } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, Gem, Zap } from "lucide-react";
+import { Check, Gem, Zap, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Switch } from '../ui/switch';
 import { Label } from '../ui/label';
+import { createCheckoutSession } from '@/app/actions/stripe';
+import { useToast } from '@/hooks/use-toast';
 
 interface UpgradePlanProps {
   currentPlan: PlanTier;
@@ -17,6 +19,35 @@ interface UpgradePlanProps {
 
 export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlanProps) {
   const [isAnnual, setIsAnnual] = useState(true);
+  const [isLoading, setIsLoading] = useState<string | null>(null); // Store the plan id being loaded
+  const { toast } = useToast();
+
+  const handleUpgradeClick = async (planId: PlanTier, billingCycle: 'monthly' | 'annual') => {
+    if (planId === 'free') return;
+
+    const plan = pricingPlans.find(p => p.id === planId);
+    if (!plan) return;
+
+    const priceId = plan.priceIds[billingCycle];
+    
+    setIsLoading(planId);
+    
+    try {
+      await createCheckoutSession(priceId);
+      // The user will be redirected to Stripe by the server action.
+      // No need to set current plan here, that would happen after a successful payment webhook.
+    } catch (error) {
+      console.error("Stripe checkout failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Checkout Failed",
+        description: "We couldn't connect to Stripe. Please check your connection and try again.",
+      });
+    } finally {
+      setIsLoading(null);
+    }
+  }
+
 
   return (
     <div className="space-y-8 animate-in fade-in-50">
@@ -66,7 +97,7 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
                       <span className="text-5xl font-bold font-headline tracking-tighter">${isAnnual ? plan.annualPrice : plan.price}</span>
                       <span className="text-muted-foreground">{isAnnual ? '/ year' : '/ month'}</span>
                     </div>
-                    { isAnnual && <p className="text-sm text-muted-foreground">Billed Annually. That's just ${plan.price}/month.</p> }
+                    { isAnnual && plan.id !== 'free' && <p className="text-sm text-muted-foreground">Billed Annually. Equivalent to ${plan.price}/month.</p> }
                   </>
                 ) : (
                   <span className="text-5xl font-bold font-headline tracking-tighter">$0</span>
@@ -89,9 +120,10 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
                 className="w-full" 
                 size="lg"
                 variant={plan.isMostPopular || plan.id === 'beast' ? 'default' : 'outline'}
-                disabled={currentPlan === plan.id}
-                onClick={() => setCurrentPlan(plan.id)}
+                disabled={currentPlan === plan.id || isLoading === plan.id}
+                onClick={() => handleUpgradeClick(plan.id, isAnnual ? 'annual' : 'monthly')}
               >
+                {isLoading === plan.id && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {currentPlan === plan.id ? 'Your Current Plan' : plan.cta}
               </Button>
             </CardFooter>
