@@ -1,5 +1,4 @@
 'use server';
-
 /**
  * @fileOverview This file defines a Genkit flow for predicting the revenue potential of a user's idea.
  *
@@ -9,23 +8,16 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {
+  PredictRevenuePotentialInputSchema,
+  PredictRevenuePotentialOutputSchema,
+  type PredictRevenuePotentialInput,
+  type PredictRevenuePotentialOutput,
+} from '@/lib/types';
 
-const PredictRevenuePotentialInputSchema = z.object({
-  idea: z.string().describe('The user\'s business idea.'),
-  plan: z.string().describe('The detailed plan for executing the idea.'),
-  marketData: z.string().describe('Relevant market data and trends.'),
-});
-export type PredictRevenuePotentialInput = z.infer<typeof PredictRevenuePotentialInputSchema>;
-
-const PredictRevenuePotentialOutputSchema = z.object({
-  revenueProjection: z.string().describe('The projected revenue for the idea.'),
-  successProbability: z.number().describe('The probability of success for the idea (0-1).'),
-  keyFactors: z.string().describe('The key factors influencing the prediction.'),
-});
-export type PredictRevenuePotentialOutput = z.infer<typeof PredictRevenuePotentialOutputSchema>;
-
-export async function predictRevenuePotential(input: PredictRevenuePotentialInput): Promise<PredictRevenuePotentialOutput> {
+export async function predictRevenuePotential(
+  input: PredictRevenuePotentialInput
+): Promise<PredictRevenuePotentialOutput> {
   return predictRevenuePotentialFlow(input);
 }
 

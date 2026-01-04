@@ -13,7 +13,9 @@ import {
   type ViralStrategyOutput,
 } from '@/lib/types';
 
-export async function generateViralStrategy(input: ViralStrategyInput): Promise<ViralStrategyOutput> {
+export async function generateViralStrategy(
+  input: ViralStrategyInput
+): Promise<ViralStrategyOutput> {
   return generateViralStrategyFlow(input);
 }
 
@@ -54,13 +56,13 @@ const generateViralStrategyFlow = ai.defineFlow(
     inputSchema: ViralStrategyInputSchema,
     outputSchema: ViralStrategyOutputSchema,
   },
-  async (input) => {
+  async input => {
     const {output} = await viralStrategyPrompt(input);
-    
-    if (output && 'strategies' in output && Array.isArray(output.strategies)) {
-       return output;
+
+    if (output?.strategies && Array.isArray(output.strategies)) {
+      return output;
     }
-    
+
     console.error('Unexpected AI output format:', output);
     throw new Error('AI returned data in an unexpected format.');
   }

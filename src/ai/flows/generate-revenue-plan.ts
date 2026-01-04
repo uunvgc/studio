@@ -1,5 +1,4 @@
 'use server';
-
 /**
  * @fileOverview A revenue plan generator AI agent.
  *
@@ -10,23 +9,12 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-
-const GenerateRevenuePlanInputSchema = z.object({
-  businessIdea: z
-    .string()
-    .describe('The business idea for which to generate a revenue plan.'),
-  tier: z
-    .enum(['free', 'pro', 'beast'])
-    .describe('The tier of service requested (free, pro, or beast).'),
-});
-export type GenerateRevenuePlanInput = z.infer<typeof GenerateRevenuePlanInputSchema>;
-
-const GenerateRevenuePlanOutputSchema = z.object({
-  revenuePlan: z
-    .string()
-    .describe('A detailed revenue maximization plan with actionable steps.'),
-});
-export type GenerateRevenuePlanOutput = z.infer<typeof GenerateRevenuePlanOutputSchema>;
+import {
+  GenerateRevenuePlanInputSchema,
+  GenerateRevenuePlanOutputSchema,
+  type GenerateRevenuePlanInput,
+  type GenerateRevenuePlanOutput,
+} from '@/lib/types';
 
 export async function generateRevenuePlan(
   input: GenerateRevenuePlanInput
@@ -36,14 +24,16 @@ export async function generateRevenuePlan(
 
 const prompt = ai.definePrompt({
   name: 'generateRevenuePlanPrompt',
-  input: {schema: z.object({
-    businessIdea: z.string(),
-    tier: z.object({
+  input: {
+    schema: z.object({
+      businessIdea: z.string(),
+      tier: z.object({
         free: z.boolean().optional(),
         pro: z.boolean().optional(),
         beast: z.boolean().optional(),
-    })
-  })},
+      }),
+    }),
+  },
   output: {schema: GenerateRevenuePlanOutputSchema},
   config: {
     model: 'googleai/gemini-1.5-pro',
@@ -110,10 +100,10 @@ const generateRevenuePlanFlow = ai.defineFlow(
   async input => {
     // Create a structured object to enable simple #if checks in Handlebars
     const structuredInput = {
-        businessIdea: input.businessIdea,
-        tier: {
-            [input.tier]: true
-        }
+      businessIdea: input.businessIdea,
+      tier: {
+        [input.tier]: true,
+      },
     };
     const {output} = await prompt(structuredInput);
     return output!;

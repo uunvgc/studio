@@ -1,5 +1,4 @@
 'use server';
-
 /**
  * @fileOverview This file defines the Genkit flow for analyzing a competitor's website and generating a report.
  *
@@ -8,10 +7,16 @@
  */
 
 import {ai} from '@/ai/genkit';
-import { WebsiteAnalysisInputSchema, WebsiteAnalysisOutputSchema, type WebsiteAnalysisInput, type WebsiteAnalysisOutput } from '@/lib/types';
+import {
+  WebsiteAnalysisInputSchema,
+  WebsiteAnalysisOutputSchema,
+  type WebsiteAnalysisInput,
+  type WebsiteAnalysisOutput,
+} from '@/lib/types';
 
-
-export async function analyzeWebsite(input: WebsiteAnalysisInput): Promise<WebsiteAnalysisOutput> {
+export async function analyzeWebsite(
+  input: WebsiteAnalysisInput
+): Promise<WebsiteAnalysisOutput> {
   return websiteAnalysisFlow(input);
 }
 

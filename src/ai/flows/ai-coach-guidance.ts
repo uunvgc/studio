@@ -8,21 +8,16 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {
+  AICoachPersonalizedGuidanceInputSchema,
+  AICoachPersonalizedGuidanceOutputSchema,
+  type AICoachPersonalizedGuidanceInput,
+  type AICoachPersonalizedGuidanceOutput,
+} from '@/lib/types';
 
-const AICoachPersonalizedGuidanceInputSchema = z.object({
-  userIdea: z.string().describe("The user's business idea or question."),
-});
-export type AICoachPersonalizedGuidanceInput = z.infer<typeof AICoachPersonalizedGuidanceInputSchema>;
-
-const AICoachPersonalizedGuidanceOutputSchema = z.object({
-  personalizedGuidance: z.string().describe('Personalized advice and strategies from the AI coach to maximize profits.'),
-  potentialRisks: z.string().describe('Potential risks associated with the suggested strategies.'),
-  recommendedActions: z.array(z.string()).describe('A list of recommended actions for the user to take.'),
-});
-export type AICoachPersonalizedGuidanceOutput = z.infer<typeof AICoachPersonalizedGuidanceOutputSchema>;
-
-export async function aiCoachPersonalizedGuidance(input: AICoachPersonalizedGuidanceInput): Promise<AICoachPersonalizedGuidanceOutput> {
+export async function aiCoachPersonalizedGuidance(
+  input: AICoachPersonalizedGuidanceInput
+): Promise<AICoachPersonalizedGuidanceOutput> {
   return aiCoachPersonalizedGuidanceFlow(input);
 }
 
