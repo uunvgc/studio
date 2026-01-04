@@ -40,7 +40,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { usePlan } from '@/hooks/use-plan';
-import { ALL_NAV_ITEMS, FREE_NAV_ITEMS, PRO_NAV_ITEMS, BEAST_NAV_ITEMS, pricingPlans } from '@/lib/constants';
+import { ALL_NAV_ITEMS } from '@/lib/constants';
 import type { NavItem, PlanTier, View } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import WebsiteAnalysis from '@/components/views/website-analysis';
@@ -55,11 +55,16 @@ import PageHeader from '@/components/page-header';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import BeastDashboard from '@/components/views/beast-dashboard';
+import FreeDashboard from '@/components/views/free-dashboard';
+import ProDashboard from '@/components/views/pro-dashboard';
 
 const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
 const NAV_ICONS: { [key in View]: React.ElementType } = {
     overview: Home,
+    'free-dashboard': Home,
+    'pro-dashboard': Home,
+    'beast-dashboard': Gem,
     'website-analysis': Swords,
     'revenue-maximizer': DollarSign,
     'ai-coach': BrainCircuit,
@@ -67,20 +72,29 @@ const NAV_ICONS: { [key in View]: React.ElementType } = {
     'viral-platforms': Share2,
     organizer: Target,
     upgrade: Gem,
-    'beast-dashboard': Gem,
 };
+
+const getDefaultViewForPlan = (plan: PlanTier): View => {
+    switch(plan) {
+        case 'beast': return 'beast-dashboard';
+        case 'pro': return 'pro-dashboard';
+        case 'free':
+        default:
+            return 'free-dashboard';
+    }
+}
 
 export default function CoverPage() {
     const { currentPlan, setCurrentPlan, navItemsForPlan, canAccess } = usePlan();
-    const [activeView, setActiveView] = React.useState<View>('overview');
+    const [activeView, setActiveView] = React.useState<View>(getDefaultViewForPlan(currentPlan));
 
     React.useEffect(() => {
-        if (currentPlan === 'beast') {
-            setActiveView('beast-dashboard');
-        } else if (activeView === 'beast-dashboard') {
-            setActiveView('overview');
+        // When plan changes, switch to the default dashboard for that plan
+        const defaultView = getDefaultViewForPlan(currentPlan);
+        if (activeView !== defaultView) {
+            setActiveView(defaultView);
         }
-    }, [currentPlan, activeView]);
+    }, [currentPlan]);
 
     const handleViewChange = (viewId: View) => {
         if (canAccess(viewId)) {
@@ -94,7 +108,9 @@ export default function CoverPage() {
 
     const renderView = () => {
         switch (activeView) {
-            case 'overview': return <Overview setActiveView={handleViewChange} />;
+            case 'free-dashboard': return <FreeDashboard setActiveView={handleViewChange} />;
+            case 'pro-dashboard': return <ProDashboard setActiveView={handleViewChange} />;
+            case 'beast-dashboard': return <BeastDashboard setActiveView={handleViewChange} />;
             case 'website-analysis': return <WebsiteAnalysis currentPlan={currentPlan} setActiveView={handleViewChange} />;
             case 'revenue-maximizer': return <RevenueMaximizer currentPlan={currentPlan} />;
             case 'ai-coach': return <AiCoach currentPlan={currentPlan} setActiveView={handleViewChange} />;
@@ -102,9 +118,7 @@ export default function CoverPage() {
             case 'viral-platforms': return <ViralPlatforms currentPlan={currentPlan} setActiveView={handleViewChange} />;
             case 'organizer': return <Organizer />;
             case 'upgrade': return <UpgradePlan currentPlan={currentPlan} setCurrentPlan={setCurrentPlan} />;
-            case 'beast-dashboard':
-                return currentPlan === 'beast' ? <BeastDashboard setActiveView={handleViewChange} /> : <UpgradePlan currentPlan={currentPlan} setCurrentPlan={setCurrentPlan} />;
-            default: return <Overview setActiveView={handleViewChange} />;
+            default: return <FreeDashboard setActiveView={handleViewChange} />;
         }
     };
 

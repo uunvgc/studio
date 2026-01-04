@@ -7,6 +7,16 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     description: 'Your command center for financial domination.',
   },
   {
+    id: 'free-dashboard',
+    title: 'Dashboard',
+    description: 'Your command center for financial domination.',
+  },
+  {
+    id: 'pro-dashboard',
+    title: 'Pro Dashboard',
+    description: 'Your command center for financial domination.',
+  },
+  {
     id: 'beast-dashboard',
     title: 'Beast Dashboard',
     description: 'Your Ultimate Command Center.',
@@ -53,14 +63,14 @@ export const ALL_NAV_ITEMS: NavItem[] = [
 const getItem = (id: NavItem['id']) => ALL_NAV_ITEMS.find(item => item.id === id)!;
 
 export const FREE_NAV_ITEMS: NavItem[] = [
-  getItem('overview'),
+  getItem('free-dashboard'),
   getItem('revenue-maximizer'),
   getItem('organizer'),
   getItem('upgrade'),
 ];
 
 export const PRO_NAV_ITEMS: NavItem[] = [
-  getItem('overview'),
+  getItem('pro-dashboard'),
   getItem('website-analysis'),
   getItem('revenue-maximizer'),
   getItem('viral-platforms'),
@@ -70,7 +80,6 @@ export const PRO_NAV_ITEMS: NavItem[] = [
 
 export const BEAST_NAV_ITEMS: NavItem[] = [
     getItem('beast-dashboard'),
-    getItem('overview'),
     getItem('website-analysis'),
     getItem('revenue-maximizer'),
     getItem('ai-coach'),

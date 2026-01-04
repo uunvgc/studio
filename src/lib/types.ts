@@ -1,3 +1,5 @@
+'use client';
+
 import { z } from 'zod';
 
 export type PlanTier = 'free' | 'pro' | 'beast';
@@ -11,7 +13,9 @@ export type View =
   | 'viral-platforms'
   | 'organizer'
   | 'upgrade'
-  | 'beast-dashboard';
+  | 'beast-dashboard'
+  | 'free-dashboard'
+  | 'pro-dashboard';
 
 export interface NavItem {
   id: View;
