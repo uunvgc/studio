@@ -1,7 +1,10 @@
+'use client';
+
 import { viralPlatforms } from "@/lib/constants";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, BarChart } from "lucide-react";
+import { Users, ExternalLink } from "lucide-react";
+import { Button } from "../ui/button";
 
 export default function ViralPlatforms() {
     
@@ -29,13 +32,21 @@ export default function ViralPlatforms() {
                             </div>
                             <CardDescription>{platform.category}</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex-grow flex flex-col justify-between">
+                        <CardContent className="flex-grow">
                             <p className="text-sm text-muted-foreground mb-4">{platform.description}</p>
                             <div className="flex items-center text-sm text-foreground">
                                 <Users className="h-4 w-4 mr-2" />
                                 <span>{platform.userBase} Users</span>
                             </div>
                         </CardContent>
+                        <CardFooter>
+                            <a href={platform.url} target="_blank" rel="noopener noreferrer" className="w-full">
+                                <Button className="w-full">
+                                    <ExternalLink className="mr-2" />
+                                    Get Started
+                                </Button>
+                            </a>
+                        </CardFooter>
                     </Card>
                 ))}
             </div>
