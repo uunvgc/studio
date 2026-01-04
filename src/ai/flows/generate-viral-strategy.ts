@@ -40,7 +40,9 @@ Platforms to consider:
 - Threads: 150M+ users, Emerging potential. Growing text-based network.
 - Lemon8: 10M+ users, Emerging potential. Visual-heavy lifestyle content.
 
-Your response must be a structured JSON object. For each recommended platform, detail the platform, rationale, a killer strategy, user base, potential, and URL.`,
+Your response MUST be a valid JSON object that conforms to the output schema.
+For each recommended platform, detail the platform, rationale, a killer strategy, user base, potential, and URL.
+The final JSON output must use the key "strategies" which is an array of objects.`,
 });
 
 const generateViralStrategyFlow = ai.defineFlow(
@@ -50,7 +52,10 @@ const generateViralStrategyFlow = ai.defineFlow(
     outputSchema: ViralStrategyOutputSchema,
   },
   async (input) => {
-    const {output} = await viralStrategyPrompt(input);
+    const {output} = await viralStrategyPrompt({
+        ...input,
+        model: 'googleai/gemini-1.5-flash',
+    });
     return output!;
   }
 );
