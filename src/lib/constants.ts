@@ -2,11 +2,6 @@ import type { NavItem, PlanTier } from '@/lib/types';
 
 export const ALL_NAV_ITEMS: NavItem[] = [
   {
-    id: 'overview',
-    title: 'Dashboard',
-    description: 'Your command center for financial domination.',
-  },
-  {
     id: 'free-dashboard',
     title: 'Dashboard',
     description: 'Your command center to start making money.',
@@ -58,39 +53,13 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     title: 'Upgrade Plan',
     description: 'Unlock your full income potential.',
   },
+  // Overview is deprecated but kept for type safety if referenced.
+  {
+    id: 'overview',
+    title: 'Dashboard',
+    description: 'Your command center for financial domination.',
+  },
 ];
-
-const getItem = (id: NavItem['id']) => ALL_NAV_ITEMS.find(item => item.id === id)!;
-
-export const FREE_NAV_ITEMS: NavItem[] = [
-  getItem('free-dashboard'),
-  getItem('revenue-maximizer'),
-  getItem('organizer'),
-  getItem('upgrade'),
-];
-
-export const PRO_NAV_ITEMS: NavItem[] = [
-  getItem('pro-dashboard'),
-  getItem('website-analysis'),
-  getItem('revenue-maximizer'),
-  getItem('viral-platforms'),
-  getItem('organizer'),
-  getItem('upgrade'),
-];
-
-export const BEAST_NAV_ITEMS: NavItem[] = [
-    getItem('beast-dashboard'),
-    getItem('website-analysis'),
-    getItem('revenue-maximizer'),
-    getItem('ai-coach'),
-    getItem('predictions'),
-    getItem('viral-platforms'),
-    getItem('organizer'),
-    getItem('upgrade'),
-];
-
-
-export const NAV_ITEMS = ALL_NAV_ITEMS; // Keep for backward compatibility if needed anywhere else
 
 export const pricingPlans: {
   id: PlanTier;

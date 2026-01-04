@@ -85,7 +85,7 @@ const PLAN_DASHBOARDS: Record<PlanTier, View> = {
 
 const VIEW_COMPONENTS: Record<View, React.ElementType> = {
     'free-dashboard': FreeDashboard,
-    'pro-dashboard': FreeDashboard,
+    'pro-dashboard': FreeDashboard, // Pro uses the same dashboard component as Free
     'beast-dashboard': BeastDashboard,
     'website-analysis': WebsiteAnalysis,
     'revenue-maximizer': RevenueMaximizer,
@@ -99,15 +99,18 @@ const VIEW_COMPONENTS: Record<View, React.ElementType> = {
 
 export default function CoverPage() {
     const { currentPlan, setCurrentPlan, navItemsForPlan, canAccess } = usePlan();
-    const [activeView, setActiveView] = React.useState<View>(PLAN_DASHBOARDS[currentPlan] || 'free-dashboard');
-    const { toast } = useToast();
-
+    const defaultViewForPlan = PLAN_DASHBOARDS[currentPlan] || 'free-dashboard';
+    
+    // Determine the initial active view. If the current plan changes, reset to its default dashboard.
+    const [activeView, setActiveView] = React.useState<View>(defaultViewForPlan);
+    
     React.useEffect(() => {
         const defaultView = PLAN_DASHBOARDS[currentPlan] || 'free-dashboard';
-        if (!canAccess(activeView)) {
-            setActiveView(defaultView);
-        } else if(activeView !== defaultView && (activeView === 'free-dashboard' || activeView === 'pro-dashboard' || activeView === 'beast-dashboard')) {
-            setActiveView(defaultView);
+        // If the current view is no longer accessible under the new plan,
+        // or if we are on a dashboard view that doesn't match the current plan,
+        // reset to the default dashboard for the current plan.
+        if (!canAccess(activeView) || (['free-dashboard', 'pro-dashboard', 'beast-dashboard'].includes(activeView) && activeView !== defaultView)) {
+          setActiveView(defaultView);
         }
     }, [currentPlan, canAccess, activeView]);
 
@@ -155,11 +158,14 @@ export default function CoverPage() {
                     <SidebarMenu>
                         {navItemsForPlan.map(item => {
                             const Icon = NAV_ICONS[item.id] ?? LayoutPanelLeft;
+                            const isDashboard = item.id.includes('-dashboard');
+                            const actualActiveView = isDashboard ? PLAN_DASHBOARDS[currentPlan] : activeView;
+                            
                             return (
                                 <SidebarMenuItem key={item.id}>
                                     <SidebarMenuButton
                                         onClick={() => handleViewChange(item.id)}
-                                        isActive={activeView === item.id}
+                                        isActive={actualActiveView === item.id}
                                         tooltip={{children: item.title, side: 'right'}}
                                     >
                                         <Icon />
