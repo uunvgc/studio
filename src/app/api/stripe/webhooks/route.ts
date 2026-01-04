@@ -18,7 +18,8 @@ const handleSubscriptionChange = (userId: string, planId: string) => {
 
 export async function POST(req: Request) {
   const body = await req.text();
-  const signature = headers().get('Stripe-Signature') ?? '';
+  const headersList = await headers();
+  const signature = headersList.get('Stripe-Signature') ?? '';
 
   let event: Stripe.Event;
 
@@ -60,7 +61,7 @@ export async function POST(req: Request) {
       
       console.log(`User ${userId} just subscribed to price ID: ${planId}`);
       // Now you can map this priceId to your app's plan tiers ('pro', 'beast') and update the user.
-      // handleSubscriptionChange(userId, planId);
+      handleSubscriptionChange(userId, planId);
 
       break;
     }
@@ -79,7 +80,7 @@ export async function POST(req: Request) {
       
       const planId = subscription.items.data[0].price.id;
       console.log(`Recurring payment successful for user ${userId} on plan ${planId}`);
-      // handleSubscriptionChange(userId, planId);
+      handleSubscriptionChange(userId, planId);
 
       break;
     }
