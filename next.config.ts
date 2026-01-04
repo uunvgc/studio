@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    serverActions: true, // enables 'use server' functions like Stripe checkout
+    serverActions: {},
   },
 };
 
