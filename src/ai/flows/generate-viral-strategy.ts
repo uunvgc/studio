@@ -61,18 +61,18 @@ const generateViralStrategyFlow = ai.defineFlow(
       throw new Error('AI returned no output.');
     }
 
-    // The AI can sometimes return a raw array, or an object with the strategies.
-    // This handles both cases to ensure the final output is always correct.
-    if ('strategies' in output && Array.isArray(output.strategies)) {
-       return output;
+    // This is the robust fix.
+    // The AI can sometimes return a raw array, or an object containing the array.
+    // This code handles both possibilities gracefully.
+    if (Array.isArray(output)) {
+      return { strategies: output as any };
     }
-
-    if(Array.isArray(output)) {
-        return { strategies: output as any };
+    if (output && 'strategies' in output && Array.isArray(output.strategies)) {
+       return output;
     }
     
     // If the output is in a completely unexpected format, throw an error.
     console.error('Unexpected AI output format:', output);
-    throw new Error('AI returned data in an unexpected format.');
+    throw new Error('AI returned data in an unexpected format. The AI may have returned a string instead of a JSON object.');
   }
 );
