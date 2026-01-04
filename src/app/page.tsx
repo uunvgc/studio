@@ -103,7 +103,7 @@ export default function Dashboard() {
               <Menu />
             </Button>
             <DollarSign className="w-8 h-8 text-primary" />
-            <h1 className="font-headline text-2xl font-bold text-primary">ProfitPro AI</h1>
+            <h1 className="font-headline text-2xl font-bold text-primary">Fiilthy</h1>
           </div>
         </SidebarHeader>
         <SidebarContent className="p-2">
@@ -140,7 +140,7 @@ export default function Dashboard() {
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">ProfitPro AI</p>
+                  <p className="text-sm font-medium leading-none">Fiilthy</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     guest@example.com
                   </p>

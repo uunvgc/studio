@@ -3,8 +3,8 @@ import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ProfitPro AI',
-  description: 'Your AI-powered partner for profit maximization.',
+  title: 'Fiilthy',
+  description: 'Get fiilthy rich.',
 };
 
 export default function RootLayout({
