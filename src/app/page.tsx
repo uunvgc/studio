@@ -17,6 +17,8 @@ import {
   Newspaper,
   LayoutPanelLeft,
   ChevronDown,
+  Copy,
+  Users,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -54,8 +56,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import BeastDashboard from '@/components/views/beast-dashboard';
 import FreeDashboard from '@/components/views/free-dashboard';
 import ProDashboard from '@/components/views/pro-dashboard';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/hooks/use-toast';
 
 const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
+const REFERRAL_CODE = "PROFIT-1A2B3C";
 
 const NAV_ICONS: { [key in View]: React.ElementType } = {
     overview: Home,
@@ -84,6 +91,7 @@ const getDefaultViewForPlan = (plan: PlanTier): View => {
 export default function CoverPage() {
     const { currentPlan, setCurrentPlan, navItemsForPlan, canAccess } = usePlan();
     const [activeView, setActiveView] = React.useState<View>(getDefaultViewForPlan(currentPlan));
+    const { toast } = useToast();
 
     React.useEffect(() => {
         const defaultView = getDefaultViewForPlan(currentPlan);
@@ -126,6 +134,14 @@ export default function CoverPage() {
             default: return <div className='px-2 py-0.5 text-xs rounded-full bg-muted text-muted-foreground'>FREE</div>
         }
     }
+    
+    const handleCopyReferral = () => {
+        navigator.clipboard.writeText(REFERRAL_CODE);
+        toast({
+            title: "Referral Code Copied",
+            description: "Share it with your friends to earn rewards!",
+        })
+    }
 
     return (
         <SidebarProvider>
@@ -159,21 +175,54 @@ export default function CoverPage() {
                     </SidebarMenu>
                 </SidebarContent>
                 <SidebarFooter>
-                     <div className="flex items-center gap-2 border rounded-lg p-2">
-                        <Avatar className="h-9 w-9">
-                            <AvatarImage src={userAvatar?.imageUrl} alt="User Avatar" />
-                            <AvatarFallback>U</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 overflow-hidden">
-                            <p className="text-sm font-semibold truncate">Richie Rich</p>
-                            <div className="flex items-center gap-1.5">
-                                {getBadgeForPlan(currentPlan)}
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <div className="flex items-center gap-2 border rounded-lg p-2 cursor-pointer hover:border-primary/50 transition-colors">
+                                <Avatar className="h-9 w-9">
+                                    <AvatarImage src={userAvatar?.imageUrl} alt="User Avatar" />
+                                    <AvatarFallback>U</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 overflow-hidden">
+                                    <p className="text-sm font-semibold truncate">Richie Rich</p>
+                                    <div className="flex items-center gap-1.5">
+                                        {getBadgeForPlan(currentPlan)}
+                                    </div>
+                                </div>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                                </Button>
                             </div>
-                        </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Settings className="h-4 w-4" />
-                        </Button>
-                     </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-72 mb-2">
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <h4 className="font-semibold text-sm">Referrals</h4>
+                                    <p className="text-xs text-muted-foreground">Invite 3 friends, get 1 month of Pro free.</p>
+                                    <div className="flex items-center justify-between text-xs">
+                                        <span>1 / 3 referrals</span>
+                                        <span>33%</span>
+                                    </div>
+                                    <Progress value={33} className="h-2"/>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                     <div className="flex-1 select-all text-sm font-mono bg-muted rounded-md px-2 py-1">{REFERRAL_CODE}</div>
+                                     <Button variant="outline" size="sm" onClick={handleCopyReferral}>
+                                         <Copy className="h-4 w-4 mr-2"/>
+                                         Copy
+                                     </Button>
+                                </div>
+                                <Separator />
+                                <Button variant="ghost" className="w-full justify-start text-muted-foreground">
+                                    <Settings className="mr-2 h-4 w-4" />
+                                    Settings
+                                </Button>
+                                 <Button variant="ghost" className="w-full justify-start text-muted-foreground">
+                                    <HelpCircle className="mr-2 h-4 w-4" />
+                                    Help & Support
+                                </Button>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 </SidebarFooter>
             </Sidebar>
 
