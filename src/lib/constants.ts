@@ -4,7 +4,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'overview',
     title: 'Dashboard',
-    description: 'A high-level overview of your profit journey.',
+    description: 'Your command center for financial domination.',
   },
   {
     id: 'website-analysis',
@@ -81,17 +81,17 @@ export const pricingPlans: {
   },
   {
     id: 'beast',
-    name: 'Beast Mode',
+    name: 'Beast',
     price: '$29.99',
     priceDetail: '/ month',
     features: [
       'Everything in Pro, plus:',
       'Premium AI Coaching',
       'Predictive Revenue Analysis',
-      'Beast Mode Revenue Plan',
+      'Beast-level Revenue Plan',
       'Emerging trend alerts',
     ],
-    cta: 'Unleash Beast Mode',
+    cta: 'Unleash the Beast',
   },
 ];
 

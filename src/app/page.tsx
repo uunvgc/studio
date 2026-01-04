@@ -106,7 +106,7 @@ export default function Dashboard() {
             <h1 className="font-headline text-2xl font-bold text-primary">ProfitPro AI</h1>
           </div>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="p-2">
           <SidebarMenu>
             {NAV_ITEMS.map(item => (
               <SidebarMenuItem key={item.id}>
