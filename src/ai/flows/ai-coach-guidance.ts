@@ -30,7 +30,7 @@ const prompt = ai.definePrompt({
   name: 'aiCoachPersonalizedGuidancePrompt',
   input: {schema: AICoachPersonalizedGuidanceInputSchema},
   output: {schema: AICoachPersonalizedGuidanceOutputSchema},
-   config: {
+  config: {
     model: 'googleai/gemini-1.5-pro',
   },
   prompt: `You are an AI-powered financial advisor/CEO whose sole focus is maximizing the user's profits. You are having a conversation with the user.
