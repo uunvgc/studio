@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true, // keeps your app safe and catches issues early
-  swcMinify: true,       // faster builds and smaller bundle
   compiler: {
     styledComponents: true, // enables server-side rendering for your styles
   },
