@@ -38,6 +38,9 @@ const prompt = ai.definePrompt({
   name: 'generateRevenuePlanPrompt',
   input: {schema: GenerateRevenuePlanInputSchema},
   output: {schema: GenerateRevenuePlanOutputSchema},
+  config: {
+    model: 'googleai/gemini-1.5-pro',
+  },
   prompt: `You are an expert business consultant specializing in revenue maximization.
 
 You will generate a detailed revenue maximization plan with actionable steps for the user's business idea.
