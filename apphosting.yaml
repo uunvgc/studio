@@ -5,6 +5,9 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+  vpcAccess:
+    connector: connector-id
+    egress: ALL_TRAFFIC
 
 env:
   - variable: STORAGE_BUCKET
@@ -12,3 +15,12 @@ env:
     availability:
       - BUILD
       - RUNTIME
+  - variable: NEXT_PUBLIC_STORAGE_BUCKET
+    value: mybucket.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: API_KEY
+    secret: myApiKeySecret
+  - variable: PINNED_API_KEY
+    secret: myApiKeySecret@5
