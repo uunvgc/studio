@@ -51,6 +51,6 @@ const websiteAnalysisFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await websiteAnalysisPrompt(input);
-    return output;
+    return output!;
   }
 );

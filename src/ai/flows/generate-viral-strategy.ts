@@ -58,12 +58,6 @@ const generateViralStrategyFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await viralStrategyPrompt(input);
-
-    if (output?.strategies && Array.isArray(output.strategies)) {
-      return output;
-    }
-
-    console.error('Unexpected AI output format:', output);
-    throw new Error('AI returned data in an unexpected format.');
+    return output!;
   }
 );

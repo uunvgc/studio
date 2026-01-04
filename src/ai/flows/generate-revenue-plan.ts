@@ -66,7 +66,7 @@ The revenue maximization plan for the 'Pro' tier should be practical, in-depth, 
     *   **Bottom of Funnel (Conversion):** Outline a simple email marketing sequence (3-5 emails) to convert leads from the lead magnet into paying customers. Include templates for these emails.
 3.  **Persona-Driven Monetization Models:** Generate 2-3 distinct customer personas for the user's business idea. For each persona, propose a tailored pricing model. Example:
     *   **Persona A: "The Budget-Conscious Beginner."** Offer: A low-cost, entry-level subscription with core features.
-    *   **Persona B: "The Growth-Focused Professional."** Offer: A premium tier with all features, priority support, and a one-on-one consultation.
+    *   **Persona B: "The Growth-Focused Professional."** Offer: A premium tier with all features, and a one-on-one consultation.
 4.  **Key Performance Indicator (KPI) Dashboard Setup:** Instruct the user to set up a simple KPI dashboard (using a free tool like Google Sheets or a paid tool if appropriate). The plan must specify the 5-7 most critical metrics to track daily/weekly, such as Customer Acquisition Cost (CAC), Lifetime Value (LTV), Conversion Rate, and Churn Rate. Explain *why* each KPI is critical.
 5.  **A/B Testing Roadmap:** Provide a 30-day roadmap for A/B testing. This should include specific, high-impact elements to test, such as the main headline on their landing page, the call-to-action button color/text, and the pricing structure. The goal is to drive incremental, data-backed improvements.
 {{/if}}
@@ -106,6 +106,6 @@ const generateRevenuePlanFlow = ai.defineFlow(
       },
     };
     const {output} = await prompt(structuredInput);
-    return output;
+    return output!;
   }
 );
