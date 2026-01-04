@@ -36,7 +36,14 @@ export async function generateRevenuePlan(
 
 const prompt = ai.definePrompt({
   name: 'generateRevenuePlanPrompt',
-  input: {schema: GenerateRevenuePlanInputSchema},
+  input: {schema: z.object({
+    businessIdea: z.string(),
+    tier: z.object({
+        free: z.boolean().optional(),
+        pro: z.boolean().optional(),
+        beast: z.boolean().optional(),
+    })
+  })},
   output: {schema: GenerateRevenuePlanOutputSchema},
   config: {
     model: 'googleai/gemini-1.5-pro',
@@ -46,7 +53,6 @@ const prompt = ai.definePrompt({
 You will generate a detailed revenue maximization plan with actionable steps for the user's business idea.
 
 The user's business idea is: {{{businessIdea}}}
-The user's selected tier is: {{{tier}}}
 
 {{#if tier.free}}
 The revenue maximization plan for the 'Free' tier focuses entirely on lead generation, value demonstration, and strategic upselling to convert users to paid subscriptions.
