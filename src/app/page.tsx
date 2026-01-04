@@ -7,10 +7,10 @@ import {
   CheckSquare,
   DollarSign,
   Gem,
-  Globe,
   LayoutDashboard,
   Menu,
   Share2,
+  Swords,
   TrendingUp,
   User,
 } from 'lucide-react';
@@ -85,7 +85,7 @@ export default function Dashboard() {
 
   const IconMap: { [key: string]: React.ElementType } = {
     overview: LayoutDashboard,
-    'website-analysis': Globe,
+    'website-analysis': Swords,
     'revenue-maximizer': DollarSign,
     'ai-coach': BrainCircuit,
     predictions: TrendingUp,

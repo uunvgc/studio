@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, BrainCircuit, DollarSign, Globe, Target } from "lucide-react";
+import { ArrowRight, BrainCircuit, DollarSign, Swords, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import type { View } from "@/lib/types";
 
@@ -10,12 +10,12 @@ interface OverviewProps {
 
 const quickLinks = [
   {
-    title: 'Analyze Your Website',
-    description: 'Instantly find hidden profits on your site.',
-    icon: Globe,
+    title: 'Annihilate Competitor',
+    description: 'Expose their weaknesses. Steal their traffic.',
+    icon: Swords,
     view: 'website-analysis',
-    color: 'text-blue-400',
-    bgColor: 'bg-blue-500/10',
+    color: 'text-red-400',
+    bgColor: 'bg-red-500/10',
   },
   {
     title: 'Build Your Revenue Plan',

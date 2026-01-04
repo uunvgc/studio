@@ -10,13 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Loader2, Zap, Target } from 'lucide-react';
+import { Loader2, Zap, Target, ShieldOff, Eye } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   websiteUrl: z.string().url({ message: 'Please enter a valid URL.' }),
-  businessIdea: z.string().min(10, { message: 'Please describe your business idea in at least 10 characters.' }),
+  businessIdea: z.string().min(10, { message: 'Describe your business in at least 10 characters.' }),
 });
 
 export default function WebsiteAnalysis() {
@@ -86,10 +86,10 @@ export default function WebsiteAnalysis() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-headline">
-                <Zap className="text-accent" />
-                Potential Revenue Streams
+                <Eye className="text-accent" />
+                Revenue Streams Recon
               </CardTitle>
-              <CardDescription>Ways your website can start making money.</CardDescription>
+              <CardDescription>How they make money. And how you can do it better.</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap">{analysisResult.potentialRevenueStreams}</p>
@@ -98,10 +98,10 @@ export default function WebsiteAnalysis() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-headline">
-                <Target className="text-accent" />
-                Areas for Improvement
+                <ShieldOff className="text-accent" />
+                Exploitable Weaknesses
               </CardTitle>
-              <CardDescription>Actionable advice to enhance your site.</CardDescription>
+              <CardDescription>The cracks in their armor. Your blueprint for attack.</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap">{analysisResult.areasForImprovement}</p>
@@ -112,9 +112,10 @@ export default function WebsiteAnalysis() {
     }
 
     return (
-        <div className="text-center py-12 text-muted-foreground">
-            <Globe className="mx-auto h-12 w-12" />
-            <p className="mt-4 text-sm">Your analysis results will appear here.</p>
+        <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
+            <Target className="mx-auto h-12 w-12" />
+            <p className="mt-4 text-sm font-bold">Your target is acquired.</p>
+            <p className="text-sm">The intel report will appear here.</p>
         </div>
     );
   };
@@ -123,8 +124,8 @@ export default function WebsiteAnalysis() {
     <div className="space-y-8">
       <Card className="shadow-sm">
         <CardHeader>
-            <CardTitle className="font-headline">Analyze Your Website</CardTitle>
-            <CardDescription>Enter your website URL and a brief description of your business to get started.</CardDescription>
+            <CardTitle className="font-headline">Identify Your Target</CardTitle>
+            <CardDescription>Enter your competitor's website. Our AI will dismantle their strategy and expose their weaknesses.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -134,9 +135,9 @@ export default function WebsiteAnalysis() {
                 name="websiteUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Website URL</FormLabel>
+                    <FormLabel>Competitor's Website URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com" {...field} />
+                      <Input placeholder="https://competitor.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -147,17 +148,17 @@ export default function WebsiteAnalysis() {
                 name="businessIdea"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Business Idea</FormLabel>
+                    <FormLabel>Your Business (for context)</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Describe your business, goals, and target audience." {...field} />
+                      <Textarea placeholder="Briefly describe your business so the AI can tailor its attack plan." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading} size="lg">
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Analyze Website
+                Annihilate
               </Button>
             </form>
           </Form>

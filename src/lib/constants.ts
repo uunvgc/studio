@@ -8,8 +8,8 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     id: 'website-analysis',
-    title: 'Website Analysis',
-    description: 'Analyze your website to find hidden revenue.',
+    title: 'Competitor Annihilator',
+    description: 'Dismantle your competition. Steal their profits.',
   },
   {
     id: 'revenue-maximizer',
@@ -58,7 +58,7 @@ export const pricingPlans: {
     price: '$0',
     priceDetail: '/ month',
     features: [
-      'Basic Website Analysis',
+      'Basic Competitor Analysis',
       'Standard Revenue Plan',
       'Task Organizer',
       'Limited platform recommendations',
@@ -72,7 +72,7 @@ export const pricingPlans: {
     priceDetail: '/ month',
     features: [
       'Everything in Free, plus:',
-      'Enhanced Website Analysis',
+      'Enhanced Competitor Annihilation',
       'Detailed Pro Revenue Plan',
       'Full platform access',
       'Priority Support',
