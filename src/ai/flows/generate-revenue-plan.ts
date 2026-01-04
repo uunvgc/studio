@@ -48,7 +48,7 @@ You will generate a detailed revenue maximization plan with actionable steps for
 The user's business idea is: {{{businessIdea}}}
 The user's selected tier is: {{{tier}}}
 
-{{#if (eq tier "free")}}
+{{#if tier.free}}
 The revenue maximization plan for the 'Free' tier focuses entirely on lead generation, value demonstration, and strategic upselling to convert users to paid subscriptions.
 
 1.  **Optimized Onboarding & Value Demonstration:** Upon sign-up, immediately guide users through a concise onboarding process that highlights the free tier's core capabilities: basic website analysis and initial idea input for generalized income suggestions. Ensure the value proposition of the free offering is clear and quickly realized. Use interactive elements to demonstrate the initial impact of the app, even with limited features. This quick win is crucial for retention and future conversion.
@@ -60,7 +60,7 @@ The revenue maximization plan for the 'Free' tier focuses entirely on lead gener
 7.  **Data-Driven Analytics for Conversion Optimization:** Continuously track user behavior within the free tier, identifying common drop-off points, features that generate the most engagement, and the most effective upgrade prompts. Use this data to iteratively refine the free experience, optimize CTA placements, and personalize upgrade offers to maximize conversion rates to the 'Pro' and 'Beast' tiers.
 {{/if}}
 
-{{#if (eq tier "pro")}}
+{{#if tier.pro}}
 The revenue maximization plan for the 'Pro' tier should be practical, in-depth, and focus on delivering tangible results quickly. The strategy is to leverage advanced analytics and market insights to give the user a distinct competitive advantage.
 
 1.  **Deep Competitor Analysis Integration:** Go beyond basic website scrapes. The plan should guide the user to leverage the "Competitor Annihilator" feature to identify 3-5 key competitors. For each competitor, the user should be prompted to analyze their pricing, marketing channels, and customer reviews. The AI will then synthesize this into a "Weakness Matrix" that shows the most exploitable gaps in the market.
@@ -75,7 +75,7 @@ The revenue maximization plan for the 'Pro' tier should be practical, in-depth, 
 5.  **A/B Testing Roadmap:** Provide a 30-day roadmap for A/B testing. This should include specific, high-impact elements to test, such as the main headline on their landing page, the call-to-action button color/text, and the pricing structure. The goal is to drive incremental, data-backed improvements.
 {{/if}}
 
-{{#if (eq tier "beast")}}
+{{#if tier.beast}}
 The "Beast" tier plan is the ultimate, all-out assault on the market. It combines ruthless strategy with cutting-edge AI and predictive analytics to not just compete, but dominate.
 
 1.  **AI-Powered Predictive Market-Fit Analysis:** Before executing, the plan will guide the user to use the "Predictive Analysis" tool. The user will input their core idea and the AI will generate a Success Probability Score. If the score is below a certain threshold (e.g., 75%), the AI will provide 3-5 specific "pivots" or adjustments to the business model to increase its likelihood of success.
@@ -102,7 +102,14 @@ const generateRevenuePlanFlow = ai.defineFlow(
     outputSchema: GenerateRevenuePlanOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    // Create a structured object to enable simple #if checks in Handlebars
+    const structuredInput = {
+        businessIdea: input.businessIdea,
+        tier: {
+            [input.tier]: true
+        }
+    };
+    const {output} = await prompt(structuredInput);
     return output!;
   }
 );
