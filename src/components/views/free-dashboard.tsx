@@ -71,13 +71,13 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
       return (
     <div className="space-y-8 animate-in fade-in-50">
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Pro Command Center</CardTitle>
                     <CardDescription>You have the power to outmaneuver the competition. Use these tools to build your empire.</CardDescription>
                 </CardHeader>
-                <CardContent className="grid gap-4 md:grid-cols-2">
+                <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                      {proLinks.map((link) => (
                       <Card key={link.view} className="hover:border-primary/50 transition-colors duration-300 group cursor-pointer" onClick={() => setActiveView(link.view as View)}>
                         <CardHeader className="p-4">
@@ -95,6 +95,9 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
                         </CardContent>
                       </Card>
                     ))}
+                    <div className="md:col-span-2 lg:col-span-1">
+                      <ReferralCard />
+                    </div>
                 </CardContent>
             </Card>
             
@@ -113,8 +116,6 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
                 </CardContent>
             </Card>
         </div>
-
-        <ReferralCard />
       </div>
     </div>
   );
@@ -128,13 +129,13 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Quick Start</CardTitle>
                     <CardDescription>You're minutes away from your first AI-generated strategy.</CardDescription>
                 </CardHeader>
-                <CardContent className="grid gap-4 md:grid-cols-2">
+                <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                      {freeQuickStartLinks.map((link) => (
                       <Card key={link.view} className="hover:border-primary/50 transition-colors duration-300 group cursor-pointer" onClick={() => setActiveView(link.view as View)}>
                         <CardHeader className="p-4">
@@ -152,6 +153,9 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
                         </CardContent>
                       </Card>
                     ))}
+                    <div className="md:col-span-2 lg:col-span-1">
+                     <ReferralCard />
+                    </div>
                 </CardContent>
             </Card>
             
@@ -170,8 +174,6 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
                 </CardContent>
             </Card>
         </div>
-
-        <ReferralCard />
       </div>
     </div>
   );

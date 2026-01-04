@@ -68,7 +68,14 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         form.reset();
 
         try {
-            const result = await aiCoachPersonalizedGuidance({ userIdea: values.message });
+            const result = await aiCoachPersonalizedGuidance({
+                userIdea: values.message,
+                // The following fields are not collected in this chat interface.
+                // You could add inputs for them or use default/placeholder values.
+                currentRevenue: 0,
+                businessGoals: 'Maximize profit.',
+                riskTolerance: 'high'
+             });
             const aiMessage: Message = { id: Date.now() + 1, sender: 'ai', text: result };
             setMessages(prev => [...prev, aiMessage]);
 
@@ -113,96 +120,83 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
     <div className="space-y-8 animate-in fade-in-50">
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
-        <div className="xl:col-span-2 space-y-8">
-            <Card className="flex flex-col h-[75vh]">
-                <CardHeader>
-                    <CardTitle className="font-headline">Your AI CEO</CardTitle>
-                    <CardDescription>Chat directly with your AI CEO for ruthless, profit-driven advice.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden">
-                   <ScrollArea className="flex-grow pr-4" ref={scrollAreaRef}>
-                        <div className="space-y-6">
-                            <AnimatePresence>
-                            {messages.map((message) => (
-                                <motion.div 
-                                    key={message.id} 
-                                    className={cn("flex items-start gap-3", message.sender === 'user' ? 'justify-end' : 'justify-start')}
-                                    layout
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                >
-                                    {message.sender === 'ai' && (
-                                        <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
-                                            <AvatarFallback><Bot size={18} /></AvatarFallback>
-                                        </Avatar>
-                                    )}
-                                    <div className={cn(
-                                        "max-w-xl rounded-lg p-3", 
-                                        message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
-                                        message.isGreeting && 'bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-foreground'
-                                    )}>
-                                        <AiMessageContent content={message.text} />
-                                    </div>
-                                    {message.sender === 'user' && (
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage src={userAvatar?.imageUrl} />
-                                            <AvatarFallback>U</AvatarFallback>
-                                        </Avatar>
-                                    )}
-                                </motion.div>
-                            ))}
-                            </AnimatePresence>
-                            {isLoading && (
-                                <motion.div
-                                    className="flex items-start gap-3 justify-start"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                >
+        <Card className="xl:col-span-3 flex flex-col h-[80vh]">
+            <CardHeader>
+                <CardTitle className="font-headline">Your AI CEO</CardTitle>
+                <CardDescription>Chat directly with your AI CEO for ruthless, profit-driven advice.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden">
+                <ScrollArea className="flex-grow pr-4" ref={scrollAreaRef}>
+                    <div className="space-y-6">
+                        <AnimatePresence>
+                        {messages.map((message) => (
+                            <motion.div 
+                                key={message.id} 
+                                className={cn("flex items-start gap-3", message.sender === 'user' ? 'justify-end' : 'justify-start')}
+                                layout
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                            >
+                                {message.sender === 'ai' && (
                                     <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
                                         <AvatarFallback><Bot size={18} /></AvatarFallback>
                                     </Avatar>
-                                    <div className="bg-muted rounded-lg p-3">
-                                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                                    </div>
-                                </motion.div>
-                            )}
-                        </div>
-                    </ScrollArea>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2 pt-4 border-t">
-                            <FormField control={form.control} name="message" render={({ field }) => (
-                                <FormItem className="flex-grow">
-                                    <FormControl>
-                                        <Textarea placeholder="Ask your AI CEO for a strategy or advice..." {...field} rows={1} className="min-h-0 resize-none" onKeyDown={(e) => {
-                                            if (e.key === 'Enter' && !e.shiftKey) {
-                                                e.preventDefault();
-                                                form.handleSubmit(onSubmit)();
-                                            }
-                                        }}/>
-                                    </FormControl>
-                                </FormItem>
-                            )} />
-                            <Button type="submit" size="icon" disabled={isLoading}>
-                                <Send className="h-4 w-4" />
-                            </Button>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-        </div>
-
-        <div className="space-y-8">
-            <div className="h-[75vh] flex flex-col gap-8">
-                <div className="flex-1 overflow-hidden">
-                    <Predictions currentPlan='beast' setActiveView={setActiveView} />
-                </div>
-                <div className="flex-1 overflow-hidden">
-                    <ViralPlatforms currentPlan='beast' setActiveView={setActiveView} />
-                </div>
-            </div>
-        </div>
-
+                                )}
+                                <div className={cn(
+                                    "max-w-3xl rounded-lg p-3", 
+                                    message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
+                                    message.isGreeting && 'bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-foreground'
+                                )}>
+                                    <AiMessageContent content={message.text} />
+                                </div>
+                                {message.sender === 'user' && (
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={userAvatar?.imageUrl} />
+                                        <AvatarFallback>U</AvatarFallback>
+                                    </Avatar>
+                                )}
+                            </motion.div>
+                        ))}
+                        </AnimatePresence>
+                        {isLoading && (
+                            <motion.div
+                                className="flex items-start gap-3 justify-start"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                            >
+                                <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
+                                    <AvatarFallback><Bot size={18} /></AvatarFallback>
+                                </Avatar>
+                                <div className="bg-muted rounded-lg p-3">
+                                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                                </div>
+                            </motion.div>
+                        )}
+                    </div>
+                </ScrollArea>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2 pt-4 border-t">
+                        <FormField control={form.control} name="message" render={({ field }) => (
+                            <FormItem className="flex-grow">
+                                <FormControl>
+                                    <Textarea placeholder="Ask your AI CEO for a strategy or advice..." {...field} rows={1} className="min-h-0 resize-none text-base" onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            form.handleSubmit(onSubmit)();
+                                        }
+                                    }}/>
+                                </FormControl>
+                            </FormItem>
+                        )} />
+                        <Button type="submit" size="lg" disabled={isLoading} className="gap-2">
+                            <Send className="h-4 w-4" />
+                            Send
+                        </Button>
+                    </form>
+                </Form>
+            </CardContent>
+        </Card>
       </div>
     </div>
   );
