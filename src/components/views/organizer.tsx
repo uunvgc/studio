@@ -88,7 +88,12 @@ export default function Organizer() {
                     <span>{completedTasks} / {totalTasks} Completed</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-2.5">
-                    <div className="bg-primary h-2.5 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
+                    <motion.div 
+                        className="bg-primary h-2.5 rounded-full" 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 0.5 }}
+                    />
                 </div>
             </div>
 
@@ -111,7 +116,7 @@ export default function Organizer() {
                             />
                             <label 
                                 htmlFor={`task-${task.id}`} 
-                                className={`flex-grow text-sm ${task.completed ? 'line-through text-muted-foreground' : ''}`}
+                                className={`flex-grow text-sm cursor-pointer ${task.completed ? 'line-through text-muted-foreground' : ''}`}
                             >
                                 {task.text}
                             </label>

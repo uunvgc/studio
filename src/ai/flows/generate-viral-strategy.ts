@@ -55,8 +55,7 @@ const generateViralStrategyFlow = ai.defineFlow(
     outputSchema: ViralStrategyOutputSchema,
   },
   async (input) => {
-    const result = await viralStrategyPrompt(input);
-    const output = result.output;
+    const {output} = await viralStrategyPrompt(input);
     
     if (!output) {
       throw new Error('AI returned no output.');
@@ -69,7 +68,7 @@ const generateViralStrategyFlow = ai.defineFlow(
     }
 
     if(Array.isArray(output)) {
-        return { strategies: output };
+        return { strategies: output as any };
     }
     
     // If the output is in a completely unexpected format, throw an error.
