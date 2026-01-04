@@ -33,6 +33,9 @@ const prompt = ai.definePrompt({
   The user will provide you with their business idea or a question. Based on this information, provide personalized guidance and strategies to maximize their profits. Include potential risks associated with the suggested strategies and a list of recommended actions for the user to take.  Assume you are speaking to the user directly, and refer to them as "you". Be encouraging but direct and ruthless in your advice.
 
   User's message: {{{userIdea}}}
+  {{#if currentRevenue}}Current Monthly Revenue: {{{currentRevenue}}}{{/if}}
+  {{#if businessGoals}}Business Goals: {{{businessGoals}}}{{/if}}
+  {{#if riskTolerance}}Risk Tolerance: {{{riskTolerance}}}{{/if}}
 
 Your response must be a JSON object that conforms to the output schema.
 `,

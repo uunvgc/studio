@@ -100,6 +100,9 @@ export type ViralStrategyOutput = z.infer<typeof ViralStrategyOutputSchema>;
 // =================================================================
 export const AICoachPersonalizedGuidanceInputSchema = z.object({
   userIdea: z.string().describe("The user's business idea or question."),
+  currentRevenue: z.number().optional().describe('The current monthly revenue in USD.'),
+  businessGoals: z.string().optional().describe('The user\'s primary business goals.'),
+  riskTolerance: z.enum(['low', 'medium', 'high']).optional().describe('The user\'s tolerance for risk.'),
 });
 export type AICoachPersonalizedGuidanceInput = z.infer<
   typeof AICoachPersonalizedGuidanceInputSchema
@@ -159,13 +162,15 @@ export type PredictRevenuePotentialInput = z.infer<
 export const PredictRevenuePotentialOutputSchema = z.object({
   revenueProjection: z
     .string()
-    .describe('The projected revenue for the idea.'),
+    .describe('The projected revenue for the idea (e.g., "$10k-$15k MRR within 12 months").'),
   successProbability: z
     .number()
+    .min(0)
+    .max(1)
     .describe('The probability of success for the idea (0-1).'),
   keyFactors: z
     .string()
-    .describe('The key factors influencing the prediction.'),
+    .describe('The key positive and negative factors influencing the prediction.'),
 });
 export type PredictRevenuePotentialOutput = z.infer<
   typeof PredictRevenuePotentialOutputSchema

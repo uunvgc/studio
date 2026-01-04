@@ -71,9 +71,11 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
       return (
         <Card className="h-full">
             <CardHeader>
-                <Skeleton className="h-6 w-1/2" />
+                <Skeleton className="h-8 w-2/3" />
+                <Skeleton className="h-6 w-1/3 mt-2" />
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
+                <Skeleton className="h-48 w-full" />
                 <Skeleton className="h-20 w-full" />
             </CardContent>
         </Card>
@@ -90,11 +92,22 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
       return (
         <Card className="h-full">
             <CardHeader>
-                <CardTitle className='font-headline'>Success Probability: {probability}%</CardTitle>
+                <CardTitle className='font-headline text-2xl'>Prediction Analysis</CardTitle>
+                <CardDescription>Based on your input, here is the AI-driven forecast.</CardDescription>
             </CardHeader>
-            <CardContent>
-                <p className="text-xl font-bold mb-2">{prediction.revenueProjection}</p>
-                <p className="text-sm text-muted-foreground">{prediction.keyFactors}</p>
+            <CardContent className="space-y-6">
+                 <div className="text-center">
+                    <p className="text-sm text-muted-foreground">Success Probability</p>
+                    <p className="text-6xl font-bold font-headline text-primary">{probability}%</p>
+                 </div>
+                 <div className="text-center">
+                    <p className="text-sm text-muted-foreground">Projected Revenue</p>
+                    <p className="text-2xl font-bold font-headline">{prediction.revenueProjection}</p>
+                 </div>
+                 <div>
+                    <p className="text-sm font-semibold text-center mb-2">Key Influencing Factors</p>
+                    <p className="text-xs text-muted-foreground whitespace-pre-wrap p-4 bg-muted/50 rounded-lg border">{prediction.keyFactors}</p>
+                 </div>
             </CardContent>
         </Card>
       );
@@ -116,7 +129,8 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
   };
   
   return (
-    <Card className="h-full flex flex-col">
+    <div className="grid md:grid-cols-2 gap-8 h-[calc(100vh-10rem)]">
+      <Card className="h-full flex flex-col">
         <CardHeader>
             <CardTitle className="font-headline">Get Your Revenue Prediction</CardTitle>
             <CardDescription>Fill out the details to get an AI-driven forecast.</CardDescription>
@@ -159,5 +173,9 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
           </Form>
         </CardContent>
       </Card>
+      <div className="h-full">
+        {renderContent()}
+      </div>
+    </div>
   );
 }

@@ -34,7 +34,7 @@ Business Idea: {{{idea}}}
 Execution Plan: {{{plan}}}
 Market Data: {{{marketData}}}
 
-Consider factors like market size, competition, execution strategy, and current trends. Provide a well-reasoned revenue projection, a success probability between 0 and 1, and list the key factors driving your prediction.
+Consider factors like market size, competition, execution strategy, and current trends. Provide a well-reasoned revenue projection (e.g., "$10k-$15k MRR within 12 months"), a success probability between 0 and 1, and list the key positive and negative factors driving your prediction.
 
 Your response must be a JSON object that conforms to the output schema.`,
 });

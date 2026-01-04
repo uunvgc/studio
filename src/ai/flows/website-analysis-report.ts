@@ -36,9 +36,9 @@ My Business: {{{businessIdea}}}
 
 Your report must be brutally honest and focused on exploitation. Your response must be a JSON object.
 
-For "potentialRevenueStreams": Deconstruct every possible way the competitor makes money. Advertising, affiliate links, product sales, subscriptions, etc. For each stream, suggest how I can do it better, cheaper, or faster to steal their customers.
+For "potentialRevenueStreams": Deconstruct every possible way the competitor makes money. Advertising, affiliate links, product sales, subscriptions, etc. For each stream, suggest how I can do it better, cheaper, or faster to steal their customers. Provide a detailed, tactical plan.
 
-For "areasForImprovement": Identify every crack in their armor. Is their design dated? Is their copy weak? Is their site slow? Is their marketing message unclear? Provide a direct, actionable list of their failures that I can turn into my strengths. Be specific and merciless.
+For "areasForImprovement": Identify every crack in their armor. Is their design dated? Is their copy weak? Is their site slow? Is their marketing message unclear? Provide a direct, actionable list of their failures that I can turn into my strengths. Be specific and merciless. Give me a concrete plan to exploit these weaknesses.
 
 The final JSON output must use the key "potentialRevenueStreams" for the revenue analysis and "areasForImprovement" for the weakness analysis.`,
 });
