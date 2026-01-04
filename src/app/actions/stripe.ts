@@ -4,12 +4,21 @@ import { stripe } from '@/lib/stripe';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+// In a real app, you'd get this from your auth session
+const FAKE_USER_ID = 'user_12345';
+
 export async function createCheckoutSession(priceId: string) {
     const headersList = await headers();
     const origin = headersList.get('origin');
+    const host = headersList.get('host');
+    
+    // Fallback for localhost or Vercel environments
+    const protocol = host?.includes('localhost') ? 'http' : 'https';
+    const appUrl = origin || `${protocol}://${host}`;
 
-    if (!origin) {
-        throw new Error('Could not determine request origin.');
+
+    if (!appUrl) {
+        throw new Error('Could not determine request origin or host.');
     }
     
     if (!priceId) {
@@ -26,8 +35,10 @@ export async function createCheckoutSession(priceId: string) {
                 },
             ],
             mode: 'subscription',
-            success_url: `${origin}/?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${origin}/upgrade`,
+            // Pass user ID to associate the checkout session with a user
+            client_reference_id: FAKE_USER_ID,
+            success_url: `${appUrl}/`,
+            cancel_url: `${appUrl}/upgrade`,
         });
 
         if (session.url) {
