@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { aiCoachPersonalizedGuidance } from '@/ai/flows/ai-coach-guidance';
-import type { PlanTier, View, AICoachPersonalizedGuidanceOutput } from '@/lib/types';
+import type { PlanTier, View } from '@/lib/types';
 import UpgradePrompt from '@/components/upgrade-prompt';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,8 @@ import { Loader2, Bot, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+
+type AICoachPersonalizedGuidanceOutput = Awaited<ReturnType<typeof aiCoachPersonalizedGuidance>>;
 
 const formSchema = z.object({
   userIdea: z.string().min(10, { message: 'Please describe your idea (min 10 chars).' }),
