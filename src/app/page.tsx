@@ -54,7 +54,7 @@ import UpgradePlan from '@/components/views/upgrade';
 import PageHeader from '@/components/page-header';
 import { motion, AnimatePresence } from 'framer-motion';
 import BeastDashboard from '@/components/views/beast-dashboard';
-import ProDashboard from '@/components/views/pro-dashboard';
+import FreeDashboard from '@/components/views/free-dashboard';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
@@ -84,8 +84,8 @@ const PLAN_DASHBOARDS: Record<PlanTier, View> = {
 };
 
 const VIEW_COMPONENTS: Record<View, React.ElementType> = {
-    'free-dashboard': ProDashboard,
-    'pro-dashboard': ProDashboard,
+    'free-dashboard': FreeDashboard,
+    'pro-dashboard': FreeDashboard,
     'beast-dashboard': BeastDashboard,
     'website-analysis': WebsiteAnalysis,
     'revenue-maximizer': RevenueMaximizer,
@@ -94,7 +94,7 @@ const VIEW_COMPONENTS: Record<View, React.ElementType> = {
     'viral-platforms': ViralPlatforms,
     organizer: Organizer,
     upgrade: UpgradePlan,
-    overview: ProDashboard,
+    overview: FreeDashboard,
 };
 
 export default function CoverPage() {
@@ -122,7 +122,7 @@ export default function CoverPage() {
     
     const activeNavItem = ALL_NAV_ITEMS.find(item => item.id === activeView);
 
-    const RenderComponent = VIEW_COMPONENTS[activeView] || ProDashboard;
+    const RenderComponent = VIEW_COMPONENTS[activeView] || FreeDashboard;
 
     const getBadgeForPlan = (plan: PlanTier) => {
         switch(plan) {
