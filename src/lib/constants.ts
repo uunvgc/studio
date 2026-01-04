@@ -1,6 +1,6 @@
 import type { NavItem, PlanTier } from '@/lib/types';
 
-export const NAV_ITEMS: NavItem[] = [
+export const ALL_NAV_ITEMS: NavItem[] = [
   {
     id: 'overview',
     title: 'Dashboard',
@@ -43,6 +43,28 @@ export const NAV_ITEMS: NavItem[] = [
     description: 'Unlock more power with Pro and Beast plans.',
   },
 ];
+
+const getItem = (id: NavItem['id']) => ALL_NAV_ITEMS.find(item => item.id === id)!;
+
+export const FREE_NAV_ITEMS: NavItem[] = [
+  getItem('overview'),
+  getItem('revenue-maximizer'),
+  getItem('organizer'),
+  getItem('upgrade'),
+];
+
+export const PRO_NAV_ITEMS: NavItem[] = [
+  getItem('overview'),
+  getItem('website-analysis'),
+  getItem('revenue-maximizer'),
+  getItem('viral-platforms'),
+  getItem('organizer'),
+  getItem('upgrade'),
+];
+
+export const BEAST_NAV_ITEMS: NavItem[] = ALL_NAV_ITEMS;
+
+export const NAV_ITEMS = ALL_NAV_ITEMS; // Keep for backward compatibility if needed anywhere else
 
 export const pricingPlans: {
   id: PlanTier;

@@ -15,7 +15,7 @@ import {
   User,
 } from 'lucide-react';
 import type { PlanTier, View } from '@/lib/types';
-import { NAV_ITEMS, pricingPlans } from '@/lib/constants';
+import { pricingPlans } from '@/lib/constants';
 import {
   SidebarProvider,
   Sidebar,
@@ -51,14 +51,22 @@ import UpgradePlan from '@/components/views/upgrade';
 import PageHeader from '@/components/page-header';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { usePlan } from '@/hooks/use-plan';
 
 const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
 export default function Dashboard() {
   const [activeView, setActiveView] = React.useState<View>('overview');
-  const [currentPlan, setCurrentPlan] = React.useState<PlanTier>('free');
+  const { currentPlan, setCurrentPlan, navItemsForPlan } = usePlan();
 
-  const activeNavItem = NAV_ITEMS.find(item => item.id === activeView);
+  React.useEffect(() => {
+    // If the active view is no longer available in the new plan, switch to overview
+    if (!navItemsForPlan.some(item => item.id === activeView)) {
+      setActiveView('overview');
+    }
+  }, [navItemsForPlan, activeView]);
+
+  const activeNavItem = navItemsForPlan.find(item => item.id === activeView);
 
   const renderView = () => {
     switch (activeView) {
@@ -108,7 +116,7 @@ export default function Dashboard() {
         </SidebarHeader>
         <SidebarContent className="p-2">
           <SidebarMenu>
-            {NAV_ITEMS.map(item => (
+            {navItemsForPlan.map(item => (
               <SidebarMenuItem key={item.id}>
                 <SidebarMenuButton
                   onClick={() => setActiveView(item.id)}
@@ -161,10 +169,12 @@ export default function Dashboard() {
       </Sidebar>
       <SidebarInset>
         <PageHeader title={activeNavItem?.title || 'Dashboard'} description={activeNavItem?.description || ''}>
-          <Button variant="outline" size="sm" onClick={() => setActiveView('upgrade')} className='ml-auto'>
-            <Gem className="mr-2 h-4 w-4" />
-            Upgrade to {pricingPlans.find(p => p.id === 'pro')?.name}
-          </Button>
+          {currentPlan !== 'beast' && (
+            <Button variant="outline" size="sm" onClick={() => setActiveView('upgrade')} className='ml-auto'>
+              <Gem className="mr-2 h-4 w-4" />
+              Upgrade to {pricingPlans.find(p => p.id === (currentPlan === 'free' ? 'pro' : 'beast'))?.name}
+            </Button>
+          )}
         </PageHeader>
         <main className="flex-1 p-6">{renderView()}</main>
       </SidebarInset>
