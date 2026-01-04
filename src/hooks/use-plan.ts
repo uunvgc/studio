@@ -18,20 +18,25 @@ export function usePlan() {
     const dashboardId = `${currentPlan}-dashboard`;
 
     // Filter all nav items to get the ones for the current plan
-    // And ensure the dashboard title is generic "Dashboard" for free/pro
-    return ALL_NAV_ITEMS.filter(item => planNavIds.includes(item.id))
+    const items = ALL_NAV_ITEMS
+      .filter(item => planNavIds.includes(item.id))
       .map(item => {
-        if (item.id === 'free-dashboard' || item.id === 'pro-dashboard') {
+        // Unify the dashboard title
+        if (item.id.endsWith('-dashboard')) {
           return { ...item, title: 'Dashboard' };
         }
         return item;
-      })
-      // Ensure the correct dashboard is the first item
-      .sort((a, b) => {
-        if (a.id === dashboardId) return -1;
-        if (b.id === dashboardId) return 1;
-        return 0;
       });
+
+    // Ensure the correct dashboard is the first item
+    items.sort((a, b) => {
+      if (a.id === dashboardId) return -1;
+      if (b.id === dashboardId) return 1;
+      // You can add other sorting logic here if needed
+      return 0;
+    });
+
+    return items;
       
   }, [currentPlan]);
 

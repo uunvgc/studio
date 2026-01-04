@@ -106,6 +106,6 @@ const generateRevenuePlanFlow = ai.defineFlow(
       },
     };
     const {output} = await prompt(structuredInput);
-    return output!;
+    return output;
   }
 );

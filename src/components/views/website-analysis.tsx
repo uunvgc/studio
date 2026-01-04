@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { analyzeWebsite } from '@/ai/flows/website-analysis-report';
-import { type WebsiteAnalysisOutput, WebsiteAnalysisInputSchema } from '@/lib/types';
+import { WebsiteAnalysisInputSchema, type WebsiteAnalysisOutput } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

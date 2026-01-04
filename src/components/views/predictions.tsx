@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { predictRevenuePotential, type PredictRevenuePotentialOutput } from '@/ai/flows/predict-revenue-potential';
-import type { PlanTier, View } from '@/lib/types';
+import { predictRevenuePotential } from '@/ai/flows/predict-revenue-potential';
+import type { PlanTier, View, PredictRevenuePotentialOutput } from '@/lib/types';
 import UpgradePrompt from '@/components/upgrade-prompt';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,8 +14,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Loader2, TrendingUp, Key } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LabelList } from 'recharts';
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { ScrollArea } from '../ui/scroll-area';
 
 
@@ -84,10 +82,6 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
 
     if (prediction) {
       const probability = Math.round(prediction.successProbability * 100);
-      const chartData = [{ name: 'Success', probability, fill: 'hsl(var(--primary))' }];
-      const chartConfig = {
-        probability: { label: 'Probability' },
-      } satisfies ChartConfig;
 
       return (
         <Card className="h-full">

@@ -3,9 +3,7 @@
 import * as React from 'react';
 import { ArrowRight, Bot, Loader2, Send } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import type { View } from '@/lib/types';
-import ViralPlatforms from './viral-platforms';
-import Predictions from './predictions';
+import type { View, AICoachPersonalizedGuidanceOutput } from '@/lib/types';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { useForm } from 'react-hook-form';
@@ -14,12 +12,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem } from '../ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { aiCoachPersonalizedGuidance } from '@/ai/flows/ai-coach-guidance';
-import type { AICoachPersonalizedGuidanceOutput } from '@/lib/types';
 import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { motion, AnimatePresence } from 'framer-motion';
+
 
 interface BeastDashboardProps {
   setActiveView: (view: View) => void;

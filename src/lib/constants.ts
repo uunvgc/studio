@@ -1,63 +1,76 @@
-import type { NavItem, PlanTier } from '@/lib/types';
+import type { NavItem } from '@/lib/types';
+import { BrainCircuit, DollarSign, Gem, Shield, Share2, Target, Zap, Bot, TrendingUp, Search } from 'lucide-react';
+
 
 export const ALL_NAV_ITEMS: NavItem[] = [
   {
     id: 'free-dashboard',
     title: 'Dashboard',
     description: 'Your command center to start making money.',
+    icon: BrainCircuit,
   },
   {
     id: 'pro-dashboard',
     title: 'Pro Dashboard',
     description: 'Your command center for building your empire.',
+    icon: BrainCircuit,
   },
   {
     id: 'beast-dashboard',
     title: 'Beast Dashboard',
     description: 'Your Ultimate Command Center for Market Domination.',
+    icon: Bot,
     isNew: true,
   },
   {
     id: 'website-analysis',
     title: 'Competitor Annihilator',
     description: 'Dismantle your competition. Steal their profits.',
+    icon: Search,
   },
   {
     id: 'revenue-maximizer',
     title: 'Revenue Maximizer',
     description: 'Generate a tailored revenue plan for your idea.',
+    icon: DollarSign,
   },
   {
     id: 'ai-coach',
     title: 'AI Coach',
     description: 'Your personal AI CEO for maximizing profits.',
+    icon: Bot,
     isNew: true,
   },
   {
     id: 'predictions',
     title: 'Predictive Analysis',
     description: 'Forecast your revenue potential with AI.',
+    icon: TrendingUp,
   },
   {
     id: 'viral-platforms',
     title: 'Viral Platforms',
     description: 'Discover the best platforms to go viral.',
+    icon: Share2,
   },
   {
     id: 'organizer',
     title: 'Idea Organizer',
     description: 'Capture, refine, and organize your business ideas.',
+    icon: Target,
   },
   {
     id: 'upgrade',
     title: 'Upgrade Plan',
     description: 'Unlock your full income potential.',
+    icon: Gem,
   },
   // Overview is deprecated but kept for type safety if referenced.
   {
     id: 'overview',
     title: 'Dashboard',
     description: 'Your command center for financial domination.',
+    icon: BrainCircuit,
   },
 ];
 

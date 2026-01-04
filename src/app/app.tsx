@@ -30,19 +30,8 @@ import ViralPlatforms from '@/components/views/viral-platforms';
 import Organizer from '@/components/views/organizer';
 import UpgradePlan from '@/components/views/upgrade';
 import PageHeader from '@/components/page-header';
+import { ALL_NAV_ITEMS } from '@/lib/constants';
 
-const getIconForView = (viewId: View) => {
-  switch (viewId) {
-    case 'free-dashboard':
-    case 'pro-dashboard':
-    case 'beast-dashboard':
-      return <BrainCircuit />;
-    case 'upgrade':
-      return <DollarSign />;
-    default:
-      return <BrainCircuit />;
-  }
-}
 
 export default function App() {
   const { currentPlan, setCurrentPlan, navItemsForPlan } = usePlan();
@@ -52,9 +41,14 @@ export default function App() {
   React.useEffect(() => {
     setActiveView(`${currentPlan}-dashboard`);
   }, [currentPlan]);
+  
+  const activeNavItem = navItemsForPlan.find(item => item.id === activeView);
 
   const renderActiveView = () => {
-    switch (activeView) {
+    // If there's no active nav item, default to the dashboard to be safe
+    const viewToRender = activeNavItem ? activeView : `${currentPlan}-dashboard`;
+
+    switch (viewToRender) {
       case 'free-dashboard':
       case 'pro-dashboard':
         return <FreeDashboard setActiveView={setActiveView} currentPlan={currentPlan} />;
@@ -75,11 +69,11 @@ export default function App() {
       case 'upgrade':
         return <UpgradePlan currentPlan={currentPlan} setCurrentPlan={setCurrentPlan} />;
       default:
+        // Default to the dashboard for the current plan
         return <FreeDashboard setActiveView={setActiveView} currentPlan={currentPlan} />;
     }
   };
 
-  const activeNavItem = navItemsForPlan.find(item => item.id === activeView);
 
   return (
     <SidebarProvider>
@@ -104,7 +98,7 @@ export default function App() {
                     className: 'bg-sidebar-accent text-sidebar-accent-foreground'
                   }}
                 >
-                  {getIconForView(item.id)}
+                  {item.icon ? <item.icon /> : <BrainCircuit />}
                   <span className='w-full'>{item.title}</span>
                   {item.isNew && (
                     <span className="ml-auto text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full">New</span>

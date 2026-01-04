@@ -1,6 +1,8 @@
 'use client';
 
 import {z} from 'zod';
+import type { LucideIcon } from 'lucide-react';
+
 
 // CORE APP TYPES
 // =================================================================
@@ -24,6 +26,7 @@ export interface NavItem {
   title: string;
   description: string;
   isNew?: boolean;
+  icon?: LucideIcon;
 }
 
 // WEBSITE ANALYSIS SCHEMAS

@@ -20,6 +20,17 @@ export async function POST(req: Request) {
   const body = await req.text();
   const headersList = await headers();
   const signature = headersList.get('Stripe-Signature') ?? '';
+  
+  // Use the secret from the environment passed by App Hosting
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  
+  if (!webhookSecret) {
+    console.error('❌ Stripe webhook secret not found in environment variables.');
+    return NextResponse.json(
+        { message: 'Server configuration error: Stripe webhook secret is missing.' },
+        { status: 500 }
+    );
+  }
 
   let event: Stripe.Event;
 
@@ -27,7 +38,7 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET || ''
+      webhookSecret
     );
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
