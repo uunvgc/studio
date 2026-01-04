@@ -28,10 +28,11 @@ export interface NavItem {
 export const WebsiteAnalysisInputSchema = z.object({
   websiteUrl: z
     .string()
-    .url()
+    .url({ message: "Please enter a valid URL."})
     .describe("The URL of the competitor's website to analyze."),
   businessIdea: z
     .string()
+    .min(10, { message: "Please provide a brief description of your business."})
     .describe(
       'A brief description of your business idea or purpose, for context.'
     ),

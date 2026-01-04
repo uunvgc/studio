@@ -97,48 +97,55 @@ export const pricingPlans: {
   name: string;
   price: string;
   priceDetail: string;
+  annualPrice: string;
   features: string[];
   cta: string;
+  isMostPopular?: boolean;
 }[] = [
   {
     id: 'free',
     name: 'Free',
     price: '$0',
     priceDetail: '/ month',
+    annualPrice: '$0',
     features: [
-      'Basic Revenue Plan',
-      'Task Organizer',
-      'Limited platform recommendations',
+      'Basic Revenue Plan Generation',
+      'Idea & Task Organizer',
+      'Limited Viral Platform Analysis',
+      'Demonstrates Core Value Fast'
     ],
-    cta: 'Current Plan',
+    cta: 'Start for Free',
   },
   {
     id: 'pro',
     name: 'Pro',
-    price: '$14.99',
+    price: '$29',
     priceDetail: '/ month',
+    annualPrice: '299',
+    isMostPopular: true,
     features: [
       'Everything in Free, plus:',
-      'Enhanced Competitor Annihilation',
-      'Detailed Pro Revenue Plan',
-      'Viral Platform Strategy',
-      'Priority Support',
+      '**Advanced** Revenue Strategies',
+      '**Competitor Annihilator** Analysis',
+      '**Detailed Viral Growth** Blueprints',
+      'ROI-focused tools to directly increase your income',
     ],
-    cta: 'Upgrade with Stripe',
+    cta: 'Upgrade to Pro',
   },
   {
     id: 'beast',
     name: 'Beast',
-    price: '$29.99',
+    price: '$99',
     priceDetail: '/ month',
+    annualPrice: '999',
     features: [
       'Everything in Pro, plus:',
-      'Premium AI Coaching',
-      'Predictive Revenue Analysis',
-      'Beast-level Revenue Plan',
-      'Emerging trend alerts',
+      '**Conversational AI CEO/Coach**',
+      '**Predictive Revenue & Success Analysis**',
+      'Elite, Custom-Tailored Business Strategies',
+      'The ultimate toolkit for market domination',
     ],
-    cta: 'Upgrade with Stripe',
+    cta: 'Unleash Beast Mode',
   },
 ];
 
