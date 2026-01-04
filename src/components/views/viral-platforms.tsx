@@ -15,8 +15,15 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import type { z } from 'zod';
+import type { PlanTier, View } from '@/lib/types';
+import UpgradePrompt from '@/components/upgrade-prompt';
 
-export default function ViralPlatforms() {
+interface ViralPlatformsProps {
+  currentPlan: PlanTier;
+  setActiveView: (view: View) => void;
+}
+
+export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlatformsProps) {
     const [strategyOutput, setStrategyOutput] = useState<ViralStrategyOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
@@ -27,6 +34,10 @@ export default function ViralPlatforms() {
             businessIdea: '',
         },
     });
+
+    if (currentPlan === 'free') {
+        return <UpgradePrompt featureName="Viral Platform Strategy" requiredPlan="Pro" setActiveView={setActiveView} />;
+    }
 
     async function onSubmit(values: z.infer<typeof ViralStrategyInputSchema>) {
         setIsLoading(true);

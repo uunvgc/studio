@@ -13,13 +13,20 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Loader2, Zap, Target, ShieldOff, Eye } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import type { PlanTier, View } from '@/lib/types';
+import UpgradePrompt from '@/components/upgrade-prompt';
 
 const formSchema = z.object({
   websiteUrl: z.string().url({ message: 'Please enter a valid URL.' }),
   businessIdea: z.string().min(10, { message: 'Describe your business in at least 10 characters.' }),
 });
 
-export default function WebsiteAnalysis() {
+interface WebsiteAnalysisProps {
+  currentPlan: PlanTier;
+  setActiveView: (view: View) => void;
+}
+
+export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteAnalysisProps) {
   const [analysisResult, setAnalysisResult] = useState<WebsiteAnalysisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -31,6 +38,10 @@ export default function WebsiteAnalysis() {
       businessIdea: '',
     },
   });
+
+  if (currentPlan === 'free') {
+    return <UpgradePrompt featureName="Competitor Annihilator" requiredPlan="Pro" setActiveView={setActiveView} />;
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);

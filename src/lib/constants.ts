@@ -80,8 +80,7 @@ export const pricingPlans: {
     price: '$0',
     priceDetail: '/ month',
     features: [
-      'Basic Competitor Analysis',
-      'Standard Revenue Plan',
+      'Basic Revenue Plan',
       'Task Organizer',
       'Limited platform recommendations',
     ],
@@ -96,7 +95,7 @@ export const pricingPlans: {
       'Everything in Free, plus:',
       'Enhanced Competitor Annihilation',
       'Detailed Pro Revenue Plan',
-      'Full platform access',
+      'Viral Platform Strategy',
       'Priority Support',
     ],
     cta: 'Upgrade with Stripe',

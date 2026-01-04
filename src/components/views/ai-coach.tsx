@@ -46,7 +46,7 @@ export default function AiCoach({ currentPlan, setActiveView }: AiCoachProps) {
   });
 
   if (currentPlan !== 'beast') {
-    return <UpgradePrompt featureName="AI Coach" requiredPlan="Beast Mode" setActiveView={setActiveView} />;
+    return <UpgradePrompt featureName="AI Coach" requiredPlan="Beast" setActiveView={setActiveView} />;
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -87,7 +87,7 @@ export default function AiCoach({ currentPlan, setActiveView }: AiCoachProps) {
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2">
                 <Bot className="text-primary" />
-                Your AI Coach&apos;s Guidance
+                Your AI Coach's Guidance
             </CardTitle>
             <CardDescription>Profit-focused strategies and actions tailored for you.</CardDescription>
           </CardHeader>

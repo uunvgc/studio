@@ -73,7 +73,7 @@ export default function Dashboard() {
       case 'overview':
         return <Overview setActiveView={setActiveView} />;
       case 'website-analysis':
-        return <WebsiteAnalysis />;
+        return <WebsiteAnalysis currentPlan={currentPlan} setActiveView={setActiveView} />;
       case 'revenue-maximizer':
         return <RevenueMaximizer currentPlan={currentPlan} />;
       case 'ai-coach':
@@ -81,7 +81,7 @@ export default function Dashboard() {
       case 'predictions':
         return <Predictions currentPlan={currentPlan} setActiveView={setActiveView} />;
       case 'viral-platforms':
-        return <ViralPlatforms />;
+        return <ViralPlatforms currentPlan={currentPlan} setActiveView={setActiveView} />;
       case 'organizer':
         return <Organizer />;
       case 'upgrade':

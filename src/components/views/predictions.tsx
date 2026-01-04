@@ -44,7 +44,7 @@ export default function Predictions({ currentPlan, setActiveView }: PredictionsP
   });
 
   if (currentPlan !== 'beast') {
-    return <UpgradePrompt featureName="Predictive Analysis" requiredPlan="Beast Mode" setActiveView={setActiveView} />;
+    return <UpgradePrompt featureName="Predictive Analysis" requiredPlan="Beast" setActiveView={setActiveView} />;
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
