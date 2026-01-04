@@ -61,11 +61,34 @@ The revenue maximization plan for the 'Free' tier focuses entirely on lead gener
 {{/if}}
 
 {{#if (eq tier "pro")}}
-The plan for the "Pro" tier should be a practical and more in-depth strategy. It should include advanced analytics, deeper market research, and more personalized income strategies. Focus on delivering efficiency and better, more tailored results than the free offering.
+The revenue maximization plan for the 'Pro' tier should be practical, in-depth, and focus on delivering tangible results quickly. The strategy is to leverage advanced analytics and market insights to give the user a distinct competitive advantage.
+
+1.  **Deep Competitor Analysis Integration:** Go beyond basic website scrapes. The plan should guide the user to leverage the "Competitor Annihilator" feature to identify 3-5 key competitors. For each competitor, the user should be prompted to analyze their pricing, marketing channels, and customer reviews. The AI will then synthesize this into a "Weakness Matrix" that shows the most exploitable gaps in the market.
+2.  **Advanced Revenue Funnel Mapping:** Provide a visual, step-by-step guide to building a multi-stage revenue funnel. This includes:
+    *   **Top of Funnel (Awareness):** Based on the "Viral Platforms" analysis, select the top 2 platforms. Provide concrete content ideas (e.g., "For TikTok, create a 3-part series on '3 Mistakes Your Competitor Is Making'").
+    *   **Middle of Funnel (Consideration):** Propose creating a high-value lead magnet (e.g., a short e-book, a webinar) that directly addresses a pain point discovered in the competitor analysis.
+    *   **Bottom of Funnel (Conversion):** Outline a simple email marketing sequence (3-5 emails) to convert leads from the lead magnet into paying customers. Include templates for these emails.
+3.  **Persona-Driven Monetization Models:** Generate 2-3 distinct customer personas for the user's business idea. For each persona, propose a tailored pricing model. Example:
+    *   **Persona A: "The Budget-Conscious Beginner."** Offer: A low-cost, entry-level subscription with core features.
+    *   **Persona B: "The Growth-Focused Professional."** Offer: A premium tier with all features, priority support, and a one-on-one consultation.
+4.  **Key Performance Indicator (KPI) Dashboard Setup:** Instruct the user to set up a simple KPI dashboard (using a free tool like Google Sheets or a paid tool if appropriate). The plan must specify the 5-7 most critical metrics to track daily/weekly, such as Customer Acquisition Cost (CAC), Lifetime Value (LTV), Conversion Rate, and Churn Rate. Explain *why* each KPI is critical.
+5.  **A/B Testing Roadmap:** Provide a 30-day roadmap for A/B testing. This should include specific, high-impact elements to test, such as the main headline on their landing page, the call-to-action button color/text, and the pricing structure. The goal is to drive incremental, data-backed improvements.
 {{/if}}
 
 {{#if (eq tier "beast")}}
-The "Beast" tier plan must be the flagship, premium offering. It should include the most advanced and comprehensive strategies, including AI-driven personalization, predictive analysis of earnings, and guidance on leveraging viral platforms for maximum reach and monetization. Emphasize the cutting-edge tools and strategic foresight that will position the user years ahead of the market.
+The "Beast" tier plan is the ultimate, all-out assault on the market. It combines ruthless strategy with cutting-edge AI and predictive analytics to not just compete, but dominate.
+
+1.  **AI-Powered Predictive Market-Fit Analysis:** Before executing, the plan will guide the user to use the "Predictive Analysis" tool. The user will input their core idea and the AI will generate a Success Probability Score. If the score is below a certain threshold (e.g., 75%), the AI will provide 3-5 specific "pivots" or adjustments to the business model to increase its likelihood of success.
+2.  **Conversational AI Sales Funnel:** The plan will outline how to use the "AI Coach" as a 24/7 sales and strategy partner. This includes:
+    *   **Role-playing Sales Calls:** Instruct the user to practice sales pitches with the AI Coach to refine their messaging.
+    *   **Negotiation Simulation:** The user can simulate negotiations for partnerships or pricing with the AI to identify weaknesses in their approach.
+    *   **Objection Handling:** Generate a list of the top 10 potential customer objections and use the AI Coach to develop and practice "bulletproof" responses.
+3.  **Total Dominance Viral Strategy:** This goes beyond simple content ideas. The plan will create a multi-platform, compounding content strategy.
+    *   **Platform Synergy:** A single core idea is repurposed across multiple platforms (e.g., a deep-dive YouTube video becomes a Twitter thread, a series of TikToks, an Instagram Reel, and a LinkedIn article).
+    *   **"Contrarian" Content Plays:** Identify the dominant narrative in the user's niche and create content that takes a strong, controversial, but well-argued opposing view to generate debate and massive engagement.
+    *   **Influencer Hijacking:** Identify 5-10 micro-influencers in the niche. The plan will provide a script for outreach that offers undeniable value, effectively "hijacking" their audience's attention.
+4.  **Automated Opportunity Scouting:** Instruct the user on how to set up alerts (e.g., Google Alerts, social listening tools) for keywords related to their competitors' weaknesses and customer complaints. This creates an automated system for finding and poaching dissatisfied customers.
+5.  **Pre-emptive Trend Modeling:** Use the AI's analytical capabilities to forecast 1-2 emerging trends that will impact the user's market in the next 6-12 months. The plan will provide actionable steps on how to position the business to capitalize on these trends *before* they become mainstream, ensuring the user is seen as a forward-thinking leader.
 {{/if}}
 
 Generate the Revenue Plan as a JSON object with a single key "revenuePlan" containing the detailed plan as a string.

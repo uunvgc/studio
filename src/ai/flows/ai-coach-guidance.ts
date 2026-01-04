@@ -11,10 +11,10 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AICoachPersonalizedGuidanceInputSchema = z.object({
-  userIdea: z.string().describe('The user\'s business idea or existing business description.'),
+  userIdea: z.string().describe("The user's business idea or question."),
   currentRevenue: z.number().optional().describe('The current monthly revenue of the business, if applicable.'),
-  businessGoals: z.string().describe('The user\'s goals for the business (e.g., increase revenue, expand market share).'),
-  riskTolerance: z.string().describe('The user\'s risk tolerance level (e.g., high, medium, low).'),
+  businessGoals: z.string().optional().describe("The user's goals for the business (e.g., increase revenue, expand market share)."),
+  riskTolerance: z.string().optional().describe("The user's risk tolerance level (e.g., high, medium, low)."),
 });
 export type AICoachPersonalizedGuidanceInput = z.infer<typeof AICoachPersonalizedGuidanceInputSchema>;
 
@@ -36,15 +36,11 @@ const prompt = ai.definePrompt({
    config: {
     model: 'googleai/gemini-1.5-pro',
   },
-  prompt: `You are an AI-powered financial advisor/CEO whose sole focus is maximizing the user\'s profits.
+  prompt: `You are an AI-powered financial advisor/CEO whose sole focus is maximizing the user's profits. You are having a conversation with the user.
 
-  The user will provide you with their business idea, current revenue, business goals and risk tolerance.
-  Based on this information, provide personalized guidance and strategies to maximize their profits. Include potential risks associated with the suggested strategies and a list of recommended actions for the user to take.  Assume you are speaking to the user directly, and refer to them as "you".
+  The user will provide you with their business idea or a question. Based on this information, provide personalized guidance and strategies to maximize their profits. Include potential risks associated with the suggested strategies and a list of recommended actions for the user to take.  Assume you are speaking to the user directly, and refer to them as "you". Be encouraging but direct and ruthless in your advice.
 
-  Business Idea: {{{userIdea}}}
-Current Revenue: {{{currentRevenue}}}
-Business Goals: {{{businessGoals}}}
-Risk Tolerance: {{{riskTolerance}}}
+  User's message: {{{userIdea}}}
 
 Your response must be a JSON object that conforms to the output schema.
 `,

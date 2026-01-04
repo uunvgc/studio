@@ -32,12 +32,20 @@ interface Message {
     id: number;
     sender: 'user' | 'ai';
     text: string | AICoachPersonalizedGuidanceOutput;
+    isGreeting?: boolean;
 }
 
 const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
 export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
-    const [messages, setMessages] = React.useState<Message[]>([]);
+    const [messages, setMessages] = React.useState<Message[]>([
+        {
+            id: Date.now(),
+            sender: 'ai',
+            text: "Welcome to Beast Mode. I'm your AI CEO. My only goal is to make you ruthlessly efficient and profitable. What's our first move? Are we analyzing a competitor, building a revenue plan, or something else?",
+            isGreeting: true,
+        }
+    ]);
     const [isLoading, setIsLoading] = React.useState(false);
     const { toast } = useToast();
     const scrollAreaRef = React.useRef<HTMLDivElement>(null);
@@ -60,13 +68,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         form.reset();
 
         try {
-            // For a more advanced implementation, we would maintain conversation history.
-            // For now, we'll treat each message as a new request for simplicity.
-            const result = await aiCoachPersonalizedGuidance({
-                userIdea: values.message,
-                businessGoals: 'Maximize profit and growth.',
-                riskTolerance: 'high',
-            });
+            const result = await aiCoachPersonalizedGuidance({ userIdea: values.message });
             const aiMessage: Message = { id: Date.now() + 1, sender: 'ai', text: result };
             setMessages(prev => [...prev, aiMessage]);
 
@@ -86,14 +88,13 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
 
     const AiMessageContent = ({ content }: { content: AICoachPersonalizedGuidanceOutput | string }) => {
         if (typeof content === 'string') {
-            return <p>{content}</p>;
+            return <p className="text-sm">{content}</p>;
         }
         return (
             <div className="space-y-2 text-sm">
-                <p className="font-bold">Here is your personalized guidance:</p>
                 <p>{content.personalizedGuidance}</p>
                 <p className="font-bold mt-2">Recommended Actions:</p>
-                <ul className="list-disc list-inside">
+                <ul className="list-disc list-inside space-y-1">
                     {content.recommendedActions.map((action, index) => <li key={index}>{action}</li>)}
                 </ul>
                 <p className="font-bold mt-2 text-amber-500">Potential Risks:</p>
@@ -114,23 +115,27 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden">
                    <ScrollArea className="flex-grow pr-4" ref={scrollAreaRef}>
-                        <div className="space-y-4">
+                        <div className="space-y-6">
                             <AnimatePresence>
                             {messages.map((message) => (
                                 <motion.div 
                                     key={message.id} 
-                                    className={cn("flex items-end gap-2", message.sender === 'user' ? 'justify-end' : 'justify-start')}
+                                    className={cn("flex items-start gap-3", message.sender === 'user' ? 'justify-end' : 'justify-start')}
                                     layout
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
                                     {message.sender === 'ai' && (
-                                        <Avatar className="h-8 w-8 border-2 border-primary/50">
+                                        <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
                                             <AvatarFallback><Bot size={18} /></AvatarFallback>
                                         </Avatar>
                                     )}
-                                    <div className={cn("max-w-md rounded-lg p-3", message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
+                                    <div className={cn(
+                                        "max-w-md rounded-lg p-3 text-sm", 
+                                        message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
+                                        message.isGreeting && 'bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-foreground'
+                                    )}>
                                         <AiMessageContent content={message.text} />
                                     </div>
                                     {message.sender === 'user' && (
@@ -142,7 +147,20 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                                 </motion.div>
                             ))}
                             </AnimatePresence>
-                            {isLoading && <div className="flex justify-start"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}
+                            {isLoading && (
+                                <motion.div
+                                    className="flex items-start gap-3 justify-start"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                >
+                                    <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
+                                        <AvatarFallback><Bot size={18} /></AvatarFallback>
+                                    </Avatar>
+                                    <div className="bg-muted rounded-lg p-3">
+                                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                                    </div>
+                                </motion.div>
+                            )}
                         </div>
                     </ScrollArea>
                     <Form {...form}>
@@ -150,7 +168,12 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                             <FormField control={form.control} name="message" render={({ field }) => (
                                 <FormItem className="flex-grow">
                                     <FormControl>
-                                        <Textarea placeholder="Ask for advice on your business idea..." {...field} rows={1} className="min-h-0 resize-none" />
+                                        <Textarea placeholder="Tell me your idea or ask for advice..." {...field} rows={1} className="min-h-0 resize-none" onKeyDown={(e) => {
+                                            if (e.key === 'Enter' && !e.shiftKey) {
+                                                e.preventDefault();
+                                                form.handleSubmit(onSubmit)();
+                                            }
+                                        }}/>
                                     </FormControl>
                                 </FormItem>
                             )} />
