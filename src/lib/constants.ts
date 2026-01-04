@@ -9,17 +9,17 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   {
     id: 'free-dashboard',
     title: 'Dashboard',
-    description: 'Your command center for financial domination.',
+    description: 'Your command center to start making money.',
   },
   {
     id: 'pro-dashboard',
     title: 'Pro Dashboard',
-    description: 'Your command center for financial domination.',
+    description: 'Your command center for building your empire.',
   },
   {
     id: 'beast-dashboard',
     title: 'Beast Dashboard',
-    description: 'Your Ultimate Command Center.',
+    description: 'Your Ultimate Command Center for Market Domination.',
     isNew: true,
   },
   {
@@ -50,13 +50,13 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   },
   {
     id: 'organizer',
-    title: 'Organizer',
-    description: 'Plan your tasks and stay on track.',
+    title: 'Idea Organizer',
+    description: 'Capture, refine, and organize your business ideas.',
   },
   {
     id: 'upgrade',
     title: 'Upgrade Plan',
-    description: 'Unlock more power with Pro and Beast plans.',
+    description: 'Unlock your full income potential.',
   },
 ];
 
@@ -111,15 +111,15 @@ export const pricingPlans: {
     features: [
       'Basic Revenue Plan Generation',
       'Idea & Task Organizer',
-      'Limited Viral Platform Analysis',
-      'Demonstrates Core Value Fast'
+      'Demonstrates Core Value Fast',
+      'Limited AI analysis'
     ],
     cta: 'Start for Free',
   },
   {
     id: 'pro',
     name: 'Pro',
-    price: '$29',
+    price: '29',
     priceDetail: '/ month',
     annualPrice: '299',
     isMostPopular: true,
@@ -135,7 +135,7 @@ export const pricingPlans: {
   {
     id: 'beast',
     name: 'Beast',
-    price: '$99',
+    price: '99',
     priceDetail: '/ month',
     annualPrice: '999',
     features: [

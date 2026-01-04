@@ -87,8 +87,11 @@ export default function CoverPage() {
 
     React.useEffect(() => {
         const defaultView = getDefaultViewForPlan(currentPlan);
-        setActiveView(defaultView);
-    }, [currentPlan]);
+        if (!canAccess(activeView)) {
+            setActiveView(defaultView);
+        }
+    }, [currentPlan, canAccess, activeView]);
+
 
     const handleViewChange = (viewId: View) => {
         if (canAccess(viewId)) {
@@ -132,7 +135,7 @@ export default function CoverPage() {
                         <div className="p-1.5 bg-primary rounded-lg">
                             <DollarSign className="w-5 h-5 text-primary-foreground" />
                         </div>
-                        <h1 className="font-headline text-2xl font-bold text-primary">Fiilthy</h1>
+                        <h1 className="font-headline text-2xl font-bold text-primary">ProfitPro</h1>
                     </div>
                 </SidebarHeader>
                 <SidebarContent>
@@ -180,7 +183,7 @@ export default function CoverPage() {
                         <div className="p-1.5 bg-primary rounded-lg">
                             <DollarSign className="w-5 h-5 text-primary-foreground" />
                         </div>
-                        <h1 className="font-headline text-2xl font-bold text-primary">Fiilthy</h1>
+                        <h1 className="font-headline text-2xl font-bold text-primary">ProfitPro</h1>
                     </div>
                     <SidebarTrigger />
                 </header>

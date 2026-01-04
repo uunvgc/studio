@@ -42,7 +42,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         {
             id: Date.now(),
             sender: 'ai',
-            text: "Welcome to Beast Mode. I'm your AI CEO. My only goal is to make you ruthlessly efficient and profitable. What's our first move? Are we analyzing a competitor, building a revenue plan, or something else?",
+            text: "Welcome to Beast Mode. I am your personal AI CEO. My purpose is to maximize your profit. Tell me what you're working on, or ask me for a market domination strategy. Let's get to work.",
             isGreeting: true,
         }
     ]);
@@ -79,7 +79,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                 title: "Guidance Failed",
                 description: "The AI Coach is unavailable. Please try again later.",
             });
-            const errorMessage: Message = { id: Date.now() + 1, sender: 'ai', text: "Sorry, I'm unable to provide guidance at the moment." };
+            const errorMessage: Message = { id: Date.now() + 1, sender: 'ai', text: "My apologies, I'm unable to provide guidance at this moment. Please try again." };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
@@ -88,17 +88,23 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
 
     const AiMessageContent = ({ content }: { content: AICoachPersonalizedGuidanceOutput | string }) => {
         if (typeof content === 'string') {
-            return <p className="text-sm">{content}</p>;
+            return <p className="text-sm whitespace-pre-wrap">{content}</p>;
         }
         return (
-            <div className="space-y-2 text-sm">
-                <p>{content.personalizedGuidance}</p>
-                <p className="font-bold mt-2">Recommended Actions:</p>
-                <ul className="list-disc list-inside space-y-1">
-                    {content.recommendedActions.map((action, index) => <li key={index}>{action}</li>)}
-                </ul>
-                <p className="font-bold mt-2 text-amber-500">Potential Risks:</p>
-                <p className="text-amber-500/80">{content.potentialRisks}</p>
+            <div className="space-y-3 text-sm">
+                <p className="whitespace-pre-wrap">{content.personalizedGuidance}</p>
+                
+                <div>
+                    <p className="font-bold mb-1">Recommended Actions:</p>
+                    <ul className="list-disc list-inside space-y-1">
+                        {content.recommendedActions.map((action, index) => <li key={index}>{action}</li>)}
+                    </ul>
+                </div>
+                
+                <div>
+                    <p className="font-bold text-amber-500 mb-1">Potential Risks:</p>
+                    <p className="text-amber-500/90 whitespace-pre-wrap">{content.potentialRisks}</p>
+                </div>
             </div>
         );
     }
@@ -108,9 +114,9 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
         <div className="xl:col-span-2 space-y-8">
-            <Card className="flex flex-col h-[70vh]">
+            <Card className="flex flex-col h-[75vh]">
                 <CardHeader>
-                    <CardTitle className="font-headline">Conversational AI Coach</CardTitle>
+                    <CardTitle className="font-headline">Your AI CEO</CardTitle>
                     <CardDescription>Chat directly with your AI CEO for ruthless, profit-driven advice.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden">
@@ -132,7 +138,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                                         </Avatar>
                                     )}
                                     <div className={cn(
-                                        "max-w-md rounded-lg p-3 text-sm", 
+                                        "max-w-xl rounded-lg p-3", 
                                         message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted',
                                         message.isGreeting && 'bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-foreground'
                                     )}>
@@ -168,7 +174,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                             <FormField control={form.control} name="message" render={({ field }) => (
                                 <FormItem className="flex-grow">
                                     <FormControl>
-                                        <Textarea placeholder="Tell me your idea or ask for advice..." {...field} rows={1} className="min-h-0 resize-none" onKeyDown={(e) => {
+                                        <Textarea placeholder="Ask your AI CEO for a strategy or advice..." {...field} rows={1} className="min-h-0 resize-none" onKeyDown={(e) => {
                                             if (e.key === 'Enter' && !e.shiftKey) {
                                                 e.preventDefault();
                                                 form.handleSubmit(onSubmit)();
@@ -187,7 +193,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         </div>
 
         <div className="space-y-8">
-            <div className="h-[70vh] flex flex-col gap-8">
+            <div className="h-[75vh] flex flex-col gap-8">
                 <div className="flex-1 overflow-hidden">
                     <Predictions currentPlan='beast' setActiveView={setActiveView} />
                 </div>

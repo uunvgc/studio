@@ -12,7 +12,7 @@ interface ProDashboardProps {
 const proLinks = [
   {
     title: 'Annihilate Competitor',
-    description: 'Expose their weaknesses. Steal their traffic.',
+    description: 'Expose their weaknesses. Steal their traffic and revenue.',
     icon: Swords,
     view: 'website-analysis',
     color: 'text-red-400',
@@ -20,23 +20,23 @@ const proLinks = [
   },
   {
     title: 'Find Viral Platforms',
-    description: 'Get a ruthless plan to go viral.',
+    description: 'Get a ruthless, data-driven plan to go viral.',
     icon: Share2,
     view: 'viral-platforms',
     color: 'text-blue-400',
     bgColor: 'bg-blue-500/10',
   },
    {
-    title: 'Build Your Revenue Plan',
-    description: 'Turn your idea into a cash machine.',
+    title: 'Advanced Revenue Plan',
+    description: 'Build a multi-stage funnel for your business.',
     icon: DollarSign,
     view: 'revenue-maximizer',
     color: 'text-primary',
     bgColor: 'bg-primary/10',
   },
   {
-    title: 'Organize Your Tasks',
-    description: 'Map out your world domination.',
+    title: 'Organize Your Ideas',
+    description: 'Map out your empire, from concept to execution.',
     icon: Target,
     view: 'organizer',
     color: 'text-accent',
@@ -49,7 +49,7 @@ export default function ProDashboard({ setActiveView }: ProDashboardProps) {
     <div className="space-y-8 animate-in fade-in-50">
       <div className="p-8 bg-card rounded-xl shadow-lg text-center border">
         <h2 className="font-headline text-3xl md:text-5xl font-bold">Pro Dashboard</h2>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mt-2">You have the power. Use these tools to build your empire.</p>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mt-2">You have the power to outmaneuver the competition. Use these tools to build your empire.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -64,7 +64,7 @@ export default function ProDashboard({ setActiveView }: ProDashboardProps) {
               <h3 className="font-headline text-xl font-bold mb-1">{link.title}</h3>
               <p className="text-sm text-muted-foreground mb-4">{link.description}</p>
               <div className="flex items-center text-primary font-bold text-sm transition-transform group-hover:translate-x-1">
-                <span>Start Now</span>
+                <span>Engage</span>
                 <ArrowRight className="h-4 w-4 ml-1.5" />
               </div>
             </CardContent>
@@ -79,10 +79,10 @@ export default function ProDashboard({ setActiveView }: ProDashboardProps) {
                         <BrainCircuit className="w-8 h-8 text-white"/>
                      </div>
                     <div className='text-left'>
-                        <h3 className="font-headline text-xl font-bold">Enter Beast Mode</h3>
-                        <p className="text-muted-foreground">Unlock the conversational AI Coach and predictive analytics.</p>
+                        <h3 className="font-headline text-xl font-bold">You're Ready For The Next Level.</h3>
+                        <p className="text-muted-foreground">Unlock the conversational AI CEO and predictive analytics to achieve market domination.</p>
                     </div>
-                    <Button variant="outline" size="lg" className="ml-auto bg-background">Upgrade to Beast</Button>
+                    <Button variant="outline" size="lg" className="ml-auto bg-background flex-shrink-0">Unleash Beast Mode</Button>
                 </div>
             </CardContent>
         </Card>

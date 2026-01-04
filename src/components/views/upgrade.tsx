@@ -22,7 +22,7 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
     <div className="space-y-8 animate-in fade-in-50">
       <div className="text-center">
         <h2 className="font-headline text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-2">The ROI is Inevitable</h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">We built a system to make you more money. The only question is how much more you want to make.</p>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">This is not an expense, it's an investment in your income. Choose the plan that matches your ambition.</p>
       </div>
       
       <div className="flex justify-center items-center gap-4">
@@ -66,13 +66,13 @@ export default function UpgradePlan({ currentPlan, setCurrentPlan }: UpgradePlan
                       <span className="text-5xl font-bold font-headline tracking-tighter">${isAnnual ? plan.annualPrice : plan.price}</span>
                       <span className="text-muted-foreground">{isAnnual ? '/ year' : '/ month'}</span>
                     </div>
-                    { isAnnual && <p className="text-sm text-muted-foreground">billed annually</p> }
+                    { isAnnual && <p className="text-sm text-muted-foreground">Billed Annually. That's just ${plan.price}/month.</p> }
                   </>
                 ) : (
                   <span className="text-5xl font-bold font-headline tracking-tighter">$0</span>
                 )}
               </div>
-              <CardDescription>{plan.id === 'free' ? "Get a taste of the power." : plan.id === 'pro' ? "For serious builders." : "For market dominators."}</CardDescription>
+              <CardDescription>{plan.id === 'free' ? "A taste of the power. For beginners." : plan.id === 'pro' ? "For serious builders ready to scale." : "For market dominators who refuse to lose."}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow px-8">
               <ul className="space-y-4">

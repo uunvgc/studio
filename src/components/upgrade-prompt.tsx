@@ -1,5 +1,5 @@
 import { Lock, Gem } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { View } from "@/lib/types";
 
@@ -20,7 +20,7 @@ export default function UpgradePrompt({ featureName, requiredPlan, setActiveView
         </CardHeader>
         <CardContent>
             <p className="text-muted-foreground mb-6">
-                This powerful feature is exclusively available on the <span className="font-semibold text-primary">{requiredPlan}</span> plan. Upgrade now to unlock it and supercharge your growth.
+                This is a premium feature. To multiply your results and unlock your full income potential, upgrade to the <span className="font-semibold text-primary">{requiredPlan}</span> plan.
             </p>
             <Button size="lg" onClick={() => setActiveView('upgrade')}>
                 <Gem className="mr-2 h-5 w-5" />

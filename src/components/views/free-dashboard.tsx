@@ -19,7 +19,7 @@ const freeLinks = [
     bgColor: 'bg-primary/10',
   },
   {
-    title: 'Organize Your Tasks',
+    title: 'Organize Your Ideas',
     description: 'Map out your world domination.',
     icon: Target,
     view: 'organizer',
@@ -32,8 +32,8 @@ export default function FreeDashboard({ setActiveView }: FreeDashboardProps) {
   return (
     <div className="space-y-8 animate-in fade-in-50">
       <div className="p-8 bg-card rounded-xl shadow-lg text-center border">
-        <h2 className="font-headline text-3xl md:text-5xl font-bold">Welcome to Fiilthy</h2>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mt-2">You're on the free plan. Here's what you can do. Upgrade to unlock the real power.</p>
+        <h2 className="font-headline text-3xl md:text-5xl font-bold">Welcome to ProfitPro AI</h2>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mt-2">You're on the free plan. Get a taste of the power, then upgrade to unlock your full income potential.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -63,10 +63,10 @@ export default function FreeDashboard({ setActiveView }: FreeDashboardProps) {
                         <Gem className="w-8 h-8 text-primary-foreground"/>
                      </div>
                     <div className='text-left'>
-                        <h3 className="font-headline text-xl font-bold">Ready to Get Serious?</h3>
-                        <p className="text-muted-foreground">Unlock the Competitor Annihilator, AI Coach & more.</p>
+                        <h3 className="font-headline text-xl font-bold">You're Leaving Money On The Table.</h3>
+                        <p className="text-muted-foreground">The free plan is just a warm-up. Unlock the Competitor Annihilator, AI Coach & more to multiply your results.</p>
                     </div>
-                    <Button size="lg" className="ml-auto">Upgrade to Pro or Beast</Button>
+                    <Button size="lg" className="ml-auto flex-shrink-0">Upgrade to Pro</Button>
                 </div>
             </CardContent>
         </Card>
