@@ -5,37 +5,12 @@
  *
  * It includes:
  * - `analyzeWebsite`: The main function to trigger the website analysis flow.
- * - `WebsiteAnalysisInput`: The input type for the `analyzeWebsite` function.
- * - `WebsiteAnalysisOutput`: The output type for the `analyzeWebsite` function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { WebsiteAnalysisInputSchema, WebsiteAnalysisOutputSchema, type WebsiteAnalysisInput, type WebsiteAnalysisOutput } from '@/lib/types';
 
-const WebsiteAnalysisInputSchema = z.object({
-  websiteUrl: z
-    .string()
-    .url()
-    .describe("The URL of the competitor's website to analyze."),
-  businessIdea: z
-    .string()
-    .describe(
-      'A brief description of your business idea or purpose, for context.'
-    ),
-});
-export type WebsiteAnalysisInput = z.infer<typeof WebsiteAnalysisInputSchema>;
-
-const WebsiteAnalysisOutputSchema = z.object({
-  potentialRevenueStreams: z
-    .string()
-    .describe(
-      'A ruthless analysis of how the competitor makes money and how you can do it better.'
-    ),
-  areasForImprovement: z
-    .string()
-    .describe('A list of the competitor\'s weaknesses to be exploited.'),
-});
-export type WebsiteAnalysisOutput = z.infer<typeof WebsiteAnalysisOutputSchema>;
 
 export async function analyzeWebsite(input: WebsiteAnalysisInput): Promise<WebsiteAnalysisOutput> {
   return websiteAnalysisFlow(input);

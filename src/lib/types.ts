@@ -19,6 +19,33 @@ export interface NavItem {
   isNew?: boolean;
 }
 
+// Website Analysis Schemas
+export const WebsiteAnalysisInputSchema = z.object({
+  websiteUrl: z
+    .string()
+    .url()
+    .describe("The URL of the competitor's website to analyze."),
+  businessIdea: z
+    .string()
+    .describe(
+      'A brief description of your business idea or purpose, for context.'
+    ),
+});
+export type WebsiteAnalysisInput = z.infer<typeof WebsiteAnalysisInputSchema>;
+
+export const WebsiteAnalysisOutputSchema = z.object({
+  potentialRevenueStreams: z
+    .string()
+    .describe(
+      'A ruthless analysis of how the competitor makes money and how you can do it better.'
+    ),
+  areasForImprovement: z
+    .string()
+    .describe('A list of the competitor\'s weaknesses to be exploited.'),
+});
+export type WebsiteAnalysisOutput = z.infer<typeof WebsiteAnalysisOutputSchema>;
+
+
 // Viral Strategy Schemas and Types
 export const ViralStrategyInputSchema = z.object({
   businessIdea: z

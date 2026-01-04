@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { analyzeWebsite, type WebsiteAnalysisOutput } from '@/ai/flows/website-analysis-report';
+import { analyzeWebsite } from '@/ai/flows/website-analysis-report';
+import { type WebsiteAnalysisOutput, WebsiteAnalysisInputSchema } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,11 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 import type { PlanTier, View } from '@/lib/types';
 import UpgradePrompt from '@/components/upgrade-prompt';
 
-const formSchema = z.object({
-  websiteUrl: z.string().url({ message: 'Please enter a valid URL.' }),
-  businessIdea: z.string().min(10, { message: 'Describe your business in at least 10 characters.' }),
-});
-
 interface WebsiteAnalysisProps {
   currentPlan: PlanTier;
   setActiveView: (view: View) => void;
@@ -31,8 +27,8 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof WebsiteAnalysisInputSchema>>({
+    resolver: zodResolver(WebsiteAnalysisInputSchema),
     defaultValues: {
       websiteUrl: '',
       businessIdea: '',
@@ -43,7 +39,7 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
     return <UpgradePrompt featureName="Competitor Annihilator" requiredPlan="Pro" setActiveView={setActiveView} />;
   }
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof WebsiteAnalysisInputSchema>) {
     setIsLoading(true);
     setAnalysisResult(null);
     try {
