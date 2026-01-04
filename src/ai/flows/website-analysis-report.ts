@@ -19,7 +19,7 @@ const websiteAnalysisPrompt = ai.definePrompt({
   name: 'websiteAnalysisPrompt',
   input: {schema: WebsiteAnalysisInputSchema},
   output: {schema: WebsiteAnalysisOutputSchema},
-   config: {
+  config: {
     model: 'googleai/gemini-1.5-pro',
   },
   prompt: `You are a ruthless business strategist and corporate spy. Your mission is to analyze a competitor's website and provide a actionable battle plan for my business to dominate them.
