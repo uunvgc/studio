@@ -17,7 +17,6 @@ import {
   Newspaper,
   LayoutPanelLeft,
   ChevronDown,
-  Check,
 } from 'lucide-react';
 import {
   SidebarProvider,
@@ -49,10 +48,8 @@ import AiCoach from '@/components/views/ai-coach';
 import Predictions from '@/components/views/predictions';
 import ViralPlatforms from '@/components/views/viral-platforms';
 import Organizer from '@/components/views/organizer';
-import Overview from '@/components/views/overview';
 import UpgradePlan from '@/components/views/upgrade';
 import PageHeader from '@/components/page-header';
-import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import BeastDashboard from '@/components/views/beast-dashboard';
 import FreeDashboard from '@/components/views/free-dashboard';
@@ -89,7 +86,6 @@ export default function CoverPage() {
     const [activeView, setActiveView] = React.useState<View>(getDefaultViewForPlan(currentPlan));
 
     React.useEffect(() => {
-        // When plan changes, switch to the default dashboard for that plan
         const defaultView = getDefaultViewForPlan(currentPlan);
         setActiveView(defaultView);
     }, [currentPlan]);
@@ -143,7 +139,6 @@ export default function CoverPage() {
                     <SidebarMenu>
                         {navItemsForPlan.map(item => {
                             const Icon = NAV_ICONS[item.id] ?? LayoutPanelLeft;
-                            const isLocked = !canAccess(item.id);
                             return (
                                 <SidebarMenuItem key={item.id}>
                                     <SidebarMenuButton

@@ -83,7 +83,7 @@ export default function RevenueMaximizer({ currentPlan }: RevenueMaximizerProps)
             <CardDescription>A detailed strategy to turn your idea into a profitable business.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="whitespace-pre-wrap rounded-md border p-4 bg-muted/50 text-sm font-code">
+            <div className="whitespace-pre-wrap rounded-md border p-4 bg-muted/50 font-code">
                 {revenuePlan.revenuePlan}
             </div>
           </CardContent>
