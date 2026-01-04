@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Loader2, Zap, Target, ShieldOff, Eye } from 'lucide-react';
+import { Loader2, ShieldOff, Target, Eye } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import type { PlanTier, View } from '@/lib/types';
@@ -94,7 +94,7 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-headline">
                 <Eye className="text-accent" />
-                Revenue Streams Recon
+                Revenue Stream Recon
               </CardTitle>
               <CardDescription>How they make money. And how you can do it better.</CardDescription>
             </CardHeader>

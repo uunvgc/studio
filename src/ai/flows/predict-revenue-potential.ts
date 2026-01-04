@@ -12,7 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const PredictRevenuePotentialInputSchema = z.object({
-  idea: z.string().describe('The user\u0027s business idea.'),
+  idea: z.string().describe('The user\'s business idea.'),
   plan: z.string().describe('The detailed plan for executing the idea.'),
   marketData: z.string().describe('Relevant market data and trends.'),
 });
@@ -33,6 +33,9 @@ const prompt = ai.definePrompt({
   name: 'predictRevenuePotentialPrompt',
   input: {schema: PredictRevenuePotentialInputSchema},
   output: {schema: PredictRevenuePotentialOutputSchema},
+   config: {
+    model: 'googleai/gemini-1.5-pro',
+  },
   prompt: `You are an AI-powered business analyst specializing in predicting the revenue potential of new business ideas. Analyze the provided business idea, execution plan, and market data to generate a revenue projection, a success probability, and identify key factors influencing the prediction.
 
 Business Idea: {{{idea}}}
@@ -41,12 +44,7 @@ Market Data: {{{marketData}}}
 
 Consider factors like market size, competition, execution strategy, and current trends. Provide a well-reasoned revenue projection, a success probability between 0 and 1, and list the key factors driving your prediction.
 
-Output in the following JSON format:
-{
-  "revenueProjection": "Projected revenue",
-  "successProbability": 0.75,
-  "keyFactors": "Key factors influencing the prediction"
-}`,
+Your response must be a JSON object that conforms to the output schema.`,
 });
 
 const predictRevenuePotentialFlow = ai.defineFlow(

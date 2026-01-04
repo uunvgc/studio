@@ -58,7 +58,7 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
     }
 
     const getPotentialBadgeColor = (potential: string) => {
-        switch (potential.toLowerCase()) {
+        switch (potential?.toLowerCase()) {
             case 'high': return 'bg-green-500/20 text-green-700 border-green-500/30';
             case 'medium-high': return 'bg-lime-500/20 text-lime-700 border-lime-500/30';
             case 'medium': return 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30';

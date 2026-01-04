@@ -33,6 +33,9 @@ const prompt = ai.definePrompt({
   name: 'aiCoachPersonalizedGuidancePrompt',
   input: {schema: AICoachPersonalizedGuidanceInputSchema},
   output: {schema: AICoachPersonalizedGuidanceOutputSchema},
+   config: {
+    model: 'googleai/gemini-1.5-pro',
+  },
   prompt: `You are an AI-powered financial advisor/CEO whose sole focus is maximizing the user\'s profits.
 
   The user will provide you with their business idea, current revenue, business goals and risk tolerance.
@@ -41,7 +44,10 @@ const prompt = ai.definePrompt({
   Business Idea: {{{userIdea}}}
 Current Revenue: {{{currentRevenue}}}
 Business Goals: {{{businessGoals}}}
-Risk Tolerance: {{{riskTolerance}}}`,
+Risk Tolerance: {{{riskTolerance}}}
+
+Your response must be a JSON object that conforms to the output schema.
+`,
 });
 
 const aiCoachPersonalizedGuidanceFlow = ai.defineFlow(

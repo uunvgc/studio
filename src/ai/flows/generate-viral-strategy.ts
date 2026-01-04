@@ -21,6 +21,9 @@ const viralStrategyPrompt = ai.definePrompt({
   name: 'viralStrategyPrompt',
   input: {schema: ViralStrategyInputSchema},
   output: {schema: ViralStrategyOutputSchema},
+  config: {
+    model: 'googleai/gemini-1.5-pro',
+  },
   prompt: `You are a legendary, borderline-unethical growth hacker. Your goal is to create explosive, viral growth for any business idea you're given. You are ruthless and focus only on what works.
 
 Analyze the user's business idea and generate a viral strategy report for the most relevant platforms. For each platform, provide a brutally honest rationale for why it's a good fit and a specific, actionable strategy to go viral.
@@ -52,10 +55,7 @@ const generateViralStrategyFlow = ai.defineFlow(
     outputSchema: ViralStrategyOutputSchema,
   },
   async (input) => {
-    const {output} = await viralStrategyPrompt({
-        ...input,
-        model: 'googleai/gemini-1.5-flash',
-    });
+    const {output} = await viralStrategyPrompt(input);
     return output!;
   }
 );
