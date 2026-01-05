@@ -25,13 +25,6 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  env: {
-    // Firebase App Hosting secrets are accessed at runtime
-    NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-  },
 };
 
 export default nextConfig;
