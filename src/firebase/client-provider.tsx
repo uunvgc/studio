@@ -19,7 +19,14 @@ export function FirebaseClientProvider({children}: Props) {
   const [auth, setAuth] = useState<Auth | null>(null);
 
   useEffect(() => {
-    const {app} = initializeFirebase();
+    // Correctly initialize Firebase on the client with the API key from the environment.
+    const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+    if (!apiKey) {
+      console.error("Firebase API key is missing. Make sure NEXT_PUBLIC_FIREBASE_API_KEY is set.");
+      return;
+    }
+
+    const {app} = initializeFirebase(apiKey);
     const db = getFirestore(app);
     const auth = getAuth(app);
     setFirebaseApp(app);
