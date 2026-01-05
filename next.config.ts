@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  env: {
+    NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  },
 };
 
 export default nextConfig;
