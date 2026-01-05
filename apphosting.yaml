@@ -20,7 +20,7 @@ env:
     availability:
       - BUILD
       - RUNTIME
-  - variable: API_KEY
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
     secret: myApiKeySecret
   - variable: PINNED_API_KEY
     secret: myApiKeySecret@5

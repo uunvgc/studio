@@ -2,7 +2,7 @@
 
 // Get this from the Firebase Console.
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAw7grYA8oWNaHh9QsdjinqQRTsvTsSFig',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'studio-9794377776-f2142.firebaseapp.com',
   projectId: 'studio-9794377776-f2142',
   appId: '1:785360545239:web:fdde057882739e8484d792',
