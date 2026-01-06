@@ -1,8 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import type { PlanTier, View } from '@/lib/types';
+import type { PlanTier, View, UserData } from '@/lib/types';
 import { ALL_NAV_ITEMS } from '@/lib/constants';
+import { getUserData, updateUserData } from '@/lib/user-service';
 
 const NAV_ITEMS_BY_PLAN: Record<PlanTier, View[]> = {
   free: ['free-dashboard', 'revenue-maximizer', 'organizer', 'upgrade'],
@@ -10,19 +11,35 @@ const NAV_ITEMS_BY_PLAN: Record<PlanTier, View[]> = {
   beast: ['beast-dashboard', 'website-analysis', 'revenue-maximizer', 'ai-coach', 'predictions', 'viral-platforms', 'organizer', 'upgrade'],
 };
 
-export function usePlan() {
-  const [currentPlan, setCurrentPlan] = React.useState<PlanTier>('free');
+// A placeholder user ID. In a real app, you would get this from your auth session.
+const FAKE_USER_ID = "user_placeholder_id";
 
+export function usePlan() {
+  const [userData, setUserData] = React.useState<UserData | null>(null);
+
+  React.useEffect(() => {
+    async function loadUserData() {
+      const data = await getUserData(FAKE_USER_ID);
+      setUserData(data);
+    }
+    loadUserData();
+  }, []);
+
+  const currentPlan = userData?.plan ?? 'free';
   const activeDashboard = `${currentPlan}-dashboard` as View;
+  
+  const setCurrentPlan = React.useCallback(async (plan: PlanTier) => {
+    // Optimistically update the UI
+    setUserData(prevData => prevData ? { ...prevData, plan } : { plan, messagesUsedToday: 0, lastMessageDate: '' });
+    // "Persist" the change
+    await updateUserData(FAKE_USER_ID, { plan });
+  }, []);
 
   const navItemsForPlan = React.useMemo(() => {
     const planNavIds = NAV_ITEMS_BY_PLAN[currentPlan];
-
-    // Filter all nav items to get the ones for the current plan
     const items = ALL_NAV_ITEMS
       .filter(item => planNavIds.includes(item.id))
       .map(item => {
-        // Unify the dashboard title and icon for all plans
         if (item.id.endsWith('-dashboard')) {
           const dashboardItem = ALL_NAV_ITEMS.find(i => i.id === 'free-dashboard');
           return { ...item, title: 'Dashboard', icon: dashboardItem?.icon };
@@ -30,11 +47,10 @@ export function usePlan() {
         return item;
       });
 
-    // Ensure the correct dashboard is the first item
     items.sort((a, b) => {
       if (a.id === activeDashboard) return -1;
       if (b.id === activeDashboard) return 1;
-      return 0; // maintain original order for other items
+      return 0;
     });
     
     return items;
@@ -45,5 +61,5 @@ export function usePlan() {
     return NAV_ITEMS_BY_PLAN[currentPlan].includes(featureId as View);
   }, [currentPlan]);
 
-  return { currentPlan, setCurrentPlan, navItemsForPlan, canAccess, activeDashboard };
+  return { currentPlan, setCurrentPlan, navItemsForPlan, canAccess, activeDashboard, userData, setUserData };
 }
