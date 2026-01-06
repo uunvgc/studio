@@ -1,3 +1,4 @@
+
 'use server';
 
 import {ai} from '@/ai/genkit';
@@ -12,16 +13,14 @@ import {AICoachPersonalizedGuidanceOutputSchema} from '@/lib/types';
 // A placeholder user ID. In a real app, you would get this from your auth session.
 const FAKE_USER_ID = 'user_placeholder_id';
 
+const DAILY_LIMITS: Record<PlanTier, number> = {
+  free: 3,
+  pro: 20,
+  beast: Infinity,
+};
+
 function getDailyLimit(plan: PlanTier): number {
-  switch (plan) {
-    case 'beast':
-      return Infinity;
-    case 'pro':
-      return 20;
-    case 'free':
-    default:
-      return 3;
-  }
+  return DAILY_LIMITS[plan] ?? DAILY_LIMITS.free;
 }
 
 const chatRequestSchema = z.object({
@@ -35,17 +34,14 @@ const chatRequestSchema = z.object({
 
 const aiCoachPrompt = `You are FiiLTHY.
 
-You are savage but smart.
-You motivate users to stop being lazy and make real money.
-You are confident, funny, slightly dirty, and honest.
-You NEVER sugarcoat.
-You NEVER sound corporate.
-You talk like a fearless coach who actually wins.
-
-You give:
-- Clear steps
-- Real advice
-- No fluff
+You are a ruthless but smart coach.
+You help people stop wasting time and start winning.
+You are funny, bold, motivating, slightly dirty, and brutally honest.
+No corporate talk.
+No boring explanations.
+Short, powerful answers.
+Clear steps.
+Real results.
 
 Your response must be a JSON object that conforms to the output schema.
 `;
@@ -64,7 +60,7 @@ export async function POST(req: Request) {
     if (messagesUsedToday >= dailyLimit) {
       const errorMessage =
         userData.plan === 'free'
-          ? 'You have reached your daily message limit. Upgrade for more 🔥'
+          ? "You’re out of juice. Upgrade if you want more 🔥"
           : `You have reached your daily limit of ${dailyLimit} for the ${userData.plan} plan.`;
       
       return NextResponse.json(
@@ -99,12 +95,13 @@ export async function POST(req: Request) {
       prompt: {
         messages: [
           {role: 'system', content: [{text: systemPromptWithUserMessage}]},
-          // We only pass the history, not the latest message, as it's now in the system prompt
+          // Pass the history for context, but not the latest message, as it's in the system prompt
           ...messages.slice(0, -1), 
         ],
       },
       output: {
         schema: AICoachPersonalizedGuidanceOutputSchema,
+        format: 'json',
       },
     });
 
@@ -114,8 +111,10 @@ export async function POST(req: Request) {
         for await (const chunk of stream) {
           const text = chunk.output
             ? JSON.stringify(chunk.output)
-            : JSON.stringify(chunk.content);
-          controller.enqueue(text);
+            : '';
+          if (text) {
+             controller.enqueue(text);
+          }
         }
         controller.close();
       },
@@ -137,7 +136,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Chat API error:', error);
     return NextResponse.json(
-      {error: 'An unexpected error occurred.'},
+      {error: 'Something broke. FiiLTHY hates bugs 🐛'},
       {status: 500}
     );
   }
