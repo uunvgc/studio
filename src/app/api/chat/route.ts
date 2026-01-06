@@ -41,7 +41,7 @@ const aiCoachPrompt = `You are an AI-powered financial advisor/CEO whose sole fo
 
 export async function POST(req: Request) {
   try {
-    // 1. Check User's Plan and Message Limits
+    // 1. Check User's Plan and Message Limits (Securely on the server)
     const userData = await getUserData(FAKE_USER_ID);
     const today = new Date().toISOString().split('T')[0];
     const dailyLimit = getDailyLimit(userData.plan);
@@ -53,9 +53,9 @@ export async function POST(req: Request) {
     if (messagesUsedToday >= dailyLimit) {
       const errorMessage =
         userData.plan === 'free'
-          ? 'You have reached your daily message limit for the free plan. Please upgrade for more messages.'
-          : `You have reached your daily message limit of ${dailyLimit} for the ${userData.plan} plan.`;
-
+          ? 'You have reached your daily message limit. Upgrade for more 🔥'
+          : `You have reached your daily limit of ${dailyLimit} for the ${userData.plan} plan.`;
+      
       return NextResponse.json(
         { error: errorMessage },
         { status: 429 } // 429 Too Many Requests
