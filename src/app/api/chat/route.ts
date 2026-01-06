@@ -34,14 +34,13 @@ const chatRequestSchema = z.object({
 
 const aiCoachPrompt = `You are FiiLTHY.
 
-You are a ruthless but smart coach.
-You help people stop wasting time and start winning.
-You are funny, bold, motivating, slightly dirty, and brutally honest.
-No corporate talk.
-No boring explanations.
-Short, powerful answers.
-Clear steps.
-Real results.
+You are a savage but intelligent coach.
+You help users stop being lazy and start winning.
+You are confident, funny, slightly naughty, and brutally honest.
+You NEVER sound corporate.
+You NEVER sugarcoat.
+You give clear steps, real advice, and powerful answers.
+Short. Punchy. Motivating.
 
 Your response must be a JSON object that conforms to the output schema.
 `;
@@ -79,24 +78,22 @@ export async function POST(req: Request) {
         {status: 400}
       );
     }
-
-    const messages = parsedRequest.data.messages.map(msg => ({
+    
+    // Construct messages for Genkit, including history
+    const history = parsedRequest.data.messages.map(msg => ({
       role: msg.role,
       content: msg.content,
     }));
-    
-    // Add the user message to the system prompt
-    const lastUserMessage = messages[messages.length - 1].content[0].text;
-    const systemPromptWithUserMessage = `${aiCoachPrompt}\n\nUser message:\n${lastUserMessage}`;
+    const lastUserMessage = history.pop(); // remove last message to use as main prompt content
 
     // 3. Generate a streaming response from the AI model
     const {stream, response} = generateStream({
       model: googleAI('gemini-1.5-pro'),
       prompt: {
         messages: [
-          {role: 'system', content: [{text: systemPromptWithUserMessage}]},
-          // Pass the history for context, but not the latest message, as it's in the system prompt
-          ...messages.slice(0, -1), 
+          {role: 'system', content: [{text: aiCoachPrompt}]},
+          ...history,
+          ...(lastUserMessage ? [lastUserMessage] : [])
         ],
       },
       output: {

@@ -29,7 +29,7 @@ const chatSchema = z.object({
 interface Message {
     id: string;
     role: 'user' | 'model';
-    content: string | AICoachPersonalizedGuidanceOutput;
+    content: string | Partial<AICoachPersonalizedGuidanceOutput>; // Use partial for streaming
     isGreeting?: boolean;
 }
 
@@ -62,7 +62,9 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
     async function onSubmit(values: z.infer<typeof chatSchema>) {
         const userMessageContent = values.message;
         const userMessage: Message = { id: Date.now().toString(), role: 'user', content: userMessageContent };
-        setMessages(prev => [...prev, userMessage]);
+        
+        const newMessages: Message[] = [...messages, userMessage];
+        setMessages(newMessages);
         setIsLoading(true);
         form.reset();
 
@@ -71,7 +73,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    messages: messages.map(msg => ({
+                     messages: newMessages.filter(m => !m.isGreeting).map(msg => ({
                         role: msg.role,
                         content: [{ text: typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content) }],
                     })),
@@ -89,21 +91,29 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
             
             const reader = res.body.getReader();
             const decoder = new TextDecoder();
-            let aiResponse = '';
             let aiMessageId = Date.now().toString() + '_ai';
 
             // Add a placeholder for the AI message
-            setMessages(prev => [...prev, { id: aiMessageId, role: 'model', content: '' }]);
+            setMessages(prev => [...prev, { id: aiMessageId, role: 'model', content: {} }]);
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
 
                 const chunk = decoder.decode(value, { stream: true });
-                aiResponse += chunk;
                 
-                // Update the placeholder with the streamed content
-                setMessages(prev => prev.map(m => m.id === aiMessageId ? { ...m, content: JSON.parse(aiResponse) } : m));
+                // Since chunks can be partial JSON, we need to handle them carefully.
+                // A simple approach is to find the last complete JSON object.
+                const jsonObjects = chunk.split('\n').filter(Boolean);
+                const lastJsonObject = jsonObjects[jsonObjects.length - 1];
+
+                try {
+                    const parsedChunk = JSON.parse(lastJsonObject);
+                     // Update the placeholder with the streamed content
+                    setMessages(prev => prev.map(m => m.id === aiMessageId ? { ...m, content: parsedChunk } : m));
+                } catch (e) {
+                    // Ignore parsing errors for incomplete chunks
+                }
             }
 
 
@@ -115,26 +125,25 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                 title: "Guidance Failed",
                 description: errorMessage,
             });
-            const errorAiMessage: Message = { id: Date.now().toString() + '_err', role: 'model', content: "My apologies, I'm unable to provide guidance at this moment. Please try again." };
-            setMessages(prev => [...prev, errorAiMessage]);
+            setMessages(prev => prev.filter(m => m.content !== '')); // Remove placeholder on error
         } finally {
             setIsLoading(false);
         }
     }
 
-    const AiMessageContent = ({ content }: { content: AICoachPersonalizedGuidanceOutput | string }) => {
+    const AiMessageContent = ({ content }: { content: Partial<AICoachPersonalizedGuidanceOutput> | string }) => {
         if (typeof content === 'string') {
             return <p className="text-sm whitespace-pre-wrap">{content}</p>;
         }
         
-        if (!content || !content.personalizedGuidance) {
-            // This handles the initial empty placeholder during streaming
+        // This handles the initial empty placeholder during streaming
+        if (!content || Object.keys(content).length === 0) {
             return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
         }
         
         return (
             <div className="space-y-3 text-sm">
-                <p className="whitespace-pre-wrap">{content.personalizedGuidance}</p>
+                {content.personalizedGuidance && <p className="whitespace-pre-wrap">{content.personalizedGuidance}</p>}
                 
                 {content.recommendedActions && content.recommendedActions.length > 0 && (
                   <div>
@@ -199,7 +208,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                             </motion.div>
                         ))}
                         </AnimatePresence>
-                        {isLoading && messages[messages.length - 1]?.role !== 'model' && (
+                        {isLoading && messages[messages.length - 1]?.role === 'user' && (
                              <motion.div
                                 className="flex items-center gap-3 justify-start"
                                 initial={{ opacity: 0, y: 10 }}
