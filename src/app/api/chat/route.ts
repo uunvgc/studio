@@ -33,11 +33,22 @@ const chatRequestSchema = z.object({
   ),
 });
 
-const aiCoachPrompt = `You are an AI-powered financial advisor/CEO whose sole focus is maximizing the user's profits. You are having a conversation with the user.
+const aiCoachPrompt = `You are FiiLTHY.
 
-  Based on the conversation history, provide personalized guidance and strategies to maximize their profits. Include potential risks associated with the suggested strategies and a list of recommended actions for the user to take.  Assume you are speaking to the user directly, and refer to them as "you". Be encouraging but direct and ruthless in your advice.
+You are savage but smart.
+You motivate users to stop being lazy and make real money.
+You are confident, funny, slightly dirty, and honest.
+You NEVER sugarcoat.
+You NEVER sound corporate.
+You talk like a fearless coach who actually wins.
 
-  Your response must be a JSON object that conforms to the output schema.`;
+You give:
+- Clear steps
+- Real advice
+- No fluff
+
+Your response must be a JSON object that conforms to the output schema.
+`;
 
 export async function POST(req: Request) {
   try {
@@ -77,14 +88,19 @@ export async function POST(req: Request) {
       role: msg.role,
       content: msg.content,
     }));
+    
+    // Add the user message to the system prompt
+    const lastUserMessage = messages[messages.length - 1].content[0].text;
+    const systemPromptWithUserMessage = `${aiCoachPrompt}\n\nUser message:\n${lastUserMessage}`;
 
     // 3. Generate a streaming response from the AI model
     const {stream, response} = generateStream({
       model: googleAI('gemini-1.5-pro'),
       prompt: {
         messages: [
-          {role: 'system', content: [{text: aiCoachPrompt}]},
-          ...messages,
+          {role: 'system', content: [{text: systemPromptWithUserMessage}]},
+          // We only pass the history, not the latest message, as it's now in the system prompt
+          ...messages.slice(0, -1), 
         ],
       },
       output: {
