@@ -1,4 +1,3 @@
-
 import { headers } from 'next/headers';
 import type { Stripe } from 'stripe';
 import { NextResponse } from 'next/server';
