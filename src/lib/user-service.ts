@@ -11,7 +11,7 @@ const MOCK_USER_DATA: Record<string, UserData> = {
   "user_placeholder_id": {
     plan: 'free',
     messagesUsedToday: 0,
-    lastMessageDate: new Date().toISOString().split('T')[0], // "YYYY-MM-DD"
+    lastUsedDate: new Date().toISOString().split('T')[0], // "YYYY-MM-DD"
   }
 };
 

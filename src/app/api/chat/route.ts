@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
     // Reset daily count if it's a new day
     const messagesUsedToday =
-      userData.lastMessageDate === today ? userData.messagesUsedToday : 0;
+      userData.lastUsedDate === today ? userData.messagesUsedToday : 0;
 
     if (messagesUsedToday >= dailyLimit) {
       const errorMessage =
@@ -124,7 +124,7 @@ export async function POST(req: Request) {
     response.then(async () => {
       await updateUserData(FAKE_USER_ID, {
         messagesUsedToday: messagesUsedToday + 1,
-        lastMessageDate: today,
+        lastUsedDate: today,
       });
     });
 

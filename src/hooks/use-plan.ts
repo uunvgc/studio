@@ -30,7 +30,7 @@ export function usePlan() {
   
   const setCurrentPlan = React.useCallback(async (plan: PlanTier) => {
     // Optimistically update the UI
-    setUserData(prevData => prevData ? { ...prevData, plan } : { plan, messagesUsedToday: 0, lastMessageDate: '' });
+    setUserData(prevData => prevData ? { ...prevData, plan } : { plan, messagesUsedToday: 0, lastUsedDate: '' });
     // "Persist" the change
     await updateUserData(FAKE_USER_ID, { plan });
   }, []);

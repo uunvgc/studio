@@ -32,12 +32,12 @@ export interface NavItem {
 export interface UserData {
   plan: PlanTier;
   messagesUsedToday: number;
-  lastMessageDate: string; // "YYYY-MM-DD"
+  lastUsedDate: string; // "YYYY-MM-DD"
 }
 
 
 // WEBSITE ANALYSIS SCHEMAS
-// =================================================================
+// =   ==============================================================
 export const WebsiteAnalysisInputSchema = z.object({
   websiteUrl: z
     .string()
