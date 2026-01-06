@@ -11,14 +11,12 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem } from '../ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { aiCoachPersonalizedGuidance } from '@/ai/flows/ai-coach-guidance';
 import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { motion, AnimatePresence } from 'framer-motion';
-
-type AICoachPersonalizedGuidanceOutput = Awaited<ReturnType<typeof aiCoachPersonalizedGuidance>>;
+import type { AICoachPersonalizedGuidanceOutput } from '@/lib/types';
 
 interface BeastDashboardProps {
   setActiveView: (view: View) => void;
@@ -29,9 +27,9 @@ const chatSchema = z.object({
 });
 
 interface Message {
-    id: number;
-    sender: 'user' | 'ai';
-    text: string | AICoachPersonalizedGuidanceOutput;
+    id: string;
+    role: 'user' | 'model';
+    content: string | AICoachPersonalizedGuidanceOutput;
     isGreeting?: boolean;
 }
 
@@ -40,9 +38,9 @@ const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
     const [messages, setMessages] = React.useState<Message[]>([
         {
-            id: Date.now(),
-            sender: 'ai',
-            text: "Welcome to Beast Mode. I am your personal AI CEO. My purpose is to maximize your profit. Tell me what you're working on, or ask me for a market domination strategy. Let's get to work.",
+            id: 'initial-greeting',
+            role: 'model',
+            content: "Welcome to Beast Mode. I am your personal AI CEO. My purpose is to maximize your profit. Tell me what you're working on, or ask me for a market domination strategy. Let's get to work.",
             isGreeting: true,
         }
     ]);
@@ -59,33 +57,66 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         if (scrollAreaRef.current) {
             scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
         }
-    }, [messages]);
+    }, [messages, isLoading]);
 
     async function onSubmit(values: z.infer<typeof chatSchema>) {
-        const userMessage: Message = { id: Date.now(), sender: 'user', text: values.message };
+        const userMessageContent = values.message;
+        const userMessage: Message = { id: Date.now().toString(), role: 'user', content: userMessageContent };
         setMessages(prev => [...prev, userMessage]);
         setIsLoading(true);
         form.reset();
 
         try {
-            const result = await aiCoachPersonalizedGuidance({
-                userIdea: values.message,
-                currentRevenue: 0,
-                businessGoals: 'Maximize profit.',
-                riskTolerance: 'high'
-             });
-            const aiMessage: Message = { id: Date.now() + 1, sender: 'ai', text: result };
-            setMessages(prev => [...prev, aiMessage]);
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: messages.map(msg => ({
+                        role: msg.role,
+                        content: [{ text: typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content) }],
+                    })),
+                }),
+            });
 
-        } catch (error) {
+            if (!res.ok) {
+                 const errorData = await res.json();
+                 throw new Error(errorData.error || 'The AI Coach is having a moment. Try again.');
+            }
+
+            if (!res.body) {
+                throw new Error("The response body is empty.");
+            }
+            
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let aiResponse = '';
+            let aiMessageId = Date.now().toString() + '_ai';
+
+            // Add a placeholder for the AI message
+            setMessages(prev => [...prev, { id: aiMessageId, role: 'model', content: '' }]);
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                aiResponse += chunk;
+                
+                // Update the placeholder with the streamed content
+                setMessages(prev => prev.map(m => m.id === aiMessageId ? { ...m, content: JSON.parse(aiResponse) } : m));
+            }
+
+
+        } catch (error: any) {
             console.error("AI Coach guidance failed:", error);
+            const errorMessage = error.message || "The AI Coach is unavailable. Please try again later.";
             toast({
                 variant: "destructive",
                 title: "Guidance Failed",
-                description: "The AI Coach is unavailable. Please try again later.",
+                description: errorMessage,
             });
-            const errorMessage: Message = { id: Date.now() + 1, sender: 'ai', text: "My apologies, I'm unable to provide guidance at this moment. Please try again." };
-            setMessages(prev => [...prev, errorMessage]);
+            const errorAiMessage: Message = { id: Date.now().toString() + '_err', role: 'model', content: "My apologies, I'm unable to provide guidance at this moment. Please try again." };
+            setMessages(prev => [...prev, errorAiMessage]);
         } finally {
             setIsLoading(false);
         }
@@ -95,21 +126,31 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
         if (typeof content === 'string') {
             return <p className="text-sm whitespace-pre-wrap">{content}</p>;
         }
+        
+        if (!content || !content.personalizedGuidance) {
+            // This handles the initial empty placeholder during streaming
+            return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
+        }
+        
         return (
             <div className="space-y-3 text-sm">
                 <p className="whitespace-pre-wrap">{content.personalizedGuidance}</p>
                 
-                <div>
-                    <p className="font-bold mb-1">Recommended Actions:</p>
-                    <ul className="list-disc list-inside space-y-1">
-                        {content.recommendedActions.map((action, index) => <li key={index}>{action}</li>)}
-                    </ul>
-                </div>
+                {content.recommendedActions && content.recommendedActions.length > 0 && (
+                  <div>
+                      <p className="font-bold mb-1">Recommended Actions:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                          {content.recommendedActions.map((action, index) => <li key={index}>{action}</li>)}
+                      </ul>
+                  </div>
+                )}
                 
-                <div>
-                    <p className="font-bold text-amber-500 mb-1">Potential Risks:</p>
-                    <p className="text-amber-500/90 whitespace-pre-wrap">{content.potentialRisks}</p>
-                </div>
+                {content.potentialRisks && (
+                  <div>
+                      <p className="font-bold text-amber-500 mb-1">Potential Risks:</p>
+                      <p className="text-amber-500/90 whitespace-pre-wrap">{content.potentialRisks}</p>
+                  </div>
+                )}
             </div>
         );
     }
@@ -130,26 +171,26 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                         {messages.map((message) => (
                             <motion.div 
                                 key={message.id} 
-                                className={cn("flex items-start gap-3", message.sender === 'user' ? 'justify-end' : 'justify-start')}
+                                className={cn("flex items-start gap-3", message.role === 'user' ? 'justify-end' : 'justify-start')}
                                 layout
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                {message.sender === 'ai' && (
+                                {message.role === 'model' && (
                                     <Avatar className="h-8 w-8 border-2 border-primary/50 shadow-sm">
                                         <AvatarFallback className="bg-background"><Bot size={18} className="text-primary" /></AvatarFallback>
                                     </Avatar>
                                 )}
                                 <div className={cn(
                                     "max-w-3xl rounded-xl p-4 shadow-md", 
-                                    message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card',
+                                    message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card',
                                     message.isGreeting && 'bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 text-foreground'
                                 )}>
-                                    <AiMessageContent content={message.text} />
+                                    <AiMessageContent content={message.content} />
                                 </div>
-                                {message.sender === 'user' && userAvatar && (
+                                {message.role === 'user' && userAvatar && (
                                     <Avatar className="h-8 w-8">
                                         <AvatarImage src={userAvatar.imageUrl} />
                                         <AvatarFallback>U</AvatarFallback>
@@ -158,9 +199,9 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                             </motion.div>
                         ))}
                         </AnimatePresence>
-                        {isLoading && (
-                            <motion.div
-                                className="flex items-start gap-3 justify-start"
+                        {isLoading && messages[messages.length - 1]?.role !== 'model' && (
+                             <motion.div
+                                className="flex items-center gap-3 justify-start"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                             >
@@ -168,7 +209,7 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                                     <AvatarFallback className="bg-background"><Bot size={18} className="text-primary"/></AvatarFallback>
                                 </Avatar>
                                 <div className="bg-card rounded-lg p-3">
-                                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                                   <p className='text-sm italic text-muted-foreground'>FiiLTHY is cooking something filthy... 🔥</p>
                                 </div>
                             </motion.div>
                         )}
