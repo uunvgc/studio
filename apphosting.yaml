@@ -22,9 +22,21 @@ env:
       - RUNTIME
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
     secret: myApiKeySecret
+    availability:
+      - BUILD
+      - RUNTIME
   - variable: PINNED_API_KEY
     secret: myApiKeySecret@5
+    availability:
+      - BUILD
+      - RUNTIME
   - variable: STRIPE_SECRET_KEY
     secret: myStripeSecretKey
+    availability:
+      - BUILD
+      - RUNTIME
   - variable: STRIPE_WEBHOOK_SECRET
     secret: myStripeWebhookSecret
+    availability:
+      - BUILD
+      - RUNTIME
