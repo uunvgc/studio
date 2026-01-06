@@ -6,12 +6,23 @@ import {generateStream} from 'genkit/generate';
 import {NextResponse} from 'next/server';
 import {z} from 'zod';
 import {getUserData, updateUserData} from '@/lib/user-service';
-import type {Message} from '@/lib/types';
+import type { PlanTier } from '@/lib/types';
 import {AICoachPersonalizedGuidanceOutputSchema} from '@/lib/types';
 
 // A placeholder user ID. In a real app, you would get this from your auth session.
 const FAKE_USER_ID = 'user_placeholder_id';
-const FREE_PLAN_MESSAGE_LIMIT = 5;
+
+function getDailyLimit(plan: PlanTier): number {
+  switch (plan) {
+    case 'beast':
+      return Infinity;
+    case 'pro':
+      return 20;
+    case 'free':
+    default:
+      return 3;
+  }
+}
 
 const chatRequestSchema = z.object({
   messages: z.array(
@@ -33,21 +44,21 @@ export async function POST(req: Request) {
     // 1. Check User's Plan and Message Limits
     const userData = await getUserData(FAKE_USER_ID);
     const today = new Date().toISOString().split('T')[0];
+    const dailyLimit = getDailyLimit(userData.plan);
 
     // Reset daily count if it's a new day
     const messagesUsedToday =
       userData.lastMessageDate === today ? userData.messagesUsedToday : 0;
 
-    if (
-      userData.plan === 'free' &&
-      messagesUsedToday >= FREE_PLAN_MESSAGE_LIMIT
-    ) {
+    if (messagesUsedToday >= dailyLimit) {
+      const errorMessage =
+        userData.plan === 'free'
+          ? 'You have reached your daily message limit for the free plan. Please upgrade for more messages.'
+          : `You have reached your daily message limit of ${dailyLimit} for the ${userData.plan} plan.`;
+
       return NextResponse.json(
-        {
-          error:
-            'You have reached your daily message limit for the free plan. Please upgrade for unlimited messages.',
-        },
-        {status: 429} // 429 Too Many Requests
+        { error: errorMessage },
+        { status: 429 } // 429 Too Many Requests
       );
     }
 
