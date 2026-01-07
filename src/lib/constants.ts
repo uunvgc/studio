@@ -1,8 +1,9 @@
 import type { NavItem } from '@/lib/types';
-import { BrainCircuit, DollarSign, Gem, Shield, Share2, Target, Zap, Bot, TrendingUp, Search } from 'lucide-react';
+import { BrainCircuit, DollarSign, Gem, Search, Share2, Target, Bot, TrendingUp } from 'lucide-react';
 
 
 export const ALL_NAV_ITEMS: NavItem[] = [
+  // Dashboards (handled dynamically)
   {
     id: 'free-dashboard',
     title: 'Dashboard',
@@ -11,21 +12,23 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   },
   {
     id: 'pro-dashboard',
-    title: 'Pro Dashboard',
+    title: 'Dashboard',
     description: 'Your command center for building your empire.',
     icon: BrainCircuit,
   },
   {
     id: 'beast-dashboard',
-    title: 'Beast Dashboard',
+    title: 'Dashboard',
     description: 'Your Ultimate Command Center for Market Domination.',
     icon: BrainCircuit,
   },
+  
+  // Core Tools
   {
-    id: 'website-analysis',
-    title: 'Competitor Annihilator',
-    description: 'Dismantle your competition. Steal their profits.',
-    icon: Search,
+    id: 'organizer',
+    title: 'Idea Organizer',
+    description: 'Capture, refine, and organize your business ideas.',
+    icon: Target,
   },
   {
     id: 'revenue-maximizer',
@@ -33,6 +36,22 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     description: 'Generate a tailored revenue plan for your idea.',
     icon: DollarSign,
   },
+
+  // Pro & Beast Tools
+  {
+    id: 'website-analysis',
+    title: 'Website Analyzer',
+    description: 'Dismantle your competition. Steal their profits.',
+    icon: Search,
+  },
+  {
+    id: 'viral-platforms',
+    title: 'Viral Platforms',
+    description: 'Discover the best platforms to go viral.',
+    icon: Share2,
+  },
+  
+  // Beast-only Tools
   {
     id: 'ai-coach',
     title: 'AI Coach',
@@ -46,24 +65,15 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     description: 'Forecast your revenue potential with AI.',
     icon: TrendingUp,
   },
-  {
-    id: 'viral-platforms',
-    title: 'Viral Platforms',
-    description: 'Discover the best platforms to go viral.',
-    icon: Share2,
-  },
-  {
-    id: 'organizer',
-    title: 'Idea Organizer',
-    description: 'Capture, refine, and organize your business ideas.',
-    icon: Target,
-  },
+
+  // Upgrade
   {
     id: 'upgrade',
     title: 'Upgrade Plan',
     description: 'Unlock your full income potential.',
     icon: Gem,
   },
+  
   // Overview is deprecated but kept for type safety if referenced.
   {
     id: 'overview',
