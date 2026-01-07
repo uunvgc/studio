@@ -1,3 +1,4 @@
+
 import type { NavItem } from '@/lib/types';
 import { BrainCircuit, DollarSign, Gem, Search, Share2, Target, Bot, TrendingUp } from 'lucide-react';
 
@@ -133,10 +134,8 @@ export const pricingPlans: {
     ],
     cta: 'Upgrade to Pro',
     priceIds: {
-      // Replace with your actual Stripe Price ID for the Pro monthly plan
-      monthly: 'YOUR_PRO_MONTHLY_PRICE_ID', 
-      // Replace with your actual Stripe Price ID for the Pro annual plan
-      annual: 'YOUR_PRO_ANNUAL_PRICE_ID',
+      monthly: 'price_1PjAbaEQzx4EitcgmhA1Z9yP',
+      annual: 'price_1PjAbaEQzx4Eitcgv40oVy3D',
     },
   },
   {
@@ -154,10 +153,8 @@ export const pricingPlans: {
     ],
     cta: 'Unleash Beast Mode',
     priceIds: {
-      // Replace with your actual Stripe Price ID for the Beast monthly plan
-      monthly: 'YOUR_BEAST_MONTHLY_PRICE_ID',
-      // Replace with your actual Stripe Price ID for the Beast annual plan
-      annual: 'YOUR_BEAST_ANNUAL_PRICE_ID',
+      monthly: 'price_1PjAc7EQzx4Eitcgvau0mZtX',
+      annual: 'price_1PjAc7EQzx4EitcgQ0sT4XkK',
     },
   },
 ];
