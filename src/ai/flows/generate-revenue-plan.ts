@@ -98,7 +98,6 @@ const generateRevenuePlanFlow = ai.defineFlow(
     outputSchema: GenerateRevenuePlanOutputSchema,
   },
   async input => {
-    // Create a structured object to enable simple #if checks in Handlebars
     const structuredInput = {
       businessIdea: input.businessIdea,
       tier: {
