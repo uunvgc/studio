@@ -4,9 +4,8 @@
 import {useEffect, useState} from 'react';
 import type {Auth} from 'firebase/auth';
 import type {FirebaseApp} from 'firebase/app';
-import {getAuth} from 'firebase/auth';
-import {getFirestore, type Firestore} from 'firebase/firestore';
-import { getFunctions, type Functions } from 'firebase/functions';
+import type {Firestore} from 'firebase/firestore';
+import type { Functions } from 'firebase/functions';
 
 import {FirebaseProvider} from './provider';
 import {initializeFirebase} from '.';
@@ -23,12 +22,9 @@ export function FirebaseClientProvider({children}: Props) {
 
   useEffect(() => {
     try {
-      const {app} = initializeFirebase();
-      const db = getFirestore(app);
-      const auth = getAuth(app);
-      const functions = getFunctions(app);
+      const {app, firestore, auth, functions} = initializeFirebase();
       setFirebaseApp(app);
-      setFirestore(db);
+      setFirestore(firestore);
       setAuth(auth);
       setFunctions(functions);
     } catch (error) {

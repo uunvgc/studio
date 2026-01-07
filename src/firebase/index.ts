@@ -1,6 +1,10 @@
 
 import {initializeApp, getApp, getApps, type FirebaseApp} from 'firebase/app';
 import { getAnalytics } from "firebase/analytics";
+import { getAuth, type Auth } from 'firebase/auth';
+import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getFunctions, type Functions } from 'firebase/functions';
+
 
 import {
   useAuth,
@@ -9,7 +13,7 @@ import {
   useFirestore,
 } from './provider';
 
-function initializeFirebase() {
+function initializeFirebase(): { app: FirebaseApp; firestore: Firestore; auth: Auth; functions: Functions; } {
     const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
     if (!apiKey) {
       throw new Error("Firebase API key is missing. Make sure NEXT_PUBLIC_FIREBASE_API_KEY is set in your environment.");
@@ -26,6 +30,9 @@ function initializeFirebase() {
     };
     
     const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    const firestore = getFirestore(app);
+    const auth = getAuth(app);
+    const functions = getFunctions(app);
 
     if (typeof window !== "undefined") {
       try {
@@ -35,7 +42,7 @@ function initializeFirebase() {
       }
     }
 
-    return {app};
+    return {app, firestore, auth, functions };
 }
 
 export {
