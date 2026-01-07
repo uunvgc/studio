@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Loader2, Users, Sparkles } from "lucide-react";
+import { Loader2, Users, Sparkles, Copy, ClipboardCheck } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +18,7 @@ import type { z } from 'zod';
 import type { PlanTier, View } from '@/lib/types';
 import UpgradePrompt from '@/components/upgrade-prompt';
 import { ScrollArea } from '../ui/scroll-area';
+import { Separator } from '../ui/separator';
 
 interface ViralPlatformsProps {
   currentPlan: PlanTier;
@@ -27,6 +28,7 @@ interface ViralPlatformsProps {
 export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlatformsProps) {
     const [strategyOutput, setStrategyOutput] = useState<ViralStrategyOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [copiedStates, setCopiedStates] = useState<Record<string, boolean>>({});
     const { toast } = useToast();
 
     const form = useForm<z.infer<typeof ViralStrategyInputSchema>>({
@@ -58,6 +60,17 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
         }
     }
 
+    const handleCopy = (textToCopy: string, type: 'content' | 'hashtags', platform: string) => {
+        navigator.clipboard.writeText(textToCopy);
+        const key = `${platform}-${type}`;
+        setCopiedStates(prev => ({...prev, [key]: true}));
+        toast({
+            title: "Copied to Clipboard",
+            description: `Your ${type === 'content' ? 'post content' : 'hashtags'} for ${platform} are ready.`,
+        });
+        setTimeout(() => setCopiedStates(prev => ({...prev, [key]: false})), 2000);
+    }
+
     const getPotentialBadgeColor = (potential: string) => {
         switch (potential?.toLowerCase()) {
             case 'high': return 'bg-green-500/20 text-green-400 border-green-500/30';
@@ -72,9 +85,13 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
     const renderContent = () => {
         if (isLoading) {
             return (
-                <div className="space-y-2">
-                    {[...Array(2)].map((_, i) => (
-                        <Skeleton key={i} className="h-12 w-full" />
+                <div className="space-y-4">
+                    {[...Array(3)].map((_, i) => (
+                        <Card key={i} className='bg-card/50'>
+                          <CardHeader className='p-4'>
+                             <Skeleton className="h-6 w-full" />
+                          </CardHeader>
+                        </Card>
                     ))}
                 </div>
             );
@@ -82,24 +99,54 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
 
         if (strategyOutput && strategyOutput.strategies && strategyOutput.strategies.length > 0) {
             return (
-                <Accordion type="single" collapsible defaultValue={strategyOutput.strategies[0]?.platform} className="w-full space-y-2">
+                <Accordion type="single" collapsible defaultValue={strategyOutput.strategies[0]?.platform} className="w-full space-y-3">
                     {strategyOutput.strategies.map((platformStrategy) => (
                         <AccordionItem value={platformStrategy.platform} key={platformStrategy.platform} className="border-b-0">
-                            <Card className="flex flex-col text-sm bg-card/50">
-                                <AccordionTrigger className="p-3 text-left hover:no-underline group">
+                            <Card className="flex flex-col text-sm bg-card/80 border-border transition-all">
+                                <AccordionTrigger className="p-4 text-left hover:no-underline group">
                                     <div className="flex justify-between items-center w-full">
-                                        <div className='font-bold text-base'>{platformStrategy.platform}</div>
-                                        <Badge variant="outline" className={`font-bold ml-4 ${getPotentialBadgeColor(platformStrategy.potential)}`}>
-                                            {platformStrategy.potential}
-                                        </Badge>
+                                        <div className='font-bold text-lg font-headline'>{platformStrategy.platform}</div>
+                                        <div className="flex items-center gap-2">
+                                          <Badge variant="outline" className={`font-bold ml-4 ${getPotentialBadgeColor(platformStrategy.potential)}`}>
+                                              {platformStrategy.potential}
+                                          </Badge>
+                                          <div className="flex items-center text-xs text-muted-foreground">
+                                              <Users className="h-3 w-3 mr-1.5" />
+                                              <span>{platformStrategy.userBase} Users</span>
+                                          </div>
+                                        </div>
                                     </div>
                                 </AccordionTrigger>
-                                <AccordionContent className="px-3 pb-3">
-                                    <p className="text-muted-foreground mb-2">{platformStrategy.rationale}</p>
-                                    <p className="whitespace-pre-wrap text-xs mb-2 p-3 bg-muted/50 rounded-md border">{platformStrategy.strategy}</p>
-                                    <div className="flex items-center text-xs text-foreground">
-                                        <Users className="h-3 w-3 mr-1.5 text-muted-foreground" />
-                                        <span>{platformStrategy.userBase} Users</span>
+                                <AccordionContent className="px-4 pb-4 space-y-4">
+                                    <div>
+                                      <p className="font-bold text-muted-foreground text-xs uppercase tracking-wider mb-1">Rationale</p>
+                                      <p className="text-foreground/90">{platformStrategy.rationale}</p>
+                                    </div>
+                                    <Separator />
+                                    <div className="space-y-3">
+                                        <p className="font-bold text-muted-foreground text-xs uppercase tracking-wider">Killer Content Idea: <span className="font-medium capitalize text-foreground/90">{platformStrategy.contentIdea}</span></p>
+
+                                        <div>
+                                          <div className="flex justify-between items-center mb-2">
+                                            <p className="text-sm font-semibold">Copy-Paste Content</p>
+                                            <Button variant="ghost" size="sm" onClick={() => handleCopy(platformStrategy.copyPasteContent, 'content', platformStrategy.platform)}>
+                                                {copiedStates[`${platformStrategy.platform}-content`] ? <ClipboardCheck className="h-4 w-4 mr-2 text-green-500"/> : <Copy className="h-4 w-4 mr-2"/>}
+                                                Copy
+                                            </Button>
+                                          </div>
+                                          <p className="whitespace-pre-wrap text-sm p-3 bg-muted/50 rounded-md border">{platformStrategy.copyPasteContent}</p>
+                                        </div>
+
+                                        <div>
+                                          <div className="flex justify-between items-center mb-2">
+                                            <p className="text-sm font-semibold">Hashtags</p>
+                                            <Button variant="ghost" size="sm" onClick={() => handleCopy(platformStrategy.hashtags.join(' '), 'hashtags', platformStrategy.platform)}>
+                                                {copiedStates[`${platformStrategy.platform}-hashtags`] ? <ClipboardCheck className="h-4 w-4 mr-2 text-green-500"/> : <Copy className="h-4 w-4 mr-2"/>}
+                                                Copy
+                                            </Button>
+                                          </div>
+                                          <p className="text-sm p-3 bg-muted/50 rounded-md border text-accent">{platformStrategy.hashtags.join(' ')}</p>
+                                        </div>
                                     </div>
                                 </AccordionContent>
                             </Card>
@@ -113,6 +160,7 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
             <div className="text-center py-4 text-muted-foreground border-2 border-dashed rounded-lg h-full flex flex-col justify-center">
                 <Sparkles className="mx-auto h-8 w-8" />
                 <p className="mt-2 text-sm font-bold">Your custom viral strategy awaits.</p>
+                <p className="text-xs">Fill out your idea to get started.</p>
             </div>
         );
     }
@@ -122,25 +170,25 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
              <Card className="h-full flex flex-col">
                 <CardHeader>
                     <CardTitle className="font-headline">AI Viral Strategy</CardTitle>
-                    <CardDescription>Tell our AI your business idea to get a ruthless plan.</CardDescription>
+                    <CardDescription>Tell our AI your business idea to get a ruthless, copy-paste plan to go viral.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 h-full flex flex-col">
                         <FormField
                             control={form.control}
                             name="businessIdea"
                             render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="flex-grow flex flex-col">
                                 <FormLabel>Your Business Idea</FormLabel>
-                                <FormControl>
-                                <Textarea placeholder="e.g., A subscription box service for rare indoor plants..." {...field} />
+                                <FormControl className="flex-grow">
+                                <Textarea placeholder="e.g., A subscription box service for rare indoor plants, targeting millennials living in apartments. We'll source plants from local nurseries and provide care guides..." {...field} className="h-full" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                             )}
                         />
-                        <Button type="submit" disabled={isLoading} className="w-full">
+                        <Button type="submit" disabled={isLoading} className="w-full" size="lg">
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Generate Viral Plan
                         </Button>
@@ -150,7 +198,7 @@ export default function ViralPlatforms({ currentPlan, setActiveView }: ViralPlat
             </Card>
             <Card className="h-full flex flex-col">
                 <CardHeader>
-                    <CardTitle className="font-headline">Recommended Platforms</CardTitle>
+                    <CardTitle className="font-headline">Recommended Platforms & Content</CardTitle>
                     <CardDescription>Your AI-generated list of high-potential platforms will appear here.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow overflow-hidden">

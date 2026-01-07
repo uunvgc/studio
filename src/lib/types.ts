@@ -85,11 +85,15 @@ const StrategyItemSchema = z.object({
     .describe(
       "A brief, hard-hitting reason why this platform is a goldmine for the user's specific business idea."
     ),
-  strategy: z
+  contentIdea: z
     .string()
-    .describe(
-      'A concise, actionable, and ruthless viral strategy for this platform. Give specific content ideas.'
-    ),
+    .describe('A concise, actionable, and ruthless viral content idea for this platform.'),
+  copyPasteContent: z
+    .string()
+    .describe('The pre-made, copy-and-paste text for the post.'),
+  hashtags: z
+    .array(z.string())
+    .describe('A list of the most effective hashtags to use.'),
   userBase: z.string().describe("The user base of the platform (e.g., '1B+')."),
   potential: z
     .string()
