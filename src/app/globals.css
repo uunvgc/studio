@@ -10,35 +10,35 @@
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 45 90% 55%; /* Rich Gold */
-    --primary-foreground: 45 90% 10%; /* Dark text for Gold buttons */
+    --primary: 25 95% 53%; /* Metallic Orange */
+    --primary-foreground: 25 85% 10%; /* Dark text for Orange buttons */
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
     --muted: 220 15% 15%;
     --muted-foreground: 215 20% 65%;
-    --accent: 45 90% 60%; /* Slightly Brighter Gold */
-    --accent-foreground: 45 90% 10%;
+    --accent: 210 90% 60%; /* Bright Blue */
+    --accent-foreground: 210 90% 10%;
     --destructive: 0 72% 51%; /* Destructive Red */
     --destructive-foreground: 210 40% 98%;
     --border: 240 4% 16%; /* Darker Border */
     --input: 240 4% 16%;
-    --ring: 45 90% 55%; /* Gold Ring */
+    --ring: 25 95% 53%; /* Orange Ring */
     --radius: 0.5rem;
 
-    --chart-1: 45 90% 55%;
-    --chart-2: 45 80% 65%;
-    --chart-3: 45 70% 75%;
-    --chart-4: 45 60% 85%;
+    --chart-1: 25 95% 53%;
+    --chart-2: 210 90% 60%;
+    --chart-3: 25 80% 65%;
+    --chart-4: 210 80% 70%;
     --chart-5: 210 40% 98%;
     
     --sidebar-background: 240 10% 5%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 45 90% 55%;
-    --sidebar-primary-foreground: 45 90% 10%;
-    --sidebar-accent: 45 90% 55%;
-    --sidebar-accent-foreground: 45 90% 10%;
+    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary-foreground: 25 85% 10%;
+    --sidebar-accent: 25 95% 53%;
+    --sidebar-accent-foreground: 25 85% 10%;
     --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 45 90% 55%;
+    --sidebar-ring: 25 95% 53%;
   }
 
   .dark {
@@ -48,34 +48,34 @@
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 45 90% 55%; /* Rich Gold */
-    --primary-foreground: 45 90% 10%; /* Dark text for Gold buttons */
+    --primary: 25 95% 53%; /* Metallic Orange */
+    --primary-foreground: 25 85% 10%; /* Dark text for Orange buttons */
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
     --muted: 220 15% 15%;
     --muted-foreground: 215 20% 65%;
-    --accent: 45 90% 60%; /* Slightly Brighter Gold */
-    --accent-foreground: 45 90% 10%;
+    --accent: 210 90% 60%; /* Bright Blue */
+    --accent-foreground: 210 90% 10%;
     --destructive: 0 72% 51%; /* Destructive Red */
     --destructive-foreground: 210 40% 98%;
     --border: 240 4% 16%; /* Darker Border */
     --input: 240 4% 16%;
-    --ring: 45 90% 55%; /* Gold Ring */
+    --ring: 25 95% 53%; /* Orange Ring */
 
-    --chart-1: 45 90% 55%;
-    --chart-2: 45 80% 65%;
-    --chart-3: 45 70% 75%;
-    --chart-4: 45 60% 85%;
+    --chart-1: 25 95% 53%;
+    --chart-2: 210 90% 60%;
+    --chart-3: 25 80% 65%;
+    --chart-4: 210 80% 70%;
     --chart-5: 210 40% 98%;
     
     --sidebar-background: 240 10% 5%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 45 90% 55%;
-    --sidebar-primary-foreground: 45 90% 10%;
-    --sidebar-accent: 45 90% 55%;
-    --sidebar-accent-foreground: 45 90% 10%;
+    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary-foreground: 25 85% 10%;
+    --sidebar-accent: 25 95% 53%;
+    --sidebar-accent-foreground: 25 85% 10%;
     --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 45 90% 55%;
+    --sidebar-ring: 25 95% 53%;
   }
 }
 
