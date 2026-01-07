@@ -133,8 +133,10 @@ export const pricingPlans: {
     ],
     cta: 'Upgrade to Pro',
     priceIds: {
-      monthly: 'price_1PjAbaEQzx4EitcgmhA1Z9yP',
-      annual: 'price_1PjAbaEQzx4Eitcgv40oVy3D',
+      // Replace with your actual Stripe Price ID for the Pro monthly plan
+      monthly: 'YOUR_PRO_MONTHLY_PRICE_ID', 
+      // Replace with your actual Stripe Price ID for the Pro annual plan
+      annual: 'YOUR_PRO_ANNUAL_PRICE_ID',
     },
   },
   {
@@ -152,8 +154,10 @@ export const pricingPlans: {
     ],
     cta: 'Unleash Beast Mode',
     priceIds: {
-      monthly: 'price_1PjAc7EQzx4Eitcgvau0mZtX',
-      annual: 'price_1PjAc7EQzx4EitcgQ0sT4XkK',
+      // Replace with your actual Stripe Price ID for the Beast monthly plan
+      monthly: 'YOUR_BEAST_MONTHLY_PRICE_ID',
+      // Replace with your actual Stripe Price ID for the Beast annual plan
+      annual: 'YOUR_BEAST_ANNUAL_PRICE_ID',
     },
   },
 ];
