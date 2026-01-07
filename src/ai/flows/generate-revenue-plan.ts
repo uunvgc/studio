@@ -18,7 +18,23 @@ import {
 export async function generateRevenuePlan(
   input: GenerateRevenuePlanInput
 ): Promise<GenerateRevenuePlanOutput> {
-  return generateRevenuePlanFlow(input);
+  if (!input) {
+    console.error("generateRevenuePlan called with undefined or null input.");
+    throw new Error("GenerateRevenuePlan called with invalid input");
+  }
+
+  const parsed = GenerateRevenuePlanInputSchema.safeParse(input);
+  if (!parsed.success) {
+    console.error("Invalid input schema for generateRevenuePlan:", parsed.error);
+    throw new Error("Invalid input provided to generateRevenuePlan flow.");
+  }
+  
+  try {
+    return await generateRevenuePlanFlow(parsed.data);
+  } catch (e: any) {
+    console.error("ERROR EXECUTING FLOW: generateRevenuePlanFlow", e);
+    throw new Error(`Failed to generate revenue plan: ${e.message}`);
+  }
 }
 
 const prompt = ai.definePrompt({
@@ -49,7 +65,11 @@ const generateRevenuePlanFlow = ai.defineFlow(
     outputSchema: GenerateRevenuePlanOutputSchema,
   },
   async input => {
+    console.log("FLOW RECEIVED (generateRevenuePlanFlow):", JSON.stringify(input, null, 2));
     const {output} = await prompt(input);
-    return output!;
+    if (!output) {
+      throw new Error("AI model did not return a valid output.");
+    }
+    return output;
   }
 );
