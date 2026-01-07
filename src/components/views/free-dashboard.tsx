@@ -124,7 +124,7 @@ export default function FreeDashboard({ setActiveView, currentPlan }: DashboardP
   return (
     <div className="space-y-8 animate-in fade-in-50">
       <div className="p-8 bg-card rounded-xl shadow-lg text-center border">
-        <h2 className="font-headline text-3xl md:text-5xl font-bold">Welcome to ProfitPro AI</h2>
+        <h2 className="font-headline text-3xl md:text-5xl font-bold">Welcome to FiiLTHY</h2>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mt-2">You're on the free plan. Get a taste of the power, then upgrade to unlock your full income potential.</p>
       </div>
       

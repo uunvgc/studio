@@ -87,7 +87,7 @@ export default function App() {
                   <path d="M12 12V22" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
                   <path d="M17 4.5L7 9.5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
                 </svg>
-                ProfitPro AI
+                FiiLTHY
             </Button>
           </div>
         </SidebarHeader>

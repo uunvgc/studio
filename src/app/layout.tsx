@@ -8,7 +8,7 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 
 export const metadata: Metadata = {
-  title: 'ProfitPro AI',
+  title: 'FiiLTHY',
   description: 'Your AI CEO for maximizing profit.',
 };
 
