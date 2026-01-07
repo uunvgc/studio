@@ -133,8 +133,8 @@ export const pricingPlans: {
     ],
     cta: 'Upgrade to Pro',
     priceIds: {
-      monthly: 'price_1PbdHqBLe1J7T5bVjC4G9Y3Z', // Placeholder Test ID for Pro Monthly
-      annual: 'price_1PbdHqBLe1J7T5bVwOqfA3b1', // Placeholder Test ID for Pro Annual
+      monthly: 'price_1PjAbaEQzx4EitcgmhA1Z9yP',
+      annual: 'price_1PjAbaEQzx4Eitcgv40oVy3D',
     },
   },
   {
@@ -152,8 +152,8 @@ export const pricingPlans: {
     ],
     cta: 'Unleash Beast Mode',
     priceIds: {
-      monthly: 'price_1PbdJHBLe1J7T5bV7e8fI9o2', // Placeholder Test ID for Beast Monthly
-      annual: 'price_1PbdJHBLe1J7T5bVV23tG4d0', // Placeholder Test ID for Beast Annual
+      monthly: 'price_1PjAc7EQzx4Eitcgvau0mZtX',
+      annual: 'price_1PjAc7EQzx4EitcgQ0sT4XkK',
     },
   },
 ];
