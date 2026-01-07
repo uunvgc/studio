@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import type { Stripe } from 'stripe';
 import { NextResponse } from 'next/server';
-import StripeSdk from "stripe";
+import { stripe } from '@/lib/stripe';
 
 
 // This is where you would update the user's plan in your database.
@@ -17,7 +17,6 @@ const handleSubscriptionChange = (userId: string, planId: string) => {
 
 
 export async function POST(req: Request) {
-  const stripe = new StripeSdk(process.env.STRIPE_SECRET_KEY!);
   const body = await req.text();
   const headersList = await headers();
   const signature = headersList.get('Stripe-Signature') ?? '';
