@@ -32,6 +32,11 @@ const FormSchema = z.object({
 });
 
 
+const basicStrategyReport: WebsiteAnalysisOutput = {
+    potentialRevenueStreams: "Basic analysis shows this site likely uses affiliate links and display ads. To compete, you could create higher-quality content and build a direct email list for monetization.",
+    areasForImprovement: "Their SEO seems average. Focus on long-tail keywords related to your niche to capture targeted traffic. Their social media presence is weak; you can dominate on a platform they're ignoring."
+};
+
 interface WebsiteAnalysisProps {
   currentPlan: PlanTier;
   setActiveView: (view: View) => void;
@@ -51,24 +56,34 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
     },
   });
 
-  if (currentPlan === 'free') {
-    return <UpgradePrompt featureName="Competitor Annihilator" requiredPlan="Pro" setActiveView={setActiveView} />;
-  }
-
   async function onSubmit(values: z.infer<typeof FormSchema>) {
+    setIsLoading(true);
+    setAnalysisResult(null);
+
+    // Simulate network delay for a better user experience
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    if (currentPlan === 'free') {
+        setAnalysisResult(basicStrategyReport);
+        setIsLoading(false);
+        toast({
+            title: "Basic Analysis Complete",
+            description: "Upgrade to Pro to get a full, AI-powered competitive analysis.",
+        });
+        return;
+    }
+
     if (!functions) {
       toast({
         variant: "destructive",
         title: "Connection Error",
         description: "Could not connect to backend services. Please try again later.",
       });
+      setIsLoading(false);
       return;
     }
-    setIsLoading(true);
-    setAnalysisResult(null);
+
     try {
-      // We pass the business idea in the report object, but the function only needs the URL.
-      // In a real scenario, the backend function would likely use both.
       const result = await runUrlAnalyzer(functions, values.websiteUrl);
       setAnalysisResult(result);
     } catch (error) {
@@ -158,7 +173,11 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
       <Card className="shadow-sm">
         <CardHeader>
             <CardTitle className="font-headline">Identify Your Target</CardTitle>
-            <CardDescription>Enter your competitor's website. Our AI will dismantle their strategy and expose their weaknesses.</CardDescription>
+            <CardDescription>
+              {currentPlan === 'free' 
+                ? "Enter your competitor's website to receive a basic analysis." 
+                : "Enter your competitor's website. Our AI will dismantle their strategy and expose their weaknesses."}
+            </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -191,7 +210,7 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
               />
               <Button type="submit" disabled={isLoading} size="lg">
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Annihilate
+                {currentPlan === 'free' ? 'Get Basic Analysis' : 'Annihilate'}
               </Button>
             </form>
           </Form>
@@ -199,6 +218,16 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
       </Card>
       
       {renderContent()}
+
+      {currentPlan === 'free' && analysisResult && (
+        <div className="mt-8">
+          <UpgradePrompt 
+            featureName="AI-Powered Analysis"
+            requiredPlan="Pro"
+            setActiveView={setActiveView}
+          />
+        </div>
+      )}
     </div>
   );
 }
