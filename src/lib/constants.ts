@@ -154,7 +154,7 @@ export const pricingPlans: {
     cta: 'Unleash Beast Mode',
     priceIds: {
       monthly: 'price_1SliGOEQzx4EitcgibTSq1CE',
-      annual: 'YOUR_BEAST_ANNUAL_PRICE_ID',
+      annual: 'price_1Sn1l6EQzx4EitcgnDSfho1W',
     },
   },
 ];
