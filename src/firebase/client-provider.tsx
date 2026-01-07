@@ -29,6 +29,7 @@ export function FirebaseClientProvider({children}: Props) {
       setAuth(auth);
     } catch (error) {
         if (error instanceof Error) {
+            // The error from initializeFirebase is already descriptive
             console.error(error.message);
         } else {
             console.error("An unknown error occurred during Firebase initialization.");
