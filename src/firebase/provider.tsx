@@ -4,11 +4,13 @@ import {createContext, useContext} from 'react';
 import type {FirebaseApp} from 'firebase/app';
 import type {Auth} from 'firebase/auth';
 import type {Firestore} from 'firebase/firestore';
+import type { Functions } from 'firebase/functions';
 
 type FirebaseContextValue = {
   app: FirebaseApp | null;
   firestore: Firestore | null;
   auth: Auth | null;
+  functions: Functions | null;
 };
 
 const FirebaseContext = createContext<FirebaseContextValue | undefined>(
@@ -20,6 +22,7 @@ type Props = {
   app: FirebaseApp | null;
   firestore: Firestore | null;
   auth: Auth | null;
+  functions: Functions | null;
 };
 
 export function FirebaseProvider({children, ...value}: Props) {
@@ -58,4 +61,12 @@ export function useAuth() {
     throw new Error('useAuth must be used within a FirebaseProvider');
   }
   return context.auth;
+}
+
+export function useFunctions() {
+  const context = useContext(FirebaseContext);
+  if (context === undefined) {
+    throw new Error('useFunctions must be used within a FirebaseProvider');
+  }
+  return context.functions;
 }

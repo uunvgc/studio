@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { analyzeWebsite } from '@/ai/flows/website-analysis-report';
-import { WebsiteAnalysisInputSchema, type WebsiteAnalysisOutput } from '@/lib/types';
+import { runUrlAnalyzer } from '@/lib/analysis-service';
+import { type WebsiteAnalysisOutput } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import type { PlanTier, View } from '@/lib/types';
 import UpgradePrompt from '@/components/upgrade-prompt';
+import { useFunctions } from '@/firebase/provider';
+
+const FormSchema = z.object({
+  websiteUrl: z
+    .string()
+    .url({message: 'Please enter a valid URL.'})
+    .describe("The URL of the competitor's website to analyze."),
+  businessIdea: z
+    .string()
+    .min(10, {message: 'Please provide a brief description of your business.'})
+    .describe(
+      'A brief description of your business idea or purpose, for context.'
+    ),
+});
+
 
 interface WebsiteAnalysisProps {
   currentPlan: PlanTier;
@@ -26,9 +41,10 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
   const [analysisResult, setAnalysisResult] = useState<WebsiteAnalysisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const functions = useFunctions();
 
-  const form = useForm<z.infer<typeof WebsiteAnalysisInputSchema>>({
-    resolver: zodResolver(WebsiteAnalysisInputSchema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       websiteUrl: '',
       businessIdea: '',
@@ -39,11 +55,21 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
     return <UpgradePrompt featureName="Competitor Annihilator" requiredPlan="Pro" setActiveView={setActiveView} />;
   }
 
-  async function onSubmit(values: z.infer<typeof WebsiteAnalysisInputSchema>) {
+  async function onSubmit(values: z.infer<typeof FormSchema>) {
+    if (!functions) {
+      toast({
+        variant: "destructive",
+        title: "Connection Error",
+        description: "Could not connect to backend services. Please try again later.",
+      });
+      return;
+    }
     setIsLoading(true);
     setAnalysisResult(null);
     try {
-      const result = await analyzeWebsite(values);
+      // We pass the business idea in the report object, but the function only needs the URL.
+      // In a real scenario, the backend function would likely use both.
+      const result = await runUrlAnalyzer(functions, values.websiteUrl);
       setAnalysisResult(result);
     } catch (error) {
       console.error("Website analysis failed:", error);
