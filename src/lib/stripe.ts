@@ -1,9 +1,18 @@
 import Stripe from "stripe";
 
-// This file is not used in the webhook, but is kept for other server-side Stripe actions.
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+if (!stripeSecretKey) {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error("STRIPE_SECRET_KEY is not set in the production environment.");
+  }
+  console.warn("Stripe secret key not found. Using a dummy key for development. This will not work for real transactions.");
+}
+
 export const stripe = new Stripe(
-  process.env.STRIPE_SECRET_KEY!,
+  stripeSecretKey || 'sk_test_dummy_key', // Use a dummy key if the secret is not found in development
   {
     apiVersion: "2024-06-20",
+    typescript: true,
   }
 );
