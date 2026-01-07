@@ -91,28 +91,24 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
             
             const reader = res.body.getReader();
             const decoder = new TextDecoder();
-            let aiMessageId = Date.now().toString() + '_ai';
+            const aiMessageId = Date.now().toString() + '_ai';
 
-            // Add a placeholder for the AI message
             setMessages(prev => [...prev, { id: aiMessageId, role: 'model', content: {} }]);
 
+            let accumulatedJson = '';
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
 
-                const chunk = decoder.decode(value, { stream: true });
+                accumulatedJson += decoder.decode(value, { stream: true });
                 
-                // Since chunks can be partial JSON, we need to handle them carefully.
-                // A simple approach is to find the last complete JSON object.
-                const jsonObjects = chunk.split('\n').filter(Boolean);
-                const lastJsonObject = jsonObjects[jsonObjects.length - 1];
-
                 try {
-                    const parsedChunk = JSON.parse(lastJsonObject);
-                     // Update the placeholder with the streamed content
+                    // This is a simplified parser. It assumes the server sends complete JSON objects in each chunk.
+                    // For more robust parsing, you'd buffer until you have a complete object.
+                    const parsedChunk = JSON.parse(accumulatedJson);
                     setMessages(prev => prev.map(m => m.id === aiMessageId ? { ...m, content: parsedChunk } : m));
                 } catch (e) {
-                    // Ignore parsing errors for incomplete chunks
+                    // Incomplete JSON, wait for the next chunk
                 }
             }
 
@@ -125,7 +121,8 @@ export default function BeastDashboard({ setActiveView }: BeastDashboardProps) {
                 title: "Guidance Failed",
                 description: errorMessage,
             });
-            setMessages(prev => prev.filter(m => m.content !== '')); // Remove placeholder on error
+            // Remove the empty AI message placeholder on error
+            setMessages(prev => prev.filter(m => m.content && Object.keys(m.content).length > 0));
         } finally {
             setIsLoading(false);
         }
