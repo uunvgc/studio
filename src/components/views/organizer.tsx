@@ -26,29 +26,34 @@ interface Idea {
 
 export default function Organizer() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
-  const [isClient, setIsClient] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-    try {
-        const storedIdeas = localStorage.getItem('userIdeas');
-        if (storedIdeas) {
-            setIdeas(JSON.parse(storedIdeas));
-        }
-    } catch (error) {
-        console.error("Failed to parse ideas from localStorage", error);
-    }
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    if (isClient) {
+    if (isMounted) {
+        try {
+            const storedIdeas = localStorage.getItem('userIdeas');
+            if (storedIdeas) {
+                setIdeas(JSON.parse(storedIdeas));
+            }
+        } catch (error) {
+            console.error("Failed to parse ideas from localStorage", error);
+        }
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
         try {
             localStorage.setItem('userIdeas', JSON.stringify(ideas));
         } catch (error) {
             console.error("Failed to save ideas to localStorage", error);
         }
     }
-  }, [ideas, isClient]);
+  }, [ideas, isMounted]);
   
   const addForm = useForm<z.infer<typeof ideaSchema>>({
     resolver: zodResolver(ideaSchema),
@@ -77,7 +82,7 @@ export default function Organizer() {
     setIdeas(ideas.filter(idea => idea.id !== id));
   };
 
-  if (!isClient) {
+  if (!isMounted) {
       return null;
   }
 
