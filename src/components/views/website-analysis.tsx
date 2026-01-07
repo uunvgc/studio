@@ -219,11 +219,11 @@ export default function WebsiteAnalysis({ currentPlan, setActiveView }: WebsiteA
       
       {renderContent()}
 
-      {currentPlan === 'free' && analysisResult && (
+      {currentPlan !== 'beast' && analysisResult && (
         <div className="mt-8">
           <UpgradePrompt 
-            featureName="AI-Powered Analysis"
-            requiredPlan="Pro"
+            featureName={currentPlan === 'free' ? "AI-Powered Analysis" : "AI Coach & Predictions"}
+            requiredPlan={currentPlan === 'free' ? "Pro" : "Beast"}
             setActiveView={setActiveView}
           />
         </div>
