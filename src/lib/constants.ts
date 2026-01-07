@@ -134,8 +134,8 @@ export const pricingPlans: {
     ],
     cta: 'Upgrade to Pro',
     priceIds: {
-      monthly: 'price_1PjAbaEQzx4EitcgmhA1Z9yP',
-      annual: 'price_1PjAbaEQzx4Eitcgv40oVy3D',
+      monthly: 'price_1SliFfEQzx4EitcgK8wnl5iP',
+      annual: 'YOUR_PRO_ANNUAL_PRICE_ID',
     },
   },
   {
@@ -154,7 +154,7 @@ export const pricingPlans: {
     cta: 'Unleash Beast Mode',
     priceIds: {
       monthly: 'price_1SliGOEQzx4EitcgibTSq1CE',
-      annual: 'price_1PjAc7EQzx4EitcgQ0sT4XkK',
+      annual: 'YOUR_BEAST_ANNUAL_PRICE_ID',
     },
   },
 ];
