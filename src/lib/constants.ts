@@ -133,8 +133,8 @@ export const pricingPlans: {
     ],
     cta: 'Upgrade to Pro',
     priceIds: {
-      monthly: 'price_1PbdHqBLe1J7T5bVjC4G9Y3Z', // $14.99/month
-      annual: 'price_1PbdHqBLe1J7T5bVwOqfA3b1', // $149/year
+      monthly: 'price_1PbdHqBLe1J7T5bVjC4G9Y3Z', // Placeholder Test ID for Pro Monthly
+      annual: 'price_1PbdHqBLe1J7T5bVwOqfA3b1', // Placeholder Test ID for Pro Annual
     },
   },
   {
@@ -152,8 +152,8 @@ export const pricingPlans: {
     ],
     cta: 'Unleash Beast Mode',
     priceIds: {
-      monthly: 'price_1PbdJHBLe1J7T5bV7e8fI9o2', // $29.99/month
-      annual: 'price_1PbdJHBLe1J7T5bVV23tG4d0', // $299/year
+      monthly: 'price_1PbdJHBLe1J7T5bV7e8fI9o2', // Placeholder Test ID for Beast Monthly
+      annual: 'price_1PbdJHBLe1J7T5bVV23tG4d0', // Placeholder Test ID for Beast Annual
     },
   },
 ];
