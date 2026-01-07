@@ -135,7 +135,7 @@ export const pricingPlans: {
     cta: 'Upgrade to Pro',
     priceIds: {
       monthly: 'price_1SliFfEQzx4EitcgK8wnl5iP',
-      annual: 'YOUR_PRO_ANNUAL_PRICE_ID', // Replace with your actual annual Pro plan Price ID
+      annual: 'price_1Sn1j3EQzx4EitcgNYxaHUMg',
     },
   },
   {
@@ -154,7 +154,7 @@ export const pricingPlans: {
     cta: 'Unleash Beast Mode',
     priceIds: {
       monthly: 'price_1SliGOEQzx4EitcgibTSq1CE',
-      annual: 'YOUR_BEAST_ANNUAL_PRICE_ID', // Replace with your actual annual Beast plan Price ID
+      annual: 'YOUR_BEAST_ANNUAL_PRICE_ID',
     },
   },
 ];
