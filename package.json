@@ -1,16 +1,9 @@
 {
-  "name": "fiilthy-ready",
+  "name": "fiillthy14",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "14.2.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "firebase": "^10.7.1"
+    "build": "cd fiilthy && npm install && npm run build",
+    "start": "cd fiilthy && npm start"
   }
 }
