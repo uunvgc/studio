@@ -20,3 +20,9 @@
     "typescript": "^5"
   }
 }
+
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
