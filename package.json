@@ -1,35 +1,28 @@
 {
-  "name": "fiilthy-ready",
+  "name": "fiilthyweb",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 9002",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "lint": "next lint"
   },
   "dependencies": {
-    "next": "^15.0.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "firebase": "^10.12.4",
-    "@stripe/stripe-js": "^1.60.0",
-    "stripe": "^15.12.0",
-    "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
-    "framer-motion": "^11.3.19",
-    "lucide-react": "^0.417.0",
-    "recharts": "^2.12.7",
-    "tailwind-merge": "^2.4.0",
-    "zod": "^3.23.8"
+    "firebase": "^10.14.0",
+    "firebase-admin": "^11.10.1",
+    "next": "13.5.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "tailwindcss": "^3.4.1",
-    "postcss": "^8.0.0"
+    "typescript": "^5.2.2",
+    "eslint": "^8.50.0",
+    "postcss": "^8.4.33",
+    "autoprefixer": "^10.4.15"
+  },
+  "engines": {
+    "node": ">=22.16.0"
   }
 }
